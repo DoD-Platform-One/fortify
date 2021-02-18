@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: service
+    app.kubernetes.io/instance: fortify
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Values.image.tag | quote }}
+    helm.sh/chart: ssc-1.0.169
+  name: {{ .Chart.Name }}-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+  - name: http-web
+    nodePort: 0
+    port: 80
+    protocol: TCP
+    targetPort: http-web
+  - name: https-web
+    nodePort: 0
+    port: 443
+    protocol: TCP
+    targetPort: https-web
+  selector:
+    app.kubernetes.io/component: webapp
+    app.kubernetes.io/instance: fortify
+    app.kubernetes.io/name: {{ .Release.Name | quote }}
+  type: ClusterIP

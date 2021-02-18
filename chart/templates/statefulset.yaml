@@ -1,0 +1,131 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/component: webapp
+    app.kubernetes.io/instance: fortify
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Values.image.tag | quote }}
+  name: fortify-fortify-ssc-webapp
+  namespace: fortify
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: webapp
+      app.kubernetes.io/instance: fortify
+      app.kubernetes.io/name: {{ .Release.Name | quote }}
+  serviceName: webapp
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: webapp
+        app.kubernetes.io/instance: fortify
+        app.kubernetes.io/name: {{ .Release.Name | quote }}
+    spec:
+      containers:
+      - env:
+        - name: CATALINA_OPTS
+          value: -XX:+UseContainerSupport -XX:MaxRAMPercentage=86.0
+        - name: JDBC_DRIVER_URI
+          value: {{ .Values.jdbc_driver }}
+        - name: HTTP_SERVER_CERTIFICATE_VERIFICATION
+          value: none
+        - name: COM_FORTIFY_SSC_LICENSEPATH
+          value: {{ .Values.license_path }}
+        - name: COM_FORTIFY_SSC_AUTOCONFIGPATH
+          value: {{ .Values.auto_config }}
+        - name: HTTP_SERVER_CERTIFICATE_KEYSTORE_FILE
+          value: {{ .Values.http_server_certificate_keystore_file }}
+        - name: HTTP_SERVER_CERTIFICATE_KEYSTORE_PASSWORD_FILE
+          value: {{ .Values.http_server_certificate_keystore_password }}
+        - name: HTTP_SERVER_CERTIFICATE_KEY_PASSWORD_FILE
+          value: {{ .Values.https_server_certificate_key_password }}
+        - name: COM_FORTIFY_SSC_ENFORCESECURETRANSPORT
+          value: "false"
+        - name: HTTP_SERVER_CERTIFICATE_KEY_ALIAS
+          value: {{ .Values.http_server_cert_alias }}
+        - name: HOST_URL
+          value: "https://{{ .Values.hostname }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        name: webapp
+        ports:
+        - containerPort: 8080
+          name: http-web
+          protocol: TCP
+        - containerPort: 8443
+          name: https-web
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            httpHeaders:
+            - name: Host
+              value: fortify-service
+            path: /images/favicon.ico
+            port: https-web
+            scheme: HTTPS
+          initialDelaySeconds: 60
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: 8
+            memory: 28Gi
+          requests:
+            cpu: 1
+            memory: 7Gi
+        volumeMounts:
+        - mountPath: /app/secrets
+          name: secrets-volume
+          readOnly: true
+        - mountPath: /fortify
+          name: persistent-volume
+        - mountPath: /app/tomcat/conf/server-tpl.xml
+          name: tomcat-config
+          subPath: server-tpl.xml
+      imagePullSecrets:
+      - name: private-registry
+      initContainers:
+      - command:
+        - /bin/bash
+        - -ecv
+        - |
+          cat /tmp/sql-scripts/create-tables1.sql /tmp/sql-scripts/create-tables2.sql /tmp/sql-scripts/create-tables3.sql > /tmp/create-tables.sql
+          mysql -h $DBHOST -u $DBUSER -p$DBPASSWORD < /tmp/create-tables.sql
+          echo "Seed-Data injection completed"
+        envFrom:
+        - secretRef:
+            name: db-credentials-mysql
+        image: registry.dso.mil/platform-one/big-bang/apps/developer-tools/fortify/mysql-client:8.0.21
+        name: seed-data-loader
+        volumeMounts:
+        - mountPath: /tmp/sql-scripts/create-tables1.sql
+          name: sql-script-volume1
+          subPath: create-tables1.sql
+        - mountPath: /tmp/sql-scripts/create-tables2.sql
+          name: sql-script-volume2
+          subPath: create-tables2.sql
+        - mountPath: /tmp/sql-scripts/create-tables3.sql
+          name: sql-script-volume3
+          subPath: create-tables3.sql
+      volumes:
+      - name: secrets-volume
+        secret:
+          secretName: fortify-secret
+      - name: persistent-volume
+        persistentVolumeClaim:
+          claimName: {{ .Chart.Name }}-pvc
+      - configMap:
+          name: tomcat-config
+        name: tomcat-config
+      - configMap:
+          name: db-initialization-script1
+        name: sql-script-volume1
+      - configMap:
+          name: db-initialization-script2
+        name: sql-script-volume2
+      - configMap:
+          name: db-initialization-script3
+        name: sql-script-volume3

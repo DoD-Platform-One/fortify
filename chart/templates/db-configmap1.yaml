@@ -1,0 +1,2115 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-initialization-script1
+data:
+  create-tables1.sql: |
+    --  *********************************************************************
+    --  Update Database Script
+    --  *********************************************************************
+    --  Change Log: dbMaster.xml
+    --  Ran at: 4/9/20 2:22 AM
+    --  Against: null@offline:mysql?version=5.0&outputLiquibaseSql=true
+    --  Liquibase version: 3.8.0
+    --  *********************************************************************
+
+    CREATE DATABASE IF NOT EXISTS fortify CHARACTER SET utf8 COLLATE utf8_bin;
+    
+    USE fortify;
+
+    CREATE TABLE DATABASECHANGELOG (ID VARCHAR(255) NOT NULL, AUTHOR VARCHAR(255) NOT NULL, FILENAME VARCHAR(255) NOT NULL, DATEEXECUTED datetime NOT NULL, ORDEREXECUTED INT NOT NULL, EXECTYPE VARCHAR(10) NOT NULL, MD5SUM VARCHAR(35) NULL, `DESCRIPTION` VARCHAR(255) NULL, COMMENTS VARCHAR(255) NULL, TAG VARCHAR(255) NULL, LIQUIBASE VARCHAR(20) NULL, CONTEXTS VARCHAR(255) NULL, LABELS VARCHAR(255) NULL, DEPLOYMENT_ID VARCHAR(10) NULL);
+
+    --  Changeset dbF360_Init.xml::f360_init_mysql_1::hp
+    SET collation_connection = @@collation_database;
+
+    INSERT INTO DATABASECHANGELOG (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, `DESCRIPTION`, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID) VALUES ('f360_init_mysql_1', 'hp', 'dbF360_Init.xml', NOW(), 1, '8:c0200fd5942e9c97af8ac5709e56d3cb', 'sql', '', 'EXECUTED', NULL, NULL, '3.8.0', '6424170446');
+
+    --  Changeset dbF360Mysql_2.5.0.xml::f360Mysql_2.5.0::hp
+    CREATE TABLE activity(
+        id                            INT              AUTO_INCREMENT,
+        name                          VARCHAR(255),
+        description                   VARCHAR(2000),
+        activityType                  VARCHAR(20),
+        guid                          VARCHAR(255)     NOT NULL,
+        objectVersion                 INT,
+        publishVersion                INT,
+        defaultWorkOwnerPersona_id    INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE activity_persona(
+        activity_id    INT    NOT NULL,
+        persona_id     INT    NOT NULL,
+        PRIMARY KEY (activity_id, persona_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE activitycomment(
+        activityInstance_id    INT              NOT NULL,
+        commentTime            DATETIME         NOT NULL,
+        userName               VARCHAR(255),
+        commentText            VARCHAR(4000),
+        commentType            VARCHAR(20),
+        PRIMARY KEY (activityInstance_id, commentTime)
+    )ENGINE=INNODB;
+
+    CREATE TABLE activityinstance(
+        id                        INT              AUTO_INCREMENT,
+        projectVersion_id         INT              NOT NULL,
+        activity_id               INT,
+        name                      VARCHAR(255),
+        description               VARCHAR(2000),
+        activityType              VARCHAR(20),
+        signOffState              VARCHAR(20),
+        signOffDate               DATETIME,
+        objectVersion             INT,
+        seqNumber                 INT,
+        requirementInstance_id    INT,
+        savedEvidence_id          INT,
+        workOwner                 VARCHAR(255),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE activitysignoff(
+        activityInstance_id    INT             NOT NULL,
+        persona_id             INT             NOT NULL,
+        signOffState           VARCHAR(20)     NOT NULL,
+        signOffDate            DATETIME,
+        signOffUser            VARCHAR(255),
+        PRIMARY KEY (activityInstance_id, persona_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE agentcredential(
+        id                   INT             AUTO_INCREMENT,
+        token                VARCHAR(255),
+        action               VARCHAR(255),
+        remainingAttempts    INT,
+        credential           BLOB,
+        userName             VARCHAR(255),
+        creationIp           VARCHAR(255),
+        creationDate         DATETIME,
+        terminalDate         DATETIME,
+        sessionId            VARCHAR(255),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE alert(
+        id                     INT              AUTO_INCREMENT,
+        name                   VARCHAR(255),
+        description            VARCHAR(2000),
+        monitoredEntityType    VARCHAR(20),
+        monitoredInstanceId    INT,
+        startDate              DATETIME,
+        endDate                DATETIME,
+        additionalParams       VARCHAR(255),
+        createdBy              VARCHAR(255),
+        creationDate           DATETIME,
+        objectVersion          INT,
+        reminderPeriod         INT,
+        enabled                CHAR(1)          DEFAULT 'Y' NOT NULL,
+        alertAllChildren       CHAR(1)          DEFAULT 'N',
+        alertStakeholders      CHAR(1)          DEFAULT 'N',
+        monitorAllApps         CHAR(1)          DEFAULT 'N',
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE alert_role(
+        alert_id    INT    NOT NULL,
+        pt_id       INT    NOT NULL,
+        PRIMARY KEY (alert_id, pt_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE alerthistory(
+        id                     INT             AUTO_INCREMENT,
+        alert_id               INT             NOT NULL,
+        userName               VARCHAR(255),
+        triggeredDate          DATETIME,
+        active                 CHAR(1),
+        monitoredEntityType    VARCHAR(20),
+        monitoredInstanceId    INT,
+        monitoredEntityName    VARCHAR(255),
+        alertStartDate         DATETIME,
+        projectVersion_id      INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE alerttrigger(
+        alert_id           INT            NOT NULL,
+        monitoredColumn    VARCHAR(80)    NOT NULL,
+        triggeredValue     VARCHAR(80)    NOT NULL,
+        PRIMARY KEY (alert_id, monitoredColumn, triggeredValue)
+    )ENGINE=INNODB;
+
+    CREATE TABLE analysisblob(
+        projectVersion_id    INT            NOT NULL,
+        issueInstanceId      VARCHAR(80)    NOT NULL,
+        engineType           VARCHAR(20)    NOT NULL,
+        analysisTrace        MEDIUMBLOB,
+        PRIMARY KEY (projectVersion_id, issueInstanceId, engineType)
+    )ENGINE=INNODB;
+
+    CREATE TABLE applicationassignmentrule(
+        id                       INT             AUTO_INCREMENT,
+        context                  VARCHAR(512),
+        objectVersion            INT,
+        seqNumber                INT,
+        runtimeApplication_id    INT             NOT NULL,
+        name                     VARCHAR(255),
+        description              TEXT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE applicationassignmentrule_host(
+        applicationAssignmentRule_id    INT    NOT NULL,
+        host_id                         INT    NOT NULL,
+        PRIMARY KEY (applicationAssignmentRule_id, host_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE applicationentity(
+        id               INT            AUTO_INCREMENT,
+        objectVersion    INT,
+        appEntityType    VARCHAR(20),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE artifact(
+        id                   INT              AUTO_INCREMENT,
+        projectVersion_id    INT              NOT NULL,
+        documentInfo_id      INT              NOT NULL,
+        artifactType         VARCHAR(20),
+        status               VARCHAR(20),
+        messages             VARCHAR(2000),
+        allowDelete          CHAR(1)          DEFAULT 'Y',
+        srcArtifact_id       INT,
+        purged               CHAR(1)          DEFAULT 'N',
+        auditUpdated         CHAR(1)          DEFAULT 'N',
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE attr(
+        id               INT              AUTO_INCREMENT,
+        guid             VARCHAR(255)     NOT NULL,
+        attrName         VARCHAR(80)      NOT NULL,
+        attrType         VARCHAR(20)      NOT NULL,
+        description      VARCHAR(2000),
+        extensible       CHAR(1),
+        masterAttr       CHAR(1)          DEFAULT 'N',
+        defaultValue     INT,
+        objectVersion    INT,
+        hidden           CHAR(1)          DEFAULT 'N',
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE attrlookup(
+        attr_id        INT             NOT NULL,
+        lookupIndex    INT             NOT NULL,
+        lookupValue    VARCHAR(255),
+        attrGuid       VARCHAR(255),
+        hidden         CHAR(1)         DEFAULT 'N',
+        seqNumber      INT,
+        PRIMARY KEY (attr_id, lookupIndex)
+    )ENGINE=INNODB;
+
+    CREATE TABLE auditcomment(
+        issue_id       INT              NOT NULL,
+        seqNumber      INT              NOT NULL,
+        auditTime      BIGINT,
+        commentText    VARCHAR(2000),
+        userName       VARCHAR(255),
+        PRIMARY KEY (issue_id, seqNumber)
+    )ENGINE=INNODB;
+
+    CREATE TABLE audithistory(
+        issue_id             INT             NOT NULL,
+        seqNumber            INT             NOT NULL,
+        attrGuid             VARCHAR(255),
+        auditTime            BIGINT,
+        oldValue             INT,
+        newValue             INT,
+        userName             VARCHAR(255),
+        conflict             CHAR(1)         DEFAULT 'N',
+        projectVersion_id    INT             NOT NULL,
+        PRIMARY KEY (issue_id, seqNumber)
+    )ENGINE=INNODB;
+
+    CREATE TABLE auditvalue(
+        issue_id             INT            NOT NULL,
+        attrGuid             VARCHAR(80)    NOT NULL,
+        attrValue            INT,
+        projectVersion_id    INT            NOT NULL,
+        PRIMARY KEY (issue_id, attrGuid)
+    )ENGINE=INNODB;
+
+    CREATE TABLE consoleeventhandler(
+        id                              INT             AUTO_INCREMENT,
+        name                            VARCHAR(255)    NOT NULL,
+        objectVersion                   INT             NOT NULL,
+        description                     TEXT,
+        eventHandlerType                VARCHAR(20),
+        matchConditionsXml              TEXT,
+        additionalMatchConditionsXml    TEXT,
+        enabled                         CHAR(1),
+        runtimeConfiguration_id         INT             NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE controller(
+        id                        INT        AUTO_INCREMENT,
+        port                      INT,
+        allowNewClients           CHAR(1)    DEFAULT 'N',
+        strictCertCheck           CHAR(1)    DEFAULT 'N',
+        controllerKeyKeeper_id    INT        NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE controllerkeykeeper(
+        id           INT            AUTO_INCREMENT,
+        keystore     LONGBLOB,
+        integrity    VARCHAR(20),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE datablob(
+        id      INT         AUTO_INCREMENT,
+        data    LONGBLOB,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE documentactivity(
+        id                INT    NOT NULL,
+        documentDef_id    INT    NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE documentai(
+        id                     INT    NOT NULL,
+        documentDef_id         INT    NOT NULL,
+        documentArtifact_id    INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE documentartifact(
+        id                   INT              AUTO_INCREMENT,
+        name                 VARCHAR(255),
+        description          VARCHAR(2000),
+        projectVersion_id    INT              NOT NULL,
+        documentInfo_id      INT              NOT NULL,
+        status               VARCHAR(20),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE documentartifact_def(
+        documentArtifact_id    INT    NOT NULL,
+        documentDef_id         INT    NOT NULL,
+        PRIMARY KEY (documentArtifact_id, documentDef_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE documentdef(
+        id                 INT              AUTO_INCREMENT,
+        guid               VARCHAR(255)     NOT NULL,
+        name               VARCHAR(255),
+        description        VARCHAR(2000),
+        templateInfo_id    INT,
+        objectVersion      INT,
+        publishVersion     INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE documentdefinstance(
+        activityInstance_id    INT              NOT NULL,
+        name                   VARCHAR(255),
+        description            VARCHAR(2000),
+        documentDef_id         INT              NOT NULL,
+        templateInfo_id        INT,
+        PRIMARY KEY (activityInstance_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE documentinfo(
+        id                  INT              AUTO_INCREMENT,
+        documentType        INT,
+        originalFileName    VARCHAR(1999),
+        fileName            VARCHAR(255),
+        fileURL             VARCHAR(1999),
+        versionNumber       INT,
+        uploadDate          DATETIME,
+        uploadIP            VARCHAR(255),
+        fileSize            BIGINT,
+        userName            VARCHAR(255),
+        fileBlob_id         INT,
+        objectVersion       INT,
+        externalFlag        CHAR(1)          DEFAULT 'N',
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE dynamicassessment(
+        id                   INT             AUTO_INCREMENT,
+        projectVersion_id    INT             NOT NULL,
+        artifactId           INT,
+        siteUrl              VARCHAR(255),
+        siteScanStatus       VARCHAR(255),
+        creationDate         DATETIME,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE entitytype(
+        id            INT             NOT NULL,
+        entityName    VARCHAR(255),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE eventlogentry(
+        id                   INT              AUTO_INCREMENT,
+        eventType            VARCHAR(255),
+        userName             VARCHAR(255),
+        eventDate            DATETIME,
+        detailedNote         VARCHAR(4000),
+        entity_id            INT,
+        projectVersion_id    INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE f360global(
+        id               INT             AUTO_INCREMENT,
+        schemaVersion    VARCHAR(255)    NOT NULL,
+        publicKey        BLOB,
+        privateKey       BLOB,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE federation(
+        id                         INT              AUTO_INCREMENT,
+        federationName             VARCHAR(255),
+        description                VARCHAR(2000),
+        defaultFederation          CHAR(1),
+        objectVersion              INT,
+        runtimeConfiguration_id    INT              NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE filterset(
+        id                   INT              AUTO_INCREMENT,
+        projectVersion_id    INT,
+        title                VARCHAR(80),
+        description          VARCHAR(2000),
+        guid                 VARCHAR(255),
+        disableEdit          CHAR(1)          DEFAULT 'N',
+        enabled              CHAR(1)          DEFAULT 'Y',
+        filterSetType        VARCHAR(20),
+        defaultFolder_id     INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE finding(
+        projectVersion_id    INT              NOT NULL,
+        guid                 VARCHAR(255)     NOT NULL,
+        name                 VARCHAR(255),
+        description          VARCHAR(2000),
+        findingType          VARCHAR(80),
+        PRIMARY KEY (projectVersion_id, guid)
+    )ENGINE=INNODB;
+
+    CREATE TABLE folder(
+        id                   INT              AUTO_INCREMENT,
+        projectVersion_id    INT              NOT NULL,
+        name                 VARCHAR(80),
+        description          VARCHAR(2000),
+        guid                 VARCHAR(255),
+        color                VARCHAR(20),
+        editable             CHAR(1),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE foldercountcache(
+        projectVersion_id    INT        NOT NULL,
+        filterSet_id         INT        NOT NULL,
+        folder_id            INT        NOT NULL,
+        hidden               CHAR(1)    NOT NULL,
+        removed              CHAR(1)    NOT NULL,
+        suppressed           CHAR(1)    NOT NULL,
+        issueCount           INT,
+        PRIMARY KEY (projectVersion_id, filterSet_id, folder_id, hidden, removed, suppressed)
+    )ENGINE=INNODB;
+
+    CREATE TABLE fortifyuser(
+        id                       INT             NOT NULL,
+        userName                 VARCHAR(255)    NOT NULL,
+        password                 VARCHAR(255),
+        requirePasswordChange    CHAR(1)         NOT NULL,
+        lastPasswordChange       DATETIME,
+        passwordNeverExpire      CHAR(1)         NOT NULL,
+        failedLoginAttempts      INT             NOT NULL,
+        dateFrozen               DATETIME,
+        firstName                VARCHAR(255),
+        lastName                 VARCHAR(255),
+        email                    VARCHAR(255),
+        remoteKey                VARCHAR(255),
+        suspended                CHAR(1)         NOT NULL,
+        secPass                  VARCHAR(255),
+        salt                     VARCHAR(255),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE fpr_scan(
+        scan_id        INT    NOT NULL,
+        artifact_id    INT    NOT NULL,
+        PRIMARY KEY (scan_id, artifact_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE host(
+        id               INT              AUTO_INCREMENT,
+        hostName         VARCHAR(255),
+        address          VARCHAR(255),
+        hostType         VARCHAR(20),
+        statusCode       VARCHAR(20),
+        statusMessage    VARCHAR(2000),
+        os               VARCHAR(50),
+        osVersion        VARCHAR(50),
+        vm               VARCHAR(50),
+        vmVersion        VARCHAR(50),
+        lastComm         DATETIME,
+        enabled          CHAR(1)          DEFAULT 'Y',
+        hasConnected     CHAR(1)          DEFAULT 'N',
+        logHasWarning    CHAR(1)          DEFAULT 'N',
+        logHasError      CHAR(1)          DEFAULT 'N',
+        connAttempts     INT,
+        federation_id    INT              NOT NULL,
+        controller_id    INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE hostlogmessage(
+        id              INT              AUTO_INCREMENT,
+        creationDate    DATETIME,
+        logLevel        VARCHAR(20),
+        msg             VARCHAR(4000),
+        host_id         INT              NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE idgenerator(
+        id             INT             AUTO_INCREMENT,
+        sessionGuid    VARCHAR(255)    NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE iidmapping(
+        migration_id      INT             NOT NULL,
+        fromInstanceId    VARCHAR(255)    NOT NULL,
+        toInstanceId      VARCHAR(255)    NOT NULL,
+        seqNumber         INT,
+        PRIMARY KEY (migration_id, fromInstanceId, toInstanceId)
+    )ENGINE=INNODB;
+
+    CREATE TABLE iidmigration(
+        id                   INT         AUTO_INCREMENT,
+        artifact_id          INT,
+        processingDate       DATETIME,
+        projectVersion_id    INT         NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE issue(
+        id                     INT              AUTO_INCREMENT,
+        remediationConstant    FLOAT(8, 2),
+        projectVersion_id      INT              NOT NULL,
+        issueInstanceId        VARCHAR(80)      NOT NULL,
+        fileName               VARCHAR(500),
+        shortFileName          VARCHAR(255),
+        severity               FLOAT(8, 2),
+        ruleGuid               VARCHAR(120),
+        confidence             FLOAT(8, 2),
+        kingdom                VARCHAR(80),
+        issueType              VARCHAR(120),
+        issueSubtype           VARCHAR(180),
+        analyzer               VARCHAR(80),
+        lineNumber             INT,
+        taintFlag              VARCHAR(255),
+        packageName            VARCHAR(255),
+        functionName           VARCHAR(1024),
+        className              VARCHAR(255),
+        issueAbstract          TEXT,
+        friority               VARCHAR(20),
+        engineType             VARCHAR(20),
+        scanStatus             VARCHAR(20),
+        audienceSet            VARCHAR(100),
+        lastScan_id            INT,
+        replaceStore           BLOB,
+        snippetId              VARCHAR(512),
+        url                    VARCHAR(1000),
+        category               VARCHAR(300),
+        source                 VARCHAR(255),
+        sourceContext          VARCHAR(1000),
+        sourceFile             VARCHAR(255),
+        sink                   VARCHAR(1000),
+        sinkContext            VARCHAR(1000),
+        userName               VARCHAR(255),
+        owasp2004              VARCHAR(120),
+        owasp2007              VARCHAR(120),
+        cwe                    VARCHAR(120),
+        objectVersion          INT,
+        revision               INT              DEFAULT 0,
+        audited                CHAR(1)          DEFAULT 'N',
+        auditedTime            DATETIME,
+        suppressed             CHAR(1)          DEFAULT 'N',
+        issueStatus            VARCHAR(20)      DEFAULT 'Unreviewed',
+        issueState             VARCHAR(20)      DEFAULT 'Open Issue',
+        findingGuid            VARCHAR(500),
+        dynamicConfidence      INT              DEFAULT 0,
+        hidden                 CHAR(1)          DEFAULT 'N',
+        likelihood             FLOAT(8, 2),
+        impact                 FLOAT(8, 2),
+        accuracy               FLOAT(8, 2),
+        sans25                 VARCHAR(120),
+        wasc                   VARCHAR(120),
+        stig                   VARCHAR(120),
+        pci11                  VARCHAR(120),
+        pci12                  VARCHAR(120),
+        rtaCovered             VARCHAR(120),
+        probability            FLOAT(8, 2),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE issuecache(
+        filterSet_id         INT             NOT NULL,
+        issue_id             INT             NOT NULL,
+        projectVersion_id    INT,
+        folder_id            INT,
+        hidden               CHAR(1)         DEFAULT 'N',
+        issueInstanceId      VARCHAR(255),
+        PRIMARY KEY (filterSet_id, issue_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE ldapentity(
+        id        INT             NOT NULL,
+        ldapDn    VARCHAR(255),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE measurement(
+        id                 INT              AUTO_INCREMENT,
+        name               VARCHAR(255),
+        description        VARCHAR(2000),
+        equation           VARCHAR(1000),
+        guid               VARCHAR(255)     NOT NULL,
+        valueFormat        VARCHAR(255),
+        measurementType    VARCHAR(20),
+        objectVersion      INT,
+        publishVersion     INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE measurement_variable(
+        measurement_id    INT    NOT NULL,
+        variable_id       INT    NOT NULL,
+        PRIMARY KEY (measurement_id, variable_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE measurementhistory(
+        id                  INT            AUTO_INCREMENT,
+        measurement_id      INT            NOT NULL,
+        creationTime        DATETIME,
+        measurementValue    FLOAT(8, 2),
+        snapshot_id         INT            NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE measurementinstance(
+        activityInstance_id       INT              NOT NULL,
+        measurement_id            INT              NOT NULL,
+        measurementName           VARCHAR(255),
+        measurementDescription    VARCHAR(2000),
+        equation                  VARCHAR(1000),
+        measurementValue          FLOAT(8, 2),
+        valueFormat               VARCHAR(255),
+        PRIMARY KEY (activityInstance_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE metadatarule(
+        id             INT              AUTO_INCREMENT,
+        name           VARCHAR(255),
+        description    VARCHAR(2000),
+        ruleType       VARCHAR(20),
+        conditions     TEXT,
+        seqNumber      INT,
+        guid           VARCHAR(255)     NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE metadef(
+        id                 INT             AUTO_INCREMENT,
+        parent_id          INT,
+        metaType           VARCHAR(255),
+        seqNumber          INT,
+        required           CHAR(1)         DEFAULT 'N',
+        hidden             CHAR(1)         DEFAULT 'N',
+        booleanDefault     CHAR(1)         DEFAULT 'N',
+        guid               VARCHAR(255)    NOT NULL,
+        parentOption_id    INT,
+        category           VARCHAR(20),
+        appEntityType      VARCHAR(80),
+        objectVersion      INT,
+        publishVersion     INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE metadef_t(
+        metaDef_id     INT              NOT NULL,
+        lang           VARCHAR(10)      NOT NULL,
+        name           VARCHAR(255),
+        description    VARCHAR(2000),
+        help           VARCHAR(2000),
+        PRIMARY KEY (metaDef_id, lang)
+    )ENGINE=INNODB;
+
+    CREATE TABLE metaoption(
+        id                  INT             AUTO_INCREMENT,
+        optionIndex         INT,
+        metaDef_id          INT,
+        defaultSelection    CHAR(1)         DEFAULT 'N',
+        hidden              CHAR(1)         DEFAULT 'N',
+        guid                VARCHAR(255),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE metaoption_t(
+        metaOption_id    INT              NOT NULL,
+        lang             VARCHAR(255)     NOT NULL,
+        name             VARCHAR(255),
+        description      VARCHAR(2000),
+        help             VARCHAR(2000),
+        PRIMARY KEY (metaOption_id, lang)
+    )ENGINE=INNODB;
+
+    CREATE TABLE metavalue(
+        id                   INT              AUTO_INCREMENT,
+        metaDef_id           INT              NOT NULL,
+        textValue            VARCHAR(2000),
+        booleanValue         CHAR(1),
+        objectVersion        INT,
+        projectVersion_id    INT              NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE metavalueselection(
+        metaValue_id     INT    NOT NULL,
+        metaOption_id    INT    NOT NULL,
+        PRIMARY KEY (metaValue_id, metaOption_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE payloadartifact(
+        id                         INT              AUTO_INCREMENT,
+        projectVersion_id          INT              NOT NULL,
+        analysisDoc_id             INT,
+        dependencyDoc_id           INT,
+        sourceDoc_id               INT,
+        status                     VARCHAR(20),
+        messages                   VARCHAR(2000),
+        additionalInput            MEDIUMBLOB,
+        defaultAnalyzeCount        INT,
+        jobId                      INT,
+        totalAnalysisFilesCount    INT,
+        totalSourceFilesCount      INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE payloadentry(
+        id             INT              AUTO_INCREMENT,
+        artifact_id    INT              NOT NULL,
+        filePath       VARCHAR(2000),
+        fileName       VARCHAR(255),
+        fileType       VARCHAR(20),
+        fileSize       INT,
+        selected       CHAR(1)          DEFAULT 'N',
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE payloadmessage(
+        id              INT            AUTO_INCREMENT,
+        artifact_id     INT            NOT NULL,
+        messageType     VARCHAR(20),
+        messageCode     INT,
+        extraMessage    TEXT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE permission(
+        id               INT             AUTO_INCREMENT,
+        name             VARCHAR(255)    NOT NULL,
+        type             INT             NOT NULL,
+        entityType_id    INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE permissioninstance(
+        id                  INT    AUTO_INCREMENT,
+        entityInstanceId    INT,
+        permission_id       INT    NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE permissiontemplate(
+        id           INT             AUTO_INCREMENT,
+        name         VARCHAR(255)    NOT NULL,
+        builtin      CHAR(1)         NOT NULL,
+        isDefault    CHAR(1)         NOT NULL,
+        userOnly     CHAR(1)         NOT NULL,
+        sortOrder    INT             NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE persona(
+        id                INT             AUTO_INCREMENT,
+        guid              VARCHAR(255),
+        name              VARCHAR(255),
+        description       TEXT,
+        objectVersion     INT,
+        publishVersion    INT,
+        superuser         CHAR(1)         DEFAULT 'N',
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE personaassignment(
+        projectVersion_id    INT             NOT NULL,
+        persona_id           INT             NOT NULL,
+        userName             VARCHAR(255),
+        PRIMARY KEY (projectVersion_id, persona_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE pod(
+        id                 INT             AUTO_INCREMENT,
+        podType            VARCHAR(255),
+        podName            VARCHAR(255),
+        multipleEnabled    CHAR(1)         DEFAULT 'N',
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE pref_pod(
+        id           INT              AUTO_INCREMENT,
+        pref_id      INT,
+        pod_id       INT              NOT NULL,
+        minimized    CHAR(1)          DEFAULT 'N',
+        maximized    CHAR(1)          DEFAULT 'N',
+        selection    VARCHAR(4000),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE pref_projectversion(
+        pref_id              INT    NOT NULL,
+        projectVersion_id    INT    NOT NULL,
+        PRIMARY KEY (pref_id, projectVersion_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE project(
+        id              INT              AUTO_INCREMENT,
+        name            VARCHAR(255),
+        description     VARCHAR(2000),
+        creationDate    DATETIME,
+        createdBy       VARCHAR(255),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE projectstateactivity(
+        id                INT            NOT NULL,
+        compareType       VARCHAR(20),
+        compareValue      FLOAT(8, 2),
+        measurement_id    INT            NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE projectstateai(
+        id                INT            NOT NULL,
+        compareType       VARCHAR(20),
+        compareValue      FLOAT(8, 2),
+        measurement_id    INT            NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE projecttemplate(
+        id                 INT              AUTO_INCREMENT,
+        documentInfo_id    INT              NOT NULL,
+        name               VARCHAR(255),
+        description        VARCHAR(2000),
+        guid               VARCHAR(255)     NOT NULL,
+        objectVersion      INT,
+        publishVersion     INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE projecttemplate_attr(
+        projectTemplate_id    INT             NOT NULL,
+        attrGuid              VARCHAR(255)    NOT NULL,
+        seqNumber             INT,
+        PRIMARY KEY (projectTemplate_id, attrGuid)
+    )ENGINE=INNODB;
+
+    CREATE TABLE projectversion(
+        id                      INT              NOT NULL,
+        name                    VARCHAR(255)     NOT NULL,
+        description             VARCHAR(1999),
+        versionTag              VARCHAR(255),
+        active                  CHAR(1)          DEFAULT 'N',
+        modifiedAfterCommit     CHAR(1),
+        creationDate            DATETIME,
+        createdBy               VARCHAR(255),
+        objectVersion           INT,
+        projectTemplate_id      INT,
+        project_id              INT,
+        versionCommitted        CHAR(1)          DEFAULT 'N',
+        versionMode             VARCHAR(20),
+        locked                  CHAR(1)          DEFAULT 'N',
+        auditAllowed            CHAR(1)          DEFAULT 'Y',
+        staleProjectTemplate    CHAR(1)          DEFAULT 'N',
+        loadProperties          VARCHAR(1999),
+        currentFprBlob_id       INT,
+        snapshotOutOfDate       CHAR(1)          DEFAULT 'N',
+        assessmentState         VARCHAR(20),
+        owner                   VARCHAR(255),
+        serverVersion           FLOAT(8, 0),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE projectversion_alert(
+        alert_id             INT    NOT NULL,
+        projectVersion_id    INT    NOT NULL,
+        PRIMARY KEY (alert_id, projectVersion_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE projectversion_rule(
+        projectVersion_id    INT             NOT NULL,
+        rule_id              INT             NOT NULL,
+        ruleGuid             VARCHAR(255),
+        engineType           VARCHAR(20),
+        PRIMARY KEY (projectVersion_id, rule_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE projectversiondependency(
+        parentProjectVersion_id    INT    NOT NULL,
+        childProjectVersion_id     INT    NOT NULL,
+        PRIMARY KEY (parentProjectVersion_id, childProjectVersion_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE pt_permission(
+        pt_id            INT    NOT NULL,
+        permission_id    INT    NOT NULL,
+        PRIMARY KEY (pt_id, permission_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE publishaction(
+        publishedReport_id    INT             NOT NULL,
+        procurerTenantId      VARCHAR(255)    NOT NULL,
+        procurer_id           INT             NOT NULL,
+        publishedBy           VARCHAR(255),
+        publishDate           DATETIME,
+        PRIMARY KEY (publishedReport_id, procurerTenantId)
+    )ENGINE=INNODB;
+
+    CREATE TABLE publishedreport(
+        id                    INT              AUTO_INCREMENT,
+        assessmentName        VARCHAR(255),
+        vendorTenantId        VARCHAR(255)     NOT NULL,
+        savedReport_id        VARCHAR(255),
+        name                  VARCHAR(255),
+        note                  VARCHAR(1999),
+        format                VARCHAR(20),
+        generatedBy           VARCHAR(255),
+        generationDate        DATETIME,
+        reportOutputDoc_id    INT              NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE report_projectversion(
+        savedReport_id       INT    NOT NULL,
+        projectVersion_id    INT    NOT NULL,
+        PRIMARY KEY (savedReport_id, projectVersion_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE reportdefinition(
+        id                 INT              AUTO_INCREMENT,
+        name               VARCHAR(255)     NOT NULL,
+        description        VARCHAR(2000),
+        reportType         VARCHAR(20),
+        renderingEngine    VARCHAR(20),
+        crossApp           CHAR(1)          DEFAULT 'N',
+        guid               VARCHAR(255),
+        templateDoc_id     INT,
+        objectVersion      INT,
+        publishVersion     INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE reportparameter(
+        id                     INT              AUTO_INCREMENT,
+        paramName              VARCHAR(255)     NOT NULL,
+        description            VARCHAR(2000),
+        dataType               VARCHAR(20)      NOT NULL,
+        entityType             VARCHAR(40),
+        identifier             VARCHAR(80),
+        reportDefinition_id    INT              NOT NULL,
+        paramOrder             INT              NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE requirement(
+        id                            INT              AUTO_INCREMENT,
+        requirementTemplate_id        INT              NOT NULL,
+        name                          VARCHAR(255),
+        description                   VARCHAR(2000),
+        tag                           VARCHAR(255),
+        seqNumber                     INT,
+        defaultWorkOwnerPersona_id    INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE requirement_activity(
+        requirement_id    INT    NOT NULL,
+        activity_id       INT    NOT NULL,
+        seqNumber         INT,
+        PRIMARY KEY (requirement_id, activity_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE requirement_persona(
+        requirement_id    INT    NOT NULL,
+        persona_id        INT    NOT NULL,
+        PRIMARY KEY (requirement_id, persona_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE requirementcomment(
+        requirementInstance_id    INT              NOT NULL,
+        commentTime               DATETIME         NOT NULL,
+        commentText               VARCHAR(4000),
+        userName                  VARCHAR(255),
+        commentType               VARCHAR(20),
+        PRIMARY KEY (requirementInstance_id, commentTime)
+    )ENGINE=INNODB;
+
+    CREATE TABLE requirementinstance(
+        id                   INT              AUTO_INCREMENT,
+        projectVersion_id    INT              NOT NULL,
+        requirement_id       INT,
+        name                 VARCHAR(255),
+        description          VARCHAR(2000),
+        tag                  VARCHAR(255),
+        signOffState         VARCHAR(20),
+        signOffDate          DATETIME,
+        objectVersion        INT,
+        seqNumber            INT,
+        workOwner            VARCHAR(255),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE requirementsignoff(
+        requirementInstance_id    INT             NOT NULL,
+        persona_id                INT             NOT NULL,
+        signOffState              VARCHAR(20)     NOT NULL,
+        signOffDate               DATETIME,
+        signOffUser               VARCHAR(255),
+        PRIMARY KEY (requirementInstance_id, persona_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE requirementtemplate(
+        id                            INT              AUTO_INCREMENT,
+        name                          VARCHAR(255),
+        description                   VARCHAR(2000),
+        guid                          VARCHAR(255)     NOT NULL,
+        projectTemplate_id            INT,
+        hidden                        CHAR(1)          DEFAULT 'N',
+        defaultTemplate               CHAR(1)          DEFAULT 'N',
+        templateMode                  VARCHAR(20),
+        objectVersion                 INT,
+        publishVersion                INT,
+        defaultWorkOwnerPersona_id    INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE requirementtemplate_persona(
+        requirementTemplate_id    INT    NOT NULL,
+        persona_id                INT    NOT NULL,
+        PRIMARY KEY (requirementTemplate_id, persona_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE requirementtemplatecomment(
+        projectVersion_id    INT              NOT NULL,
+        commentTime          DATETIME         NOT NULL,
+        commentText          VARCHAR(4000),
+        userName             VARCHAR(255),
+        commentType          VARCHAR(20),
+        PRIMARY KEY (projectVersion_id, commentTime)
+    )ENGINE=INNODB;
+
+    CREATE TABLE requirementtemplateinstance(
+        projectVersion_id         INT              NOT NULL,
+        requirementTemplate_id    INT              NOT NULL,
+        override                  CHAR(1)          DEFAULT 'N',
+        metadataRule_id           INT,
+        signOffState              VARCHAR(20),
+        signOffDate               DATETIME,
+        name                      VARCHAR(255),
+        description               VARCHAR(2000),
+        guid                      VARCHAR(255),
+        objectVersion             INT,
+        savedEvidence_id          INT,
+        workOwner                 VARCHAR(255),
+        serverVersion             FLOAT(8, 0),
+        PRIMARY KEY (projectVersion_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE requirementtemplatesignoff(
+        projectVersion_id    INT             NOT NULL,
+        persona_id           INT             NOT NULL,
+        signOffState         VARCHAR(20)     NOT NULL,
+        signOffDate          DATETIME,
+        signOffUser          VARCHAR(255),
+        PRIMARY KEY (projectVersion_id, persona_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE rtassignment(
+        metadataRule_id           INT    NOT NULL,
+        requirementTemplate_id    INT    NOT NULL,
+        objectVersion             INT,
+        publishVersion            INT,
+        PRIMARY KEY (metadataRule_id, requirementTemplate_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE rule_t(
+        id                   INT            NOT NULL,
+        lang                 VARCHAR(10)    NOT NULL,
+        rawDetail            TEXT,
+        rawRecommendation    TEXT,
+        rawRuleAbstract      TEXT,
+        detail               TEXT,
+        recommendation       TEXT,
+        ruleAbstract         TEXT,
+        PRIMARY KEY (id, lang)
+    )ENGINE=INNODB;
+
+    CREATE TABLE ruledescription(
+        id             INT             AUTO_INCREMENT,
+        guid           VARCHAR(255),
+        rulepack_id    INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE rulepack(
+        id                 INT              AUTO_INCREMENT,
+        sku                VARCHAR(255),
+        rulepackGuid       VARCHAR(255)     NOT NULL,
+        name               VARCHAR(255)     NOT NULL,
+        description        VARCHAR(1999),
+        versionNumber      VARCHAR(255),
+        progLanguage       VARCHAR(255),
+        rulepackType       VARCHAR(20),
+        objectVersion      INT,
+        documentInfo_id    INT              NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE runtimealert(
+        id                         INT             NOT NULL,
+        runtimeEvent_id            INT             NOT NULL,
+        eventHandlerName           VARCHAR(255),
+        eventHandlerDescription    TEXT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE runtimeapplication(
+        id                    INT              NOT NULL,
+        name                  VARCHAR(255)     NOT NULL,
+        description           VARCHAR(2000),
+        creationDate          DATETIME,
+        createdBy             VARCHAR(255),
+        objectVersion         INT,
+        defaultApplication    CHAR(1),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE runtimeconfig_rulepack(
+        runtimeConfiguration_id    INT    NOT NULL,
+        rulepack_id                INT    NOT NULL,
+        seqNumber                  INT,
+        PRIMARY KEY (runtimeConfiguration_id, rulepack_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE runtimeconfiguration(
+        id                    INT              AUTO_INCREMENT,
+        configGuid            VARCHAR(255),
+        configName            VARCHAR(255),
+        description           VARCHAR(2000),
+        lastModification      DATETIME,
+        objectVersion         INT,
+        enabled               CHAR(1)          DEFAULT 'Y',
+        protectModeEnabled    CHAR(1)          DEFAULT 'N',
+        templateInfo_id       INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE runtimeevent(
+        id                        INT              NOT NULL,
+        category                  VARCHAR(512),
+        ruleId                    VARCHAR(255),
+        monitorId                 VARCHAR(255),
+        exceptionStackChecksum    VARCHAR(255),
+        eventStackChecksum        VARCHAR(255),
+        eventType                 VARCHAR(120),
+        creationDate              DATETIME,
+        descriptionPath           VARCHAR(255),
+        severity                  FLOAT(8, 0),
+        accuracy                  FLOAT(8, 0),
+        impact                    FLOAT(8, 0),
+        impactBias                VARCHAR(120),
+        audience                  VARCHAR(120),
+        primaryAudience           VARCHAR(20),
+        coveredRta                CHAR(1),
+        coveredSca                CHAR(1),
+        requestHeader             TEXT,
+        requestIp                 VARCHAR(255),
+        sessionId                 VARCHAR(255),
+        requestUri                VARCHAR(2084),
+        requestParameter          TEXT,
+        authedUser                VARCHAR(255),
+        cookie                    TEXT,
+        referer                   VARCHAR(2084),
+        userAgent                 VARCHAR(255),
+        triggeredBy               TEXT,
+        action                    VARCHAR(255),
+        dispatch                  VARCHAR(255),
+        kingdom                   VARCHAR(100),
+        hourDate                  INT,
+        isAttack                  CHAR(1)          DEFAULT 'N',
+        isVulnerability           CHAR(1)          DEFAULT 'N',
+        isAudit                   CHAR(1)          DEFAULT 'N',
+        requestMethod             VARCHAR(20),
+        likelihood                FLOAT(8, 0),
+        priority                  VARCHAR(20),
+        processed                 CHAR(1)          DEFAULT 'N',
+        alerted                   CHAR(1)          DEFAULT 'N',
+        probability               FLOAT(8, 0),
+        requestScheme             VARCHAR(20),
+        host_id                   INT              NOT NULL,
+        runtimeApplication_id     INT              NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE runtimeeventarchive(
+        id                        INT             AUTO_INCREMENT,
+        startDate                 DATETIME,
+        endDate                   DATETIME,
+        runtimeApplication_id     INT,
+        runtimeApplicationName    VARCHAR(255),
+        notes                     TEXT,
+        restored                  CHAR(1)         DEFAULT 'N',
+        documentInfo_id           INT             NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE runtimeeventattr(
+        runtimeEvent_id    INT             NOT NULL,
+        attrName           VARCHAR(255)    NOT NULL,
+        attrValue          MEDIUMTEXT,
+        trusted            CHAR(1)         DEFAULT 'N',
+        internal           CHAR(1)         DEFAULT 'N',
+        PRIMARY KEY (runtimeEvent_id, attrName)
+    )ENGINE=INNODB;
+
+    CREATE TABLE runtimenamedattr(
+        id                        INT             AUTO_INCREMENT,
+        attrName                  VARCHAR(255),
+        attrValue                 VARCHAR(255),
+        runtimeNamedAttrSet_id    INT             NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE runtimenamedattrset(
+        id                INT             AUTO_INCREMENT,
+        rulepack_id       INT,
+        attributeSetId    VARCHAR(255),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE runtimesetting(
+        id                         INT             AUTO_INCREMENT,
+        objectVersion              INT,
+        settingKey                 VARCHAR(255),
+        name                       VARCHAR(255),
+        content                    VARCHAR(255),
+        description                TEXT,
+        settingType                VARCHAR(20),
+        systemDefined              CHAR(1),
+        runtimeConfiguration_id    INT             NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE savedevidence(
+        id                   INT            AUTO_INCREMENT,
+        evidenceType         VARCHAR(20),
+        creationDate         DATETIME,
+        projectVersion_id    INT,
+        evidenceBlob_id      INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE savedreport(
+        id                     INT              AUTO_INCREMENT,
+        name                   VARCHAR(255)     NOT NULL,
+        note                   VARCHAR(1999),
+        generationDate         DATETIME         NOT NULL,
+        userName               VARCHAR(255),
+        format                 VARCHAR(20),
+        status                 VARCHAR(20),
+        published              CHAR(1)          DEFAULT 'N',
+        reportDefinition_id    INT              NOT NULL,
+        reportOutputDoc_id     INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE scan(
+        id                   INT              AUTO_INCREMENT,
+        isCompleted          CHAR(1)          DEFAULT 'N',
+        updateDate           DATETIME,
+        certification        VARCHAR(20),
+        auditUpdated         CHAR(1)          DEFAULT 'N',
+        scaLabel             VARCHAR(2000),
+        scaBuildId           VARCHAR(255),
+        hostName             VARCHAR(255),
+        startDate            BIGINT,
+        elapsedTime          INT,
+        hasIssue             CHAR(1)          DEFAULT 'Y',
+        updated              CHAR(1)          DEFAULT 'Y',
+        scaFiles             INT,
+        executableLoc        INT,
+        totalLoc             INT,
+        engineType           VARCHAR(20)      NOT NULL,
+        engineVersion        VARCHAR(80),
+        guid                 VARCHAR(255),
+        projectLabel         VARCHAR(255),
+        versionLabel         VARCHAR(255),
+        projectVersion_id    INT              NOT NULL,
+        artifact_id          INT              NOT NULL,
+        objectVersion        INT,
+        migrated             VARCHAR(18)      DEFAULT 'N',
+        serverVersion        FLOAT(8, 0),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE scan_finding(
+        scan_id              INT             NOT NULL,
+        findingGuid          VARCHAR(255)    NOT NULL,
+        severity             FLOAT(8, 2),
+        remediationEffort    FLOAT(12, 2),
+        PRIMARY KEY (scan_id, findingGuid)
+    )ENGINE=INNODB;
+
+    CREATE TABLE scan_issue(
+        scan_id                INT              NOT NULL,
+        issueInstanceId        VARCHAR(80)      NOT NULL,
+        accuracy               FLOAT(8, 0),
+        fileName               VARCHAR(500),
+        shortFileName          VARCHAR(255),
+        severity               FLOAT(8, 2),
+        ruleGuid               VARCHAR(120),
+        confidence             FLOAT(8, 2),
+        kingdom                VARCHAR(80),
+        issueType              VARCHAR(120),
+        issueSubtype           VARCHAR(180),
+        analyzer               VARCHAR(80),
+        lineNumber             INT,
+        taintFlag              VARCHAR(255),
+        packageName            VARCHAR(255),
+        functionName           VARCHAR(1024),
+        className              VARCHAR(255),
+        issueAbstract          TEXT,
+        friority               VARCHAR(20),
+        engineType             VARCHAR(20),
+        audienceSet            VARCHAR(100),
+        replaceStore           BLOB,
+        snippetId              VARCHAR(512),
+        url                    VARCHAR(1000),
+        category               VARCHAR(300),
+        source                 VARCHAR(255),
+        sourceContext          VARCHAR(1000),
+        sourceFile             VARCHAR(255),
+        sink                   VARCHAR(1000),
+        sinkContext            VARCHAR(1000),
+        userName               VARCHAR(255),
+        owasp2004              VARCHAR(120),
+        owasp2007              VARCHAR(120),
+        cwe                    VARCHAR(120),
+        findingGuid            VARCHAR(500),
+        remediationConstant    FLOAT(8, 2),
+        likelihood             FLOAT(8, 0),
+        impact                 FLOAT(8, 0),
+        sans25                 VARCHAR(120),
+        wasc                   VARCHAR(120),
+        stig                   VARCHAR(120),
+        pci11                  VARCHAR(120),
+        pci12                  VARCHAR(120),
+        rtaCovered             VARCHAR(120),
+        probability            FLOAT(8, 0),
+        PRIMARY KEY (scan_id, issueInstanceId)
+    )ENGINE=INNODB;
+
+    CREATE TABLE scan_rulepack(
+        scan_id            INT             NOT NULL,
+        rulepackGuid       VARCHAR(255)    NOT NULL,
+        rulepackVersion    VARCHAR(255)    NOT NULL,
+        rulepackName       VARCHAR(255),
+        rulepackSku        VARCHAR(255),
+        PRIMARY KEY (scan_id, rulepackGuid, rulepackVersion)
+    )ENGINE=INNODB;
+
+    CREATE TABLE sdlhistory(
+        id              INT            AUTO_INCREMENT,
+        creationTime    DATETIME,
+        entityType      VARCHAR(20),
+        stateType       VARCHAR(20),
+        stateValue      VARCHAR(20),
+        snapshot_id     INT            NOT NULL,
+        entityCount     INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE securityentity(
+        id               INT    AUTO_INCREMENT,
+        entityTypeId     INT    NOT NULL,
+        objectVersion    INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE seedhistory(
+        id                  INT             AUTO_INCREMENT,
+        bundleIdentifier    VARCHAR(255),
+        bundleVersion       VARCHAR(255),
+        seedDate            DATETIME,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE snapshot(
+        id                   INT             AUTO_INCREMENT,
+        startDate            DATETIME,
+        finishDate           DATETIME,
+        projectVersion_id    INT             NOT NULL,
+        triggerType          VARCHAR(255),
+        triggerEntityId      INT,
+        auditBlob_id         INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE sourcefile(
+        checksum    VARCHAR(255)    NOT NULL,
+        fileBlob    LONGBLOB,
+        PRIMARY KEY (checksum)
+    )ENGINE=INNODB;
+
+    CREATE TABLE sourcefilemap(
+        projectVersion_id    INT             NOT NULL,
+        filePath             VARCHAR(255)    NOT NULL,
+        scan_id              INT             NOT NULL,
+        crossRef             MEDIUMBLOB,
+        checksum             VARCHAR(255),
+        PRIMARY KEY (projectVersion_id, filePath, scan_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE stacktrace(
+        checksum     VARCHAR(255)    NOT NULL,
+        traceBody    TEXT,
+        PRIMARY KEY (checksum)
+    )ENGINE=INNODB;
+
+    CREATE TABLE taskcomment(
+        taskInstance_id    INT             NOT NULL,
+        commentTime        DATETIME        NOT NULL,
+        userName           VARCHAR(255),
+        commentText        TEXT,
+        commentType        VARCHAR(20),
+        PRIMARY KEY (taskInstance_id, commentTime)
+    )ENGINE=INNODB;
+
+    CREATE TABLE taskinstance(
+        id                     INT             AUTO_INCREMENT,
+        name                   VARCHAR(255),
+        description            TEXT,
+        seqNumber              INT,
+        objectVersion          INT,
+        signOffState           VARCHAR(20)     NOT NULL,
+        signOffDate            DATETIME,
+        signOffUser            VARCHAR(255),
+        workOwner              VARCHAR(255),
+        projectVersion_id      INT             NOT NULL,
+        activityInstance_id    INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE timelapse_event(
+        eventLog_id            INT    NOT NULL,
+        activityInstance_id    INT    NOT NULL,
+        PRIMARY KEY (eventLog_id, activityInstance_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE timelapseactivity(
+        id           INT            NOT NULL,
+        eventType    VARCHAR(20),
+        timeLapse    INT,
+        unit         VARCHAR(20),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE timelapseai(
+        id                 INT            NOT NULL,
+        eventType          VARCHAR(20),
+        timeLapse          INT,
+        unit               VARCHAR(20),
+        lastEventLog_id    INT,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE user_permission(
+        user_id          INT    NOT NULL,
+        permission_id    INT    NOT NULL,
+        pt_id            INT    NOT NULL,
+        PRIMARY KEY (user_id, permission_id, pt_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE user_pi(
+        user_id    INT    NOT NULL,
+        pi_id      INT    NOT NULL,
+        pt_id      INT    NOT NULL,
+        PRIMARY KEY (user_id, pi_id, pt_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE user_pt(
+        user_id    INT    NOT NULL,
+        pt_id      INT    NOT NULL,
+        PRIMARY KEY (user_id, pt_id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE userpreference(
+        id                        INT             AUTO_INCREMENT,
+        userName                  VARCHAR(255),
+        projectVersionListMode    VARCHAR(255),
+        email                     VARCHAR(255),
+        emailAlerts               CHAR(1)         DEFAULT 'Y',
+        dateFormat                VARCHAR(20),
+        timeFormat                VARCHAR(20),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE variable(
+        id                INT              AUTO_INCREMENT,
+        guid              VARCHAR(255)     NOT NULL,
+        name              VARCHAR(255),
+        description       VARCHAR(2000),
+        searchString      VARCHAR(2000),
+        objectVersion     INT,
+        publishVersion    INT,
+        variableType      VARCHAR(20),
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE variablehistory(
+        id               INT         AUTO_INCREMENT,
+        creationTime     DATETIME,
+        variableValue    INT,
+        variable_id      INT         NOT NULL,
+        snapshot_id      INT         NOT NULL,
+        PRIMARY KEY (id)
+    )ENGINE=INNODB;
+
+    CREATE TABLE variableinstance(
+        variable_id      INT              NOT NULL,
+        ai_id            INT              NOT NULL,
+        name             VARCHAR(255),
+        description      VARCHAR(2000),
+        searchString     VARCHAR(2000),
+        variableValue    INT,
+        PRIMARY KEY (variable_id, ai_id)
+    )ENGINE=INNODB;
+
+    CREATE UNIQUE INDEX activity_guid_key ON activity(guid);
+
+    CREATE INDEX ai_proj ON activityinstance(projectVersion_id);
+
+    CREATE INDEX ai_ri ON activityinstance(requirementInstance_id);
+
+    CREATE INDEX ac_token ON agentcredential(token);
+
+    CREATE INDEX ac_username ON agentcredential(userName);
+
+    CREATE INDEX alert_proj ON alerthistory(projectVersion_id, userName);
+
+    CREATE INDEX appruleRA ON applicationassignmentrule(runtimeApplication_id);
+
+    CREATE INDEX artifact_proj ON artifact(projectVersion_id);
+
+    CREATE UNIQUE INDEX attr_altley ON attr(guid);
+
+    CREATE UNIQUE INDEX attr_lookup_altkey ON attrlookup(attrGuid, lookupIndex);
+
+    CREATE UNIQUE INDEX AuditCommentAltKey ON auditcomment(issue_id, auditTime);
+
+    CREATE UNIQUE INDEX AuditHistoryAltKey ON audithistory(issue_id, attrGuid, auditTime);
+
+    CREATE INDEX audithistory_altkey2 ON audithistory(projectVersion_id, attrGuid, auditTime);
+
+    CREATE INDEX auditValueSearch_altkey ON auditvalue(projectVersion_id, attrGuid, attrValue);
+
+    CREATE UNIQUE INDEX daName_altkey ON documentartifact(projectVersion_id, name);
+
+    CREATE UNIQUE INDEX activitydocumentguid ON documentdef(guid);
+
+    CREATE UNIQUE INDEX IDX_EMM_NAME ON entitytype(entityName);
+
+    CREATE INDEX el_proj_type ON eventlogentry(projectVersion_id, eventType);
+
+    CREATE UNIQUE INDEX filterset_altkey_1 ON filterset(projectVersion_id, guid);
+
+    CREATE UNIQUE INDEX folder_altkey ON folder(projectVersion_id, guid);
+
+    CREATE UNIQUE INDEX fortifyuseruk_1_1 ON fortifyuser(userName);
+
+    CREATE INDEX HOST_HN ON host(hostName);
+
+    CREATE INDEX HOST_FED ON host(federation_id);
+
+    CREATE INDEX HLM_HID ON hostlogmessage(host_id);
+
+    CREATE INDEX sessionGuid ON idgenerator(sessionGuid);
+
+    CREATE INDEX iidm_proj ON iidmigration(projectVersion_id);
+
+    CREATE UNIQUE INDEX Issue_Alt_Key ON issue(projectVersion_id, issueInstanceId);
+
+    CREATE UNIQUE INDEX IssueAltKeyWithEngineType ON issue(projectVersion_id, engineType, issueInstanceId);
+
+    CREATE UNIQUE INDEX IssueProjLastScanAltKey ON issue(projectVersion_id, lastScan_id, issueInstanceId);
+
+    CREATE INDEX IssueEngineStatusAltKey ON issue(projectVersion_id, scanStatus, engineType);
+
+    CREATE UNIQUE INDEX IssueCacheAltKey ON issuecache(projectVersion_id, filterSet_id, folder_id, issue_id);
+
+    CREATE INDEX viewIssueIndex ON issuecache(filterSet_id, hidden, folder_id);
+
+    CREATE UNIQUE INDEX measurement_guid_key ON measurement(guid);
+
+    CREATE INDEX mh_ss ON measurementhistory(snapshot_id, measurement_id);
+
+    CREATE UNIQUE INDEX metarule_guid_key ON metadatarule(guid);
+
+    CREATE UNIQUE INDEX metadef_guid_key ON metadef(guid);
+
+    CREATE INDEX mo_md ON metaoption(metaDef_id);
+
+    CREATE UNIQUE INDEX metainstance_altkey ON metavalue(projectVersion_id, metaDef_id);
+
+    CREATE UNIQUE INDEX UK_PERMISSION_NAME ON permission(name);
+
+    CREATE INDEX pi_p_e ON permissioninstance(permission_id, entityInstanceId);
+
+    CREATE UNIQUE INDEX UK_PT_NAME ON permissiontemplate(name);
+
+    CREATE UNIQUE INDEX PERSONA_GUID ON persona(guid);
+
+    CREATE INDEX pref_pod_alt ON pref_pod(pref_id, pod_id);
+
+    CREATE UNIQUE INDEX ProjNameUniqueKey ON project(name);
+
+    CREATE UNIQUE INDEX pt_guid_key ON projecttemplate(guid);
+
+    CREATE UNIQUE INDEX UK_APP_NAME ON projectversion(project_id, name);
+
+    CREATE UNIQUE INDEX pva_reverse ON projectversion_alert(projectVersion_id, alert_id);
+
+    CREATE INDEX pr_proj_guid ON projectversion_rule(projectVersion_id, ruleGuid);
+
+    CREATE INDEX pr_proj_engine ON projectversion_rule(projectVersion_id, engineType);
+
+    CREATE UNIQUE INDEX vender_sr ON publishedreport(vendorTenantId, savedReport_id);
+
+    CREATE UNIQUE INDEX UK_REPORT_NAME ON reportdefinition(name);
+
+    CREATE UNIQUE INDEX UK_REPORTP_NAME ON reportparameter(reportDefinition_id, paramName);
+
+    CREATE INDEX req_rt ON requirement(requirementTemplate_id);
+
+    CREATE INDEX ri_proj_req ON requirementinstance(projectVersion_id, requirement_id);
+
+    CREATE UNIQUE INDEX rt_guid_key ON requirementtemplate(guid);
+
+    CREATE INDEX rd_rp ON ruledescription(rulepack_id);
+
+    CREATE UNIQUE INDEX rp_guidver_key ON rulepack(rulepackGuid, versionNumber);
+
+    CREATE INDEX RUNTIMEALERT_REID ON runtimealert(runtimeEvent_id);
+
+    CREATE INDEX RE_RAID ON runtimeevent(runtimeApplication_id, creationDate);
+
+    CREATE INDEX RE_DATE ON runtimeevent(creationDate, runtimeApplication_id);
+
+    CREATE INDEX REA_RAID ON runtimeeventarchive(runtimeApplication_id);
+
+    CREATE INDEX RNA_RNASID ON runtimenamedattr(runtimeNamedAttrSet_id);
+
+    CREATE INDEX RNAS_ALTID ON runtimenamedattrset(attributeSetId);
+
+    CREATE INDEX scan_proj_date ON scan(projectVersion_id, engineType, updateDate);
+
+    CREATE INDEX scan_arti ON scan(artifact_id);
+
+    CREATE INDEX sh_ss ON sdlhistory(snapshot_id, entityType, stateType);
+
+    CREATE INDEX ss_proj_date ON snapshot(projectVersion_id, startDate);
+
+    CREATE INDEX ti_proj ON taskinstance(projectVersion_id);
+
+    CREATE INDEX ti_ai ON taskinstance(activityInstance_id);
+
+    CREATE UNIQUE INDEX UserPrefUserNameKey ON userpreference(userName);
+
+    CREATE UNIQUE INDEX variable_guid_key ON variable(guid);
+
+    CREATE INDEX vh_ss ON variablehistory(snapshot_id, variable_id);
+
+    ALTER TABLE activity_persona ADD CONSTRAINT RefActPersona 
+        FOREIGN KEY (activity_id)
+        REFERENCES activity(id) ON DELETE CASCADE;
+
+    ALTER TABLE activity_persona ADD CONSTRAINT RefPersonaActPersona 
+        FOREIGN KEY (persona_id)
+        REFERENCES persona(id) ON DELETE CASCADE;
+
+    ALTER TABLE activitycomment ADD CONSTRAINT RefAIActComment 
+        FOREIGN KEY (activityInstance_id)
+        REFERENCES activityinstance(id) ON DELETE CASCADE;
+
+    ALTER TABLE activityinstance ADD CONSTRAINT RefActAi 
+        FOREIGN KEY (activity_id)
+        REFERENCES activity(id);
+
+    ALTER TABLE activityinstance ADD CONSTRAINT RefRIAI 
+        FOREIGN KEY (requirementInstance_id)
+        REFERENCES requirementinstance(id) ON DELETE CASCADE;
+
+    ALTER TABLE activitysignoff ADD CONSTRAINT RefAIActSignOff 
+        FOREIGN KEY (activityInstance_id)
+        REFERENCES activityinstance(id) ON DELETE CASCADE;
+
+    ALTER TABLE activitysignoff ADD CONSTRAINT RefPersonaActSignOff 
+        FOREIGN KEY (persona_id)
+        REFERENCES persona(id);
+
+    ALTER TABLE alert_role ADD CONSTRAINT RefAlertRole 
+        FOREIGN KEY (alert_id)
+        REFERENCES alert(id) ON DELETE CASCADE;
+
+    ALTER TABLE alerthistory ADD CONSTRAINT RefAlertHis 
+        FOREIGN KEY (alert_id)
+        REFERENCES alert(id) ON DELETE CASCADE;
+
+    ALTER TABLE alerthistory ADD CONSTRAINT RefAppEntAlertHis 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES applicationentity(id) ON DELETE CASCADE;
+
+    ALTER TABLE alerttrigger ADD CONSTRAINT RefAlertTrigger 
+        FOREIGN KEY (alert_id)
+        REFERENCES alert(id) ON DELETE CASCADE;
+
+    ALTER TABLE applicationassignmentrule ADD CONSTRAINT RefRuntimeAppAssignRule 
+        FOREIGN KEY (runtimeApplication_id)
+        REFERENCES runtimeapplication(id) ON DELETE CASCADE;
+
+    ALTER TABLE applicationassignmentrule_host ADD CONSTRAINT RefAppRuleHost 
+        FOREIGN KEY (applicationAssignmentRule_id)
+        REFERENCES applicationassignmentrule(id) ON DELETE CASCADE;
+
+    ALTER TABLE applicationassignmentrule_host ADD CONSTRAINT RefHostAppAssignRuleHost 
+        FOREIGN KEY (host_id)
+        REFERENCES host(id) ON DELETE CASCADE;
+
+    ALTER TABLE artifact ADD CONSTRAINT RefPVArti 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES projectversion(id) ON DELETE CASCADE;
+
+    ALTER TABLE attrlookup ADD CONSTRAINT RefAttrAttrLookup 
+        FOREIGN KEY (attr_id)
+        REFERENCES attr(id) ON DELETE CASCADE;
+
+    ALTER TABLE auditcomment ADD CONSTRAINT RefIssAuditComment 
+        FOREIGN KEY (issue_id)
+        REFERENCES issue(id) ON DELETE CASCADE;
+
+    ALTER TABLE audithistory ADD CONSTRAINT RefIssAuditHis 
+        FOREIGN KEY (issue_id)
+        REFERENCES issue(id) ON DELETE CASCADE;
+
+    ALTER TABLE auditvalue ADD CONSTRAINT RefIssAuditVal 
+        FOREIGN KEY (issue_id)
+        REFERENCES issue(id) ON DELETE CASCADE;
+
+    ALTER TABLE consoleeventhandler ADD CONSTRAINT RefRuntimeConfEventHandler 
+        FOREIGN KEY (runtimeConfiguration_id)
+        REFERENCES runtimeconfiguration(id) ON DELETE CASCADE;
+
+    ALTER TABLE controller ADD CONSTRAINT RefKeyKeeperController 
+        FOREIGN KEY (controllerKeyKeeper_id)
+        REFERENCES controllerkeykeeper(id);
+
+    ALTER TABLE documentactivity ADD CONSTRAINT RefActDocAct 
+        FOREIGN KEY (id)
+        REFERENCES activity(id) ON DELETE CASCADE;
+
+    ALTER TABLE documentai ADD CONSTRAINT RefAIDocAI 
+        FOREIGN KEY (id)
+        REFERENCES activityinstance(id) ON DELETE CASCADE;
+
+    ALTER TABLE documentartifact ADD CONSTRAINT RefPVDocArti 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES projectversion(id) ON DELETE CASCADE;
+
+    ALTER TABLE documentartifact_def ADD CONSTRAINT RefDocArtiDocArtiDef 
+        FOREIGN KEY (documentArtifact_id)
+        REFERENCES documentartifact(id) ON DELETE CASCADE;
+
+    ALTER TABLE documentdefinstance ADD CONSTRAINT RefDocAIDocDI 
+        FOREIGN KEY (activityInstance_id)
+        REFERENCES documentai(id) ON DELETE CASCADE;
+
+    ALTER TABLE dynamicassessment ADD CONSTRAINT RefPVDynaAss 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES projectversion(id) ON DELETE CASCADE;
+
+    ALTER TABLE eventlogentry ADD CONSTRAINT RefAppEntEventLog 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES applicationentity(id) ON DELETE SET NULL;
+
+    ALTER TABLE federation ADD CONSTRAINT RefRuntimeConfFed 
+        FOREIGN KEY (runtimeConfiguration_id)
+        REFERENCES runtimeconfiguration(id);
+
+    ALTER TABLE filterset ADD CONSTRAINT RefPVFilterSet 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES projectversion(id) ON DELETE CASCADE;
+
+    ALTER TABLE finding ADD CONSTRAINT RefPVFinding 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES projectversion(id) ON DELETE CASCADE;
+
+    ALTER TABLE folder ADD CONSTRAINT RefPVFolder 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES projectversion(id) ON DELETE CASCADE;
+
+    ALTER TABLE foldercountcache ADD CONSTRAINT RefPVFolderCountCache 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES projectversion(id) ON DELETE CASCADE;
+
+    ALTER TABLE fortifyuser ADD CONSTRAINT RefSEFortifyUser 
+        FOREIGN KEY (id)
+        REFERENCES securityentity(id) ON DELETE CASCADE;
+
+    ALTER TABLE fpr_scan ADD CONSTRAINT RefArtiFPRScan 
+        FOREIGN KEY (artifact_id)
+        REFERENCES artifact(id) ON DELETE CASCADE;
+
+    ALTER TABLE host ADD CONSTRAINT RefControllerHost 
+        FOREIGN KEY (controller_id)
+        REFERENCES controller(id) ON DELETE CASCADE;
+
+    ALTER TABLE host ADD CONSTRAINT RefFedHost 
+        FOREIGN KEY (federation_id)
+        REFERENCES federation(id);
+
+    ALTER TABLE hostlogmessage ADD CONSTRAINT RefHostLogMsg 
+        FOREIGN KEY (host_id)
+        REFERENCES host(id) ON DELETE CASCADE;
+
+    ALTER TABLE iidmapping ADD CONSTRAINT RefIIDMigMapping 
+        FOREIGN KEY (migration_id)
+        REFERENCES iidmigration(id) ON DELETE CASCADE;
+
+    ALTER TABLE iidmigration ADD CONSTRAINT RefPVIIDMig 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES projectversion(id) ON DELETE CASCADE;
+
+    ALTER TABLE ldapentity ADD CONSTRAINT RefSELDAPEnt 
+        FOREIGN KEY (id)
+        REFERENCES securityentity(id) ON DELETE CASCADE;
+
+    ALTER TABLE measurement_variable ADD CONSTRAINT RefMeasVar 
+        FOREIGN KEY (measurement_id)
+        REFERENCES measurement(id) ON DELETE CASCADE;
+
+    ALTER TABLE measurement_variable ADD CONSTRAINT RefVarMeasVar 
+        FOREIGN KEY (variable_id)
+        REFERENCES variable(id) ON DELETE CASCADE;
+
+    ALTER TABLE measurementhistory ADD CONSTRAINT RefMeasHis 
+        FOREIGN KEY (measurement_id)
+        REFERENCES measurement(id) ON DELETE CASCADE;
+
+    ALTER TABLE measurementhistory ADD CONSTRAINT RefSnapshotMeasHis 
+        FOREIGN KEY (snapshot_id)
+        REFERENCES snapshot(id) ON DELETE CASCADE;
+
+    ALTER TABLE measurementinstance ADD CONSTRAINT RefMeasMI 
+        FOREIGN KEY (measurement_id)
+        REFERENCES measurement(id);
+
+    ALTER TABLE measurementinstance ADD CONSTRAINT RefProjStatAIMI 
+        FOREIGN KEY (activityInstance_id)
+        REFERENCES projectstateai(id) ON DELETE CASCADE;
+
+    ALTER TABLE metadef ADD CONSTRAINT RefMetaDefRecur 
+        FOREIGN KEY (parent_id)
+        REFERENCES metadef(id);
+
+    ALTER TABLE metadef_t ADD CONSTRAINT RefMetaDefT 
+        FOREIGN KEY (metaDef_id)
+        REFERENCES metadef(id) ON DELETE CASCADE;
+
+    ALTER TABLE metaoption ADD CONSTRAINT RefMetaDefOpt 
+        FOREIGN KEY (metaDef_id)
+        REFERENCES metadef(id) ON DELETE CASCADE;
+
+    ALTER TABLE metaoption_t ADD CONSTRAINT RefMetaOptT 
+        FOREIGN KEY (metaOption_id)
+        REFERENCES metaoption(id) ON DELETE CASCADE;
+
+    ALTER TABLE metavalue ADD CONSTRAINT RefAppEntMetaValue 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES applicationentity(id) ON DELETE CASCADE;
+
+    ALTER TABLE metavalue ADD CONSTRAINT RefMetaDefMV 
+        FOREIGN KEY (metaDef_id)
+        REFERENCES metadef(id);
+
+    ALTER TABLE metavalueselection ADD CONSTRAINT RefMetaOptMVSel 
+        FOREIGN KEY (metaOption_id)
+        REFERENCES metaoption(id);
+
+    ALTER TABLE metavalueselection ADD CONSTRAINT RefMetaValMVSel 
+        FOREIGN KEY (metaValue_id)
+        REFERENCES metavalue(id) ON DELETE CASCADE;
+
+    ALTER TABLE payloadartifact ADD CONSTRAINT RefPVPLArti 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES projectversion(id) ON DELETE CASCADE;
+
+    ALTER TABLE payloadentry ADD CONSTRAINT RefPLArtiPLEntry 
+        FOREIGN KEY (artifact_id)
+        REFERENCES payloadartifact(id) ON DELETE CASCADE;
+
+    ALTER TABLE payloadmessage ADD CONSTRAINT RefPLArtiPLMsg 
+        FOREIGN KEY (artifact_id)
+        REFERENCES payloadartifact(id) ON DELETE CASCADE;
+
+    ALTER TABLE permissioninstance ADD CONSTRAINT RefPerPI 
+        FOREIGN KEY (permission_id)
+        REFERENCES permission(id) ON DELETE CASCADE;
+
+    ALTER TABLE personaassignment ADD CONSTRAINT RefPersonaAssign 
+        FOREIGN KEY (persona_id)
+        REFERENCES persona(id);
+
+    ALTER TABLE personaassignment ADD CONSTRAINT RefPVPersonaAssign 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES projectversion(id) ON DELETE CASCADE;
+
+    ALTER TABLE pref_pod ADD CONSTRAINT RefPodPref 
+        FOREIGN KEY (pod_id)
+        REFERENCES pod(id) ON DELETE CASCADE;
+
+    ALTER TABLE pref_pod ADD CONSTRAINT RefUserPrefPrefPod 
+        FOREIGN KEY (pref_id)
+        REFERENCES userpreference(id) ON DELETE CASCADE;
+
+    ALTER TABLE pref_projectversion ADD CONSTRAINT RefPVPrefPV 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES projectversion(id) ON DELETE CASCADE;
+
+    ALTER TABLE pref_projectversion ADD CONSTRAINT UserPrefPrefPV 
+        FOREIGN KEY (pref_id)
+        REFERENCES userpreference(id) ON DELETE CASCADE;
+
+    ALTER TABLE projectstateactivity ADD CONSTRAINT RefActProjStatAct 
+        FOREIGN KEY (id)
+        REFERENCES activity(id) ON DELETE CASCADE;
+
+    ALTER TABLE projectstateactivity ADD CONSTRAINT RefMeasProjStatAct 
+        FOREIGN KEY (measurement_id)
+        REFERENCES measurement(id);
+
+    ALTER TABLE projectstateai ADD CONSTRAINT RefAIProjStatAI 
+        FOREIGN KEY (id)
+        REFERENCES activityinstance(id) ON DELETE CASCADE;
+
+    ALTER TABLE projectstateai ADD CONSTRAINT RefMeasProjStatAI 
+        FOREIGN KEY (measurement_id)
+        REFERENCES measurement(id);
+
+    ALTER TABLE projecttemplate_attr ADD CONSTRAINT RefPTAttr 
+        FOREIGN KEY (projectTemplate_id)
+        REFERENCES projecttemplate(id) ON DELETE CASCADE;
+
+    ALTER TABLE projectversion_alert ADD CONSTRAINT RefAppEntAlert 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES applicationentity(id) ON DELETE CASCADE;
+
+    ALTER TABLE projectversion_alert ADD CONSTRAINT RefPVAlert 
+        FOREIGN KEY (alert_id)
+        REFERENCES alert(id) ON DELETE CASCADE;
+
+    ALTER TABLE projectversion_rule ADD CONSTRAINT RefPVPVRule 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES projectversion(id) ON DELETE CASCADE;
+
+    ALTER TABLE projectversion_rule ADD CONSTRAINT RefRuleDescPVRule 
+        FOREIGN KEY (rule_id)
+        REFERENCES ruledescription(id) ON DELETE CASCADE;
+
+    ALTER TABLE projectversiondependency ADD CONSTRAINT RefPVDepChild 
+        FOREIGN KEY (childProjectVersion_id)
+        REFERENCES projectversion(id);
+
+    ALTER TABLE projectversiondependency ADD CONSTRAINT RefPVDepParent 
+        FOREIGN KEY (parentProjectVersion_id)
+        REFERENCES projectversion(id);
+
+    ALTER TABLE pt_permission ADD CONSTRAINT RefPerPTPer 
+        FOREIGN KEY (permission_id)
+        REFERENCES permission(id) ON DELETE CASCADE;
+
+    ALTER TABLE pt_permission ADD CONSTRAINT RefPTPer 
+        FOREIGN KEY (pt_id)
+        REFERENCES permissiontemplate(id) ON DELETE CASCADE;
+
+    ALTER TABLE publishaction ADD CONSTRAINT RefPubRepPubAct 
+        FOREIGN KEY (publishedReport_id)
+        REFERENCES publishedreport(id) ON DELETE CASCADE;
+
+    ALTER TABLE report_projectversion ADD CONSTRAINT RefSavedRepPV 
+        FOREIGN KEY (savedReport_id)
+        REFERENCES savedreport(id) ON DELETE CASCADE;
+
+    ALTER TABLE reportparameter ADD CONSTRAINT RefRepDefRepParam 
+        FOREIGN KEY (reportDefinition_id)
+        REFERENCES reportdefinition(id) ON DELETE CASCADE;
+
+    ALTER TABLE requirement ADD CONSTRAINT RefRTRep 
+        FOREIGN KEY (requirementTemplate_id)
+        REFERENCES requirementtemplate(id);
+
+    ALTER TABLE requirement_activity ADD CONSTRAINT RefActReqAct 
+        FOREIGN KEY (activity_id)
+        REFERENCES activity(id) ON DELETE CASCADE;
+
+    ALTER TABLE requirement_activity ADD CONSTRAINT RefReqAct 
+        FOREIGN KEY (requirement_id)
+        REFERENCES requirement(id) ON DELETE CASCADE;
+
+    ALTER TABLE requirement_persona ADD CONSTRAINT RefPersonaReqPerson 
+        FOREIGN KEY (persona_id)
+        REFERENCES persona(id);
+
+    ALTER TABLE requirement_persona ADD CONSTRAINT RefReqPerson 
+        FOREIGN KEY (requirement_id)
+        REFERENCES requirement(id) ON DELETE CASCADE;
+
+    ALTER TABLE requirementcomment ADD CONSTRAINT RefRIReqComment 
+        FOREIGN KEY (requirementInstance_id)
+        REFERENCES requirementinstance(id) ON DELETE CASCADE;
+
+    ALTER TABLE requirementinstance ADD CONSTRAINT RefPVRI 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES projectversion(id) ON DELETE CASCADE;
+
+    ALTER TABLE requirementinstance ADD CONSTRAINT RefReqRI 
+        FOREIGN KEY (requirement_id)
+        REFERENCES requirement(id);
+
+    ALTER TABLE requirementsignoff ADD CONSTRAINT RefPersonaReqSignOff 
+        FOREIGN KEY (persona_id)
+        REFERENCES persona(id);
+
+    ALTER TABLE requirementsignoff ADD CONSTRAINT RefRIReqSignOff 
+        FOREIGN KEY (requirementInstance_id)
+        REFERENCES requirementinstance(id) ON DELETE CASCADE;
+
+    ALTER TABLE requirementtemplate_persona ADD CONSTRAINT RefPersonaRTPersona 
+        FOREIGN KEY (persona_id)
+        REFERENCES persona(id);
+
+    ALTER TABLE requirementtemplate_persona ADD CONSTRAINT RefRTPersona 
+        FOREIGN KEY (requirementTemplate_id)
+        REFERENCES requirementtemplate(id) ON DELETE CASCADE;
+
+    ALTER TABLE requirementtemplatecomment ADD CONSTRAINT RefRTIRTComment 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES requirementtemplateinstance(projectVersion_id) ON DELETE CASCADE;
+
+    ALTER TABLE requirementtemplateinstance ADD CONSTRAINT RefPVRTI 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES projectversion(id) ON DELETE CASCADE;
+
+    ALTER TABLE requirementtemplateinstance ADD CONSTRAINT RefRTRTI 
+        FOREIGN KEY (requirementTemplate_id)
+        REFERENCES requirementtemplate(id);
+
+    ALTER TABLE requirementtemplatesignoff ADD CONSTRAINT RefPersonaRTSignOff 
+        FOREIGN KEY (persona_id)
+        REFERENCES persona(id);
+
+    ALTER TABLE requirementtemplatesignoff ADD CONSTRAINT RefRTIRTSignOff 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES requirementtemplateinstance(projectVersion_id) ON DELETE CASCADE;
+
+    ALTER TABLE rtassignment ADD CONSTRAINT RefMetaRuleRTAssign 
+        FOREIGN KEY (metadataRule_id)
+        REFERENCES metadatarule(id) ON DELETE CASCADE;
+
+    ALTER TABLE rtassignment ADD CONSTRAINT RefRTAssign 
+        FOREIGN KEY (requirementTemplate_id)
+        REFERENCES requirementtemplate(id);
+
+    ALTER TABLE rule_t ADD CONSTRAINT RefRuleDescT 
+        FOREIGN KEY (id)
+        REFERENCES ruledescription(id) ON DELETE CASCADE;
+
+    ALTER TABLE runtimealert ADD CONSTRAINT RefRERuntimeAlert 
+        FOREIGN KEY (runtimeEvent_id)
+        REFERENCES runtimeevent(id) ON DELETE CASCADE;
+
+    ALTER TABLE runtimeconfig_rulepack ADD CONSTRAINT RefRPRuntimeConfRP 
+        FOREIGN KEY (rulepack_id)
+        REFERENCES rulepack(id) ON DELETE CASCADE;
+
+    ALTER TABLE runtimeconfig_rulepack ADD CONSTRAINT RefRuntimeConfRP 
+        FOREIGN KEY (runtimeConfiguration_id)
+        REFERENCES runtimeconfiguration(id) ON DELETE CASCADE;
+
+    ALTER TABLE runtimeevent ADD CONSTRAINT RefHostRE 
+        FOREIGN KEY (host_id)
+        REFERENCES host(id) ON DELETE CASCADE;
+
+    ALTER TABLE runtimeeventarchive ADD CONSTRAINT RefDocInfoREArch 
+        FOREIGN KEY (documentInfo_id)
+        REFERENCES documentinfo(id);
+
+    ALTER TABLE runtimeeventattr ADD CONSTRAINT RefREREAttr 
+        FOREIGN KEY (runtimeEvent_id)
+        REFERENCES runtimeevent(id) ON DELETE CASCADE;
+
+    ALTER TABLE runtimenamedattr ADD CONSTRAINT RefRNASetRNA 
+        FOREIGN KEY (runtimeNamedAttrSet_id)
+        REFERENCES runtimenamedattrset(id);
+
+    ALTER TABLE runtimesetting ADD CONSTRAINT RefRuntimeConfSetting 
+        FOREIGN KEY (runtimeConfiguration_id)
+        REFERENCES runtimeconfiguration(id) ON DELETE CASCADE;
+
+    ALTER TABLE savedevidence ADD CONSTRAINT RefPVSavedEvidence 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES projectversion(id) ON DELETE CASCADE;
+
+    ALTER TABLE savedreport ADD CONSTRAINT RefRepDefSavedRep 
+        FOREIGN KEY (reportDefinition_id)
+        REFERENCES reportdefinition(id);
+
+    ALTER TABLE scan ADD CONSTRAINT RefPVScan 
+        FOREIGN KEY (projectVersion_id)
+        REFERENCES projectversion(id) ON DELETE CASCADE;

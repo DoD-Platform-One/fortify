@@ -1,0 +1,81 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: tomcat-config
+data:
+  server-tpl.xml: |-
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!--
+      Licensed to the Apache Software Foundation (ASF) under one or more
+      contributor license agreements.  See the NOTICE file distributed with
+      this work for additional information regarding copyright ownership.
+      The ASF licenses this file to You under the Apache License, Version 2.0
+      (the "License"); you may not use this file except in compliance with
+      the License.  You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
+    <!-- Note:  A "Server" is not itself a "Container", so you may not
+         define subcomponents such as "Valves" at this level.
+         Documentation at /docs/config/server.html
+     -->
+    <Server port="8005" shutdown="SHUTDOWN">
+        <Listener className="org.apache.catalina.startup.VersionLoggerListener"/>
+        <!-- Prevent memory leaks due to use of particular java/javax APIs-->
+        <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener"/>
+        <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener"/>
+
+        <!-- A "Service" is a collection of one or more "Connectors" that share
+             a single "Container" Note:  A "Service" is not itself a "Container",
+             so you may not define subcomponents such as "Valves" at this level.
+             Documentation at /docs/config/service.html
+         -->
+        <Service name="Catalina">
+
+            <!-- A "Connector" represents an endpoint by which requests are received
+                 and responses are returned. Documentation at :
+                 Java HTTP Connector: /docs/config/http.html
+                 Java AJP  Connector: /docs/config/ajp.html
+                 APR (HTTP/AJP) Connector: /docs/apr.html
+            -->
+            <Connector maxThreads="4" minSpareThreads="1" port="8080" protocol="org.apache.coyote.http11.Http11Nio2Protocol" server="Apache" connectionTimeout="1000" scheme="http" secure="false" />
+
+            <Connector maxThreads="150" minSpareThreads="4" port="8443" protocol="org.apache.coyote.http11.Http11Nio2Protocol" server="Apache" connectionTimeout="10000" connectionUploadTimeout="20000" disableUploadTimeout="false" scheme="https" secure="true" SSLEnabled="true" sslImplementationName="org.apache.tomcat.util.net.jsse.JSSEImplementation">
+                <SSLHostConfig protocols="${HTTP_SERVER_TLS_PROTOCOLS}" ciphers="${HTTP_SERVER_TLS_CIPHERS??}" honorCipherOrder="${HTTP_SERVER_HONOR_CIPHER_ORDER:false}" certificateVerification="${HTTP_SERVER_CERTIFICATE_VERIFICATION:none}" truststoreFile="${HTTP_SERVER_TRUSTSTORE_FILE??}" truststorePassword="${HTTP_SERVER_TRUSTSTORE_PASSWORD??}">
+                    <Certificate certificateKeystoreFile="${HTTP_SERVER_CERTIFICATE_KEYSTORE_FILE}" certificateKeystorePassword="${HTTP_SERVER_CERTIFICATE_KEYSTORE_PASSWORD??}" certificateKeyPassword="${HTTP_SERVER_CERTIFICATE_KEY_PASSWORD??}" certificateKeyAlias="${HTTP_SERVER_CERTIFICATE_KEY_ALIAS??}" />
+                </SSLHostConfig>
+            </Connector>
+
+            <!-- An Engine represents the entry point (within Catalina) that processes
+                 every request.  The Engine implementation for Tomcat stand alone
+                 analyzes the HTTP headers included with the request, and passes them
+                 on to the appropriate Host (virtual host).
+                 Documentation at /docs/config/engine.html -->
+            <Engine name="Catalina" defaultHost="localhost">
+                <Valve className="org.apache.catalina.valves.RemoteIpValve" remoteIpHeader="x-forwarded-for" protocolHeader="x-forwarded-proto" protocolHeaderHttpsValue="https" />
+
+                <Host name="localhost" appBase="/app/webapps" deployOnStartup="true" autoDeploy="false">
+
+                    <!-- Access log processes all example.
+                         Documentation at: /docs/config/valve.html
+                         Note: The pattern used is equivalent to using pattern="common" -->
+                    <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" prefix="localhost_access_log" suffix=".txt" pattern="%h %l %u %t &quot;%r&quot; %s %b"/>
+
+                    <!-- Disable stacktrace and server version displayed in server default HTML error pages
+                         (displaying such information is considered as security issue)
+                         Return custom error page for 404 Page not found error -->
+                    <Valve className="org.apache.catalina.valves.ErrorReportValve" showReport="false" showServerInfo="false" errorCode.404="/app/webapps/error404.html" errorCode.0="/app/webapps/errorGeneral.html"/>
+
+                </Host>
+
+            </Engine>
+
+        </Service>
+
+    </Server>

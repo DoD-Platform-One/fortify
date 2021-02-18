@@ -108,7 +108,7 @@ spec:
       volumes:
       - name: secrets-volume
         secret:
-          secretName: {{ .Release.Name }}-secret
+          secretName: {{ .Chart.Name }}-secret
       - name: persistent-volume
         persistentVolumeClaim:
           claimName: {{ .Chart.Name }}-pvc

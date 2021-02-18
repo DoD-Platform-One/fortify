@@ -9,9 +9,9 @@ metadata:
     app.kubernetes.io/name: {{ .Release.Name | quote }}
     app.kubernetes.io/version: {{ .Values.image.tag | quote }}
   name: fortify-fortify-ssc-webapp
-  namespace: fortify
+  namespace: {{ .Release.Namespace | quote }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app.kubernetes.io/component: webapp
@@ -53,10 +53,10 @@ spec:
         imagePullPolicy: IfNotPresent
         name: webapp
         ports:
-        - containerPort: 8080
+        - containerPort: {{ .Values.port.http | default 8080 }}
           name: http-web
           protocol: TCP
-        - containerPort: 8443
+        - containerPort:  {{ .Values.port.https | default 8443 }}
           name: https-web
           protocol: TCP
         readinessProbe:
@@ -70,12 +70,7 @@ spec:
           initialDelaySeconds: 60
           periodSeconds: 10
         resources:
-          limits:
-            cpu: 8
-            memory: 28Gi
-          requests:
-            cpu: 1
-            memory: 7Gi
+            {{- toYaml .Values.resources | nindent 12 }}
         volumeMounts:
         - mountPath: /app/secrets
           name: secrets-volume
@@ -86,7 +81,7 @@ spec:
           name: tomcat-config
           subPath: server-tpl.xml
       imagePullSecrets:
-      - name: private-registry
+      - name: {{ .Values.imagePullSecrets | default "private-registry" }}
       initContainers:
       - command:
         - /bin/bash
@@ -98,7 +93,7 @@ spec:
         envFrom:
         - secretRef:
             name: db-credentials-mysql
-        image: registry.dso.mil/platform-one/big-bang/apps/developer-tools/fortify/mysql-client:8.0.21
+        image: "{{ .Values.initContainer.image }}:{{ .Values.initContainer.tag }}"
         name: seed-data-loader
         volumeMounts:
         - mountPath: /tmp/sql-scripts/create-tables1.sql
@@ -113,7 +108,7 @@ spec:
       volumes:
       - name: secrets-volume
         secret:
-          secretName: fortify-secret
+          secretName: {{ .Release.Name }}-secret
       - name: persistent-volume
         persistentVolumeClaim:
           claimName: {{ .Chart.Name }}-pvc

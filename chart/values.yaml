@@ -21,7 +21,20 @@ replicaCount: 1
 http_server_cert_alias: ""
 key_store_password: ""
 key_store_cert_password : ""
-
+port:
+  http: 8080
+  https: 8443
+resources:
+  limits:
+    cpu: 2
+    memory: 4Gi
+  requests:
+    cpu: 1
+    memory: 1Gi
+initContainer:
+  image: registry.dso.mil/platform-one/big-bang/apps/developer-tools/fortify/mysql-client
+  tag: 8.0.21
+imagePullSecrets: private-registry
 # I dont like to add this a configmap which will fail the rule encoded at rest
 fortify_autoconfig: |
   appProperties: {

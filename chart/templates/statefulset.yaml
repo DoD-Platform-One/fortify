@@ -81,7 +81,7 @@ spec:
           name: tomcat-config
           subPath: server-tpl.xml
       imagePullSecrets:
-      - name: {{ .Values.imagePullSecrets | default "private-registry" }}
+      - name: {{ .Values.imagePullSecrets }}
       initContainers:
       - command:
         - /bin/bash

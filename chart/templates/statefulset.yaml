@@ -81,7 +81,7 @@ spec:
           name: tomcat-config
           subPath: server-tpl.xml
       imagePullSecrets:
-      - name: {{ .Values.imagePullSecrets }}
+      - name: {{ .Values.image.imagePullSecrets }}
       initContainers:
       - command:
         - /bin/bash

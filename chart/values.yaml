@@ -3,7 +3,7 @@ image:
   repository: registry.dso.mil/platform-one/big-bang/apps/developer-tools/fortify/scc-webapp
   pullPolicy: IfNotPresent
   tag: 20.1.0.0169
-  imagePullSecrets: ""
+  imagePullSecrets: "private-registry"
 
 # fortify configuration
 # Defaults configured no need to change unless necessary. 
@@ -34,7 +34,7 @@ resources:
 initContainer:
   image: registry.dso.mil/platform-one/big-bang/apps/developer-tools/fortify/mysql-client
   tag: 8.0.21
-imagePullSecrets: private-registry
+
 # I dont like to add this a configmap which will fail the rule encoded at rest
 fortify_autoconfig: |
   appProperties: {

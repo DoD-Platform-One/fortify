@@ -2,6 +2,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: db-initialization-script2
+  labels:
+    app.kubernetes.io/component: seed-data
+    app.kubernetes.io/instance: fortify
+    app.kubernetes.io/managed-by: flux
+    app.kubernetes.io/name: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Values.image.tag | quote }}
 data:
   create-tables2.sql: |
     ALTER TABLE scan_finding ADD CONSTRAINT RefScanFinding 

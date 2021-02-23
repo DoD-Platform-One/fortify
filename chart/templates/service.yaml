@@ -5,10 +5,9 @@ metadata:
   labels:
     app.kubernetes.io/component: service
     app.kubernetes.io/instance: fortify
-    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/managed-by: flux
     app.kubernetes.io/name: {{ .Release.Name | quote }}
     app.kubernetes.io/version: {{ .Values.image.tag | quote }}
-    helm.sh/chart: ssc-1.0.169
   name: {{ .Chart.Name }}-service
   namespace: {{ .Release.Namespace }}
 spec:

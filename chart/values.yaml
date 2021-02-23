@@ -66,9 +66,18 @@ fortify_java_keystore: # base64 encoded java keystore binary
 storage:
   volume: 50Gi
 
+mysql:
+  enabled: true
+  image:
+    registry: "docker.io"
+    repository: "bitnami/mysql"
+    tag: 8.0.23-debian-10-r28
+  auth:
+    rootPassword: ""
+  fullnameOverride: fortify-mysql
 # database parameters, this chart wont deploy database
 database :
-  host: ""
-  port: ""
-  username: ""
+  host: "fortify-mysql"
+  port: "3306"
+  username: "root"
   password: ""

@@ -2,6 +2,12 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: tomcat-config
+  labels:
+    app.kubernetes.io/component: tomcat-config
+    app.kubernetes.io/instance: fortify
+    app.kubernetes.io/managed-by: flux
+    app.kubernetes.io/name: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Values.image.tag | quote }}
 data:
   server-tpl.xml: |-
     <?xml version="1.0" encoding="UTF-8"?>

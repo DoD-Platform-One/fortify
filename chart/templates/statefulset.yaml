@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/component: webapp
     app.kubernetes.io/instance: fortify
-    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/managed-by: flux
     app.kubernetes.io/name: {{ .Release.Name | quote }}
     app.kubernetes.io/version: {{ .Values.image.tag | quote }}
   name: fortify-fortify-ssc-webapp
@@ -87,24 +87,18 @@ spec:
         - /bin/bash
         - -ecv
         - |
-          cat /tmp/sql-scripts/create-tables1.sql /tmp/sql-scripts/create-tables2.sql /tmp/sql-scripts/create-tables3.sql > /tmp/create-tables.sql
-          mysql -h $DBHOST -u $DBUSER -p$DBPASSWORD < /tmp/create-tables.sql
-          echo "Seed-Data injection completed"
+          DB=""
+          while [ "$DB" != "fortify_completed" ]; do
+            echo "going for 5 sec sleep"
+            sleep 5
+            DB=$(mysql -h $DBHOST -u $DBUSER -p$DBPASSWORD -e "SHOW DATABASES" | grep fortify_completed)
+          done
+          echo "Fortify Validation Database found"
         envFrom:
         - secretRef:
             name: db-credentials-mysql
         image: "{{ .Values.initContainer.image }}:{{ .Values.initContainer.tag }}"
         name: seed-data-loader
-        volumeMounts:
-        - mountPath: /tmp/sql-scripts/create-tables1.sql
-          name: sql-script-volume1
-          subPath: create-tables1.sql
-        - mountPath: /tmp/sql-scripts/create-tables2.sql
-          name: sql-script-volume2
-          subPath: create-tables2.sql
-        - mountPath: /tmp/sql-scripts/create-tables3.sql
-          name: sql-script-volume3
-          subPath: create-tables3.sql
       volumes:
       - name: secrets-volume
         secret:
@@ -115,12 +109,3 @@ spec:
       - configMap:
           name: tomcat-config
         name: tomcat-config
-      - configMap:
-          name: db-initialization-script1
-        name: sql-script-volume1
-      - configMap:
-          name: db-initialization-script2
-        name: sql-script-volume2
-      - configMap:
-          name: db-initialization-script3
-        name: sql-script-volume3

@@ -35,6 +35,14 @@ fortify_java_keystore: "<Base64 encoded java keystore>"
 storage:
   volume: 5Gi
 
+  mysql:
+  enabled: true
+  image:
+    registry: "docker.io"
+    repository: "bitnami/mysql"
+    tag: 8.0.23-debian-10-r28
+    pullSecrets: ""
+
 # This is external dependency fortify need mysql
 database:
   host: "mysql"

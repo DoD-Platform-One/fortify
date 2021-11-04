@@ -1,0 +1,15 @@
+{{- if .Values.networkPolicies.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: internet-egress
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  podSelector: {}
+  policyTypes:
+    - Egress
+  egress:
+    {{- if .Values.networkPolicies.egress }}
+      {{- toYaml .Values.networkPolicies.egress | nindent 4 }}
+    {{- end}}
+{{- end }}

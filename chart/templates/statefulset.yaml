@@ -25,6 +25,8 @@ spec:
         app.kubernetes.io/instance: fortify
         app.kubernetes.io/name: {{ .Release.Name | quote }}
     spec:
+      securityContext:
+        fsGroup: 0 # WARNING: OPA WILL NOT ALLOW THIS TO RUN
       containers:
       - env:
         - name: CATALINA_OPTS
@@ -33,20 +35,8 @@ spec:
           value: {{ .Values.jdbc_driver }}
         - name: HTTP_SERVER_CERTIFICATE_VERIFICATION
           value: none
-        - name: COM_FORTIFY_SSC_LICENSEPATH
-          value: {{ .Values.license_path }}
-        - name: COM_FORTIFY_SSC_AUTOCONFIGPATH
-          value: {{ .Values.auto_config }}
-        - name: HTTP_SERVER_CERTIFICATE_KEYSTORE_FILE
-          value: {{ .Values.http_server_certificate_keystore_file }}
-        - name: HTTP_SERVER_CERTIFICATE_KEYSTORE_PASSWORD_FILE
-          value: {{ .Values.http_server_certificate_keystore_password }}
-        - name: HTTP_SERVER_CERTIFICATE_KEY_PASSWORD_FILE
-          value: {{ .Values.https_server_certificate_key_password }}
         - name: COM_FORTIFY_SSC_ENFORCESECURETRANSPORT
-          value: "false"
-        - name: HTTP_SERVER_CERTIFICATE_KEY_ALIAS
-          value: {{ .Values.http_server_cert_alias }}
+          value: {{ .Values.enforce_secure_transport | quote }}
         - name: HOST_URL
           value: "https://{{ .Values.hostname }}"
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -72,14 +62,11 @@ spec:
         resources:
             {{- toYaml .Values.resources | nindent 12 }}
         volumeMounts:
-        - mountPath: /app/secrets
-          name: secrets-volume
+        - mountPath: /fortify/secrets
+          name: shared
           readOnly: true
         - mountPath: /fortify
           name: persistent-volume
-        - mountPath: /app/tomcat/conf/server-tpl.xml
-          name: tomcat-config
-          subPath: server-tpl.xml
       imagePullSecrets:
       - name: {{ .Values.image.imagePullSecrets }}
       initContainers:
@@ -87,25 +74,69 @@ spec:
         - /bin/bash
         - -ecv
         - |
-          DB=""
-          while [ "$DB" != "fortify_completed" ]; do
-            echo "going for 5 sec sleep"
-            sleep 5
-            DB=$(mysql -h $DBHOST -u $DBUSER -p$DBPASSWORD -e "SHOW DATABASES" | grep fortify_completed)
+          while ! mysqladmin ping -h $DBHOST --silent; do
+            sleep 10
           done
-          echo "Fortify Validation Database found"
+          {{- if .Values.databaseSecret.useRoot }}
+          mysql -h $DBHOST -u $DBROOTUSER -p$DBROOTPASSWORD -e "CREATE DATABASE IF NOT EXISTS fortify CHARACTER SET utf8 COLLATE utf8_bin"
+          {{- else }}
+          mysql -h $DBHOST -u $DBUSER -p$DBPASSWORD -e "CREATE DATABASE IF NOT EXISTS fortify CHARACTER SET utf8 COLLATE utf8_bin"
+          {{- end }}
         envFrom:
         - secretRef:
+            {{- if not .Values.databaseSecret.use_secret }}
             name: db-credentials-mysql
+            {{- else }}
+            name: {{ .Values.databaseSecret.name | quote }}
+            {{- end }}
         image: "{{ .Values.initContainer.image }}:{{ .Values.initContainer.tag }}"
         name: seed-data-loader
+        resources:
+          {{- toYaml .Values.initContainer.resources | nindent 10 }}
+      - name: keystore-gen
+        image: "{{ .Values.initContainer.keystoreImage }}:{{ .Values.initContainer.keystoreTag }}"
+        imagePullPolicy: IfNotPresent
+        command:
+        - /bin/sh
+        args:
+        - /script/gen.sh
+        volumeMounts:
+        - name: keystore-script
+          mountPath: /script
+        - name: shared
+          mountPath: /shared
+        - name: secrets-volume
+          mountPath: /secrets
+        resources:
+          {{- toYaml .Values.initContainer.resources | nindent 10 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       volumes:
       - name: secrets-volume
         secret:
+          {{- if not .Values.fortifySecret.use_secret }}
           secretName: {{ .Chart.Name }}-secret
+          {{- else }}
+          secretName: {{ .Values.fortifySecret.name | quote }}
+          {{- end }}
       - name: persistent-volume
         persistentVolumeClaim:
           claimName: {{ .Chart.Name }}-pvc
       - configMap:
           name: tomcat-config
         name: tomcat-config
+      - name: shared
+        emptyDir: {}
+      - name: keystore-script
+        configMap:
+          name: {{ .Chart.Name }}-keystore-script

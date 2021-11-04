@@ -1,0 +1,51 @@
+image:
+  imagePullSecrets: private-registry-mil
+
+enforce_secure_transport: false
+jdbc_driver: https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.21/mysql-connector-java-8.0.21.jar
+# configurable parameters
+hostname: fortify.bigbang.dev
+replicaCount: 1
+
+storage:
+  volume: 5Gi
+mysql:
+  enabled: true
+  image:
+    pullSecrets:
+    - private-registry-mil
+
+istio:
+  enabled: false
+  gateways:
+    - istio-system/main
+
+networkPolicies:
+  enabled: false
+
+databaseSecret:
+  use_secret: false
+  useRoot: true
+fortifySecret:
+  use_secret: false
+
+key_store_password: dsoppassword
+key_store_cert_password : dsoppassword
+fortify_autoconfig: |
+  appProperties:
+    host.validation: false
+    searchIndex.location: '/app/tomcat/fortify/ssc/ssc_search_index'
+
+  datasourceProperties:
+    jdbc.url: "jdbc:mysql://fortify-mysql:3306/fortify?useSSL=false&connectionCollation=<collation>&rewriteBatchedStatements=true&max_allowed_packet=1073741824&sql_mode=TRADITIONAL"
+    db.driver.class: com.mysql.cj.jdbc.Driver
+    db.username: root
+    db.password: root
+    db.dialect: com.fortify.manager.util.hibernate.MySQLDialect
+    db.like.specialCharacters: '%_\\'
+
+  dbMigrationProperties:
+    migration.enabled: true
+
+fortify_license: |
+  <License>

@@ -1,5 +1,0 @@
-dependencies:
-- name: mysql
-  condition: mysql.enabled
-  version: '*.*.*'
-  repository: file://./charts/mysql-8.4.3.tgz

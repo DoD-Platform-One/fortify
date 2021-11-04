@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-keystore-script
+  labels:
+    app.kubernetes.io/component: keystore
+    app.kubernetes.io/instance: fortify
+    app.kubernetes.io/managed-by: flux
+    app.kubernetes.io/name: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Values.image.tag | quote }}
+data:
+  gen.sh: |
+    #!/bin/sh
+
+    export KEYSTORE_PASSWORD=$(cat /secrets/certificate-keystore-password)
+    keytool -genkeypair -alias nullcert -storepass ${KEYSTORE_PASSWORD} -keypass ${KEYSTORE_PASSWORD} -keystore /tmp/certificate-keystore -dname "CN=Developer, OU=Department, O=Company, L=City, ST=State, C=TX"
+
+    cp /secrets/* /shared/
+    cp /tmp/certificate-keystore /shared/
+    ls -lah /shared

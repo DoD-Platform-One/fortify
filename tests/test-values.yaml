@@ -1,5 +1,5 @@
 image:
-  imagePullSecrets: private-registry-mil
+  imagePullSecrets: private-registry
 
 enforce_secure_transport: false
 jdbc_driver: https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.21/mysql-connector-java-8.0.21.jar
@@ -13,7 +13,7 @@ mysql:
   enabled: true
   image:
     pullSecrets:
-    - private-registry-mil
+    - private-registry
 
 istio:
   enabled: false

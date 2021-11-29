@@ -13,8 +13,8 @@ data:
     #!/bin/sh
 
     export KEYSTORE_PASSWORD=$(cat /secrets/certificate-keystore-password)
-    keytool -genkeypair -alias nullcert -storepass ${KEYSTORE_PASSWORD} -keypass ${KEYSTORE_PASSWORD} -keystore /tmp/certificate-keystore -dname "CN=Developer, OU=Department, O=Company, L=City, ST=State, C=TX"
+    keytool -genkeypair -alias {{ .Values.default_cert_alias }} -storepass ${KEYSTORE_PASSWORD} -keypass ${KEYSTORE_PASSWORD} -keystore /tmp/certificate-keystore -dname "CN=Developer, OU=Department, O=Company, L=City, ST=State, C=TX"
 
-    cp /secrets/* /shared/
     cp /tmp/certificate-keystore /shared/
+    cp /secrets/* /shared/
     ls -lah /shared

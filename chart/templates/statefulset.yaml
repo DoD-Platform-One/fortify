@@ -67,6 +67,9 @@ spec:
           readOnly: true
         - mountPath: /fortify
           name: persistent-volume
+        - mountPath: /app/tomcat/conf/server-tpl.xml
+          subPath: server-tpl.xml
+          name: tomcat-template
       imagePullSecrets:
       - name: {{ .Values.image.imagePullSecrets }}
       initContainers:
@@ -140,3 +143,6 @@ spec:
       - name: keystore-script
         configMap:
           name: {{ .Chart.Name }}-keystore-script
+      - name: tomcat-template
+        configMap:
+          name: {{ .Chart.Name }}-tomcat-template

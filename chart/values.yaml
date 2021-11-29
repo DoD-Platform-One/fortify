@@ -7,6 +7,7 @@ image:
 
 enforce_secure_transport: false
 jdbc_driver: https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.21/mysql-connector-java-8.0.21.jar
+default_cert_alias: dsop
 
 # configurable parameters
 hostname: "fortify.bigbang.dev"
@@ -26,8 +27,8 @@ resources:
 initContainer:
   image: registry.dso.mil/platform-one/big-bang/apps/third-party/fortify/mysql-client
   tag: 8.0.21
-  keystoreImage: registry1.dso.mil/ironbank/redhat/openjdk/openjdk11
-  keystoreTag: 1.11
+  keystoreImage: registry1.dso.mil/ironbank/redhat/openjdk/openjdk11@sha256
+  keystoreTag: cb85e62c80b885dab309bb2450595261b53d5d588e29d43b1e0b9576209369bf
   resources:
     limits:
       cpu: 500m

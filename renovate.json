@@ -1,0 +1,29 @@
+{
+    "baseBranches": ["main"],
+    "configWarningReuseIssue": false,
+    "dependencyDashboard": "true",
+    "dependencyDashboardAutoclose": "true",
+    "dependencyDashboardHeader": "- [ ] Sync upstream helm chart version with updated dependencies.",
+    "dependencyDashboardTitle": "Renovate: Upgrade Fortify Package Dependencies",
+    "draftPR": true,
+    "labels": ["fortify","renovate"],
+    "packageRules": [
+      {
+        "matchDatasources": ["docker"],
+        "groupName": "Ironbank"
+      }
+    ],
+    "separateMajorMinor": "false",
+    "regexManagers": [
+      {
+        "fileMatch": ["^chart/values\\.yaml$"],
+        "matchStrings": [
+          "tag:\\s+(?<currentValue>.+)"
+        ],
+        "depNameTemplate": "registry1.dso.mil/ironbank/microfocus/fortify/ssc",
+        "datasourceTemplate": "docker",
+        "registryUrlTemplate": "https://registry1.dso.mil"
+      }
+    ]
+  }
+  

@@ -3,6 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [0.0.4] - 2022-02-01
+### Fixed
+- Pinned to OpenJDK 13 keystore init container as default
+- Modified readiness check to HTTP
+- Added `values.yaml` option to remove runAsRootGroup
+- Update MySQL image to latest Ironbank
+- Update keytool cmd to include keyalg
 ## [0.0.3] - 2021-11-23
 ### Fixed
 - Patch helm chart issues.

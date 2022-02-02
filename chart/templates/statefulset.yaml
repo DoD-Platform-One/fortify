@@ -25,8 +25,10 @@ spec:
         app.kubernetes.io/instance: fortify
         app.kubernetes.io/name: {{ .Release.Name | quote }}
     spec:
+      {{- if .Values.runAsRootGroup }}
       securityContext:
-        fsGroup: 0 # WARNING: OPA WILL NOT ALLOW THIS TO RUN
+        fsGroup: 0
+      {{- end }}
       containers:
       - env:
         - name: CATALINA_OPTS
@@ -55,8 +57,8 @@ spec:
             - name: Host
               value: fortify-service
             path: /images/favicon.ico
-            port: https-web
-            scheme: HTTPS
+            port: http-web
+            scheme: HTTP
           initialDelaySeconds: 60
           periodSeconds: 10
         resources:

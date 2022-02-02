@@ -12,6 +12,7 @@ default_cert_alias: dsop
 # configurable parameters
 hostname: "fortify.bigbang.dev"
 replicaCount: 1
+runAsRootGroup: true # Likely required for the container to run. OPA exception needed
 key_store_password: "" # Required to be at least 8 characters
 key_store_cert_password : "" # Required to be at least 8 characters
 port:
@@ -27,8 +28,8 @@ resources:
 initContainer:
   image: registry.dso.mil/platform-one/big-bang/apps/third-party/fortify/mysql-client
   tag: 8.0.21
-  keystoreImage: registry1.dso.mil/ironbank/redhat/openjdk/openjdk11@sha256
-  keystoreTag: cb85e62c80b885dab309bb2450595261b53d5d588e29d43b1e0b9576209369bf
+  keystoreImage: registry1.dso.mil/ironbank/redhat/openjdk/openjdk13
+  keystoreTag: 1.13.0
   resources:
     limits:
       cpu: 500m
@@ -69,7 +70,7 @@ mysql:
   image:
     registry: "registry1.dso.mil"
     repository: "ironbank/bitnami/mysql8"
-    tag: 8.0.27
+    tag: 8.0.28
     pullSecrets:
       - private-registry
   auth:

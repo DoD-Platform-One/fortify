@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [0.0.5] - 2022-03-04
+### Updated
+- Renovate updated the ssc image to 21.2.2.0002
+
 ## [0.0.4] - 2022-02-01
 ### Fixed
 - Pinned to OpenJDK 13 keystore init container as default

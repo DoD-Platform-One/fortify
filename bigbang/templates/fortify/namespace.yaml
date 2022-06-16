@@ -9,7 +9,6 @@ metadata:
     app.kubernetes.io/name: {{ $pkg }}
     app.kubernetes.io/component: {{ $component | quote }}
     {{- include "commonLabels" . | nindent 4}}
-    {{- if .Values.istio.enabled }}
-    istio-injection: "enabled"
-    {{- end }}
+    # Disabled for integration test in CI, MySQL connection is broken by injection
+    istio-injection: "disabled"
 {{- end }}

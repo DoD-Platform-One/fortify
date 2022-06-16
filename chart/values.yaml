@@ -70,7 +70,7 @@ mysql:
   image:
     registry: "registry1.dso.mil"
     repository: "ironbank/bitnami/mysql8"
-    tag: 8.0.29
+    tag: "8.0.29-debian-10-r37"
     pullSecrets:
       - private-registry
   auth:

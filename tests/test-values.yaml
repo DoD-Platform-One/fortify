@@ -1,33 +1,9 @@
-image:
-  imagePullSecrets: private-registry
-
-enforce_secure_transport: false
-jdbc_driver: https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.21/mysql-connector-java-8.0.21.jar
 # configurable parameters
-hostname: fortify.bigbang.dev
-replicaCount: 1
-
 storage:
   volume: 5Gi
-mysql:
-  enabled: true
-  image:
-    pullSecrets:
-    - private-registry
-
-istio:
-  enabled: false
-  gateways:
-    - istio-system/main
-
-networkPolicies:
-  enabled: false
 
 databaseSecret:
-  use_secret: false
   useRoot: true
-fortifySecret:
-  use_secret: false
 
 key_store_password: dsoppassword
 key_store_cert_password : dsoppassword

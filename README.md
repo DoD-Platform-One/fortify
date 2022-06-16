@@ -1,6 +1,6 @@
 # fortify
 
-![Version: 0.0.5](https://img.shields.io/badge/Version-0.0.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 21.2.2.0002](https://img.shields.io/badge/AppVersion-21.2.2.0002-informational?style=flat-square)
+![Version: 0.0.6-bb.0](https://img.shields.io/badge/Version-0.0.6--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 22.1.0.0149](https://img.shields.io/badge/AppVersion-22.1.0.0149-informational?style=flat-square)
 
 A Helm chart for Microfocus Fortify SSC
 
@@ -32,7 +32,7 @@ helm install fortify chart/
 |-----|------|---------|-------------|
 | image.repository | string | `"registry1.dso.mil/ironbank/microfocus/fortify/ssc"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.tag | string | `"21.2.2.0002"` |  |
+| image.tag | string | `"22.1.0.0149"` |  |
 | image.imagePullSecrets | string | `"private-registry"` |  |
 | enforce_secure_transport | bool | `false` |  |
 | jdbc_driver | string | `"https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.21/mysql-connector-java-8.0.21.jar"` |  |
@@ -64,7 +64,7 @@ helm install fortify chart/
 | mysql.enabled | bool | `true` |  |
 | mysql.image.registry | string | `"registry1.dso.mil"` |  |
 | mysql.image.repository | string | `"ironbank/bitnami/mysql8"` |  |
-| mysql.image.tag | string | `"8.0.28"` |  |
+| mysql.image.tag | string | `"8.0.29"` |  |
 | mysql.image.pullSecrets[0] | string | `"private-registry"` |  |
 | mysql.auth.rootPassword | string | `"root"` |  |
 | mysql.auth.username | string | `"admin"` |  |

@@ -39,7 +39,7 @@ spec:
           value: none
         - name: COM_FORTIFY_SSC_ENFORCESECURETRANSPORT
           value: {{ .Values.enforce_secure_transport | quote }}
-        - name: HOST_URL
+        - name: SSC_AUTOCONFIG_HOST_URL
           value: "https://{{ .Values.hostname }}"
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: IfNotPresent

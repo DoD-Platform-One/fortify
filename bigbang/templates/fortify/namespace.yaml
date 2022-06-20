@@ -1,0 +1,14 @@
+{{- $pkg := "fortify" }}
+{{- $component := "third-party" }}
+{{- if (get .Values $pkg).enabled }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ $pkg }}
+  labels:
+    app.kubernetes.io/name: {{ $pkg }}
+    app.kubernetes.io/component: {{ $component | quote }}
+    {{- include "commonLabels" . | nindent 4}}
+    # Disabled for integration test in CI, MySQL connection is broken by injection
+    istio-injection: "disabled"
+{{- end }}

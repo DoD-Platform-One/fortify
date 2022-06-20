@@ -2,7 +2,7 @@
 image:
   repository: registry1.dso.mil/ironbank/microfocus/fortify/ssc
   pullPolicy: IfNotPresent
-  tag: 21.2.2.0002
+  tag: 22.1.0.0149
   imagePullSecrets: "private-registry"
 
 enforce_secure_transport: false
@@ -70,7 +70,7 @@ mysql:
   image:
     registry: "registry1.dso.mil"
     repository: "ironbank/bitnami/mysql8"
-    tag: 8.0.28
+    tag: "8.0.29-debian-10-r37"
     pullSecrets:
       - private-registry
   auth:

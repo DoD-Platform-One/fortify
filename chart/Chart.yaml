@@ -2,10 +2,10 @@ apiVersion: v2
 name: fortify
 description: A Helm chart for Microfocus Fortify SSC
 type: application
-version: 0.0.5
-appVersion: "21.2.2.0002"
+version: 0.0.6-bb.0
+appVersion: "22.1.0.0149"
 dependencies:
 - name: mysql
   condition: mysql.enabled
-  version: '*.*.*'
-  repository: file://./charts/mysql-8.4.3.tgz
+  version: '9.1.7'
+  repository: https://charts.bitnami.com/bitnami

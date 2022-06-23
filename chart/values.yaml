@@ -2,7 +2,7 @@
 image:
   repository: registry1.dso.mil/ironbank/microfocus/fortify/ssc
   pullPolicy: IfNotPresent
-  tag: 22.1.0.0149
+  tag: 22.1.1.0006
   imagePullSecrets: "private-registry"
 
 enforce_secure_transport: false

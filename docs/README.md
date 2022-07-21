@@ -1,6 +1,75 @@
+# flux-fortify
+
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.x](https://img.shields.io/badge/AppVersion-8.x-informational?style=flat-square)
+
+Flux compatible Helm chart for fortify
+
+## Learn More
+* [Application Overview](docs/overview.md)
+* [Other Documentation](docs/)
+
+## Pre-Requisites
+
+* Kubernetes Cluster deployed
+* Kubernetes config installed in `~/.kube/config`
+* Helm installed
+
+Install Helm
+
+https://helm.sh/docs/intro/install/
+
+## Deployment
+
+* Clone down the repository
+* cd into directory
+```bash
+helm install flux-fortify chart/
+```
+
+## Values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| fortify.enabled | bool | `true` |  |
+| fortify.git.repo | string | `"https://repo1.dso.mil/platform-one/big-bang/apps/third-party/fortify"` |  |
+| fortify.git.path | string | `"chart"` |  |
+| fortify.flux | object | `{}` |  |
+| fortify.ingress.gateway | string | `""` |  |
+| networkPolicies.enabled | bool | `true` |  |
+| jaeger.enabled | bool | `false` |  |
+| kiali.enabled | bool | `false` |  |
+| clusterAuditor.enabled | bool | `false` |  |
+| gatekeeper.enabled | bool | `false` |  |
+| kyverno.enabled | bool | `false` |  |
+| tempo.enabled | bool | `false` |  |
+| promtail.enabled | bool | `false` |  |
+| loki.enabled | bool | `false` |  |
+| eckoperator.enabled | bool | `false` |  |
+| logging.enabled | bool | `false` |  |
+| fluentbit.enabled | bool | `false` |  |
+| monitoring.enabled | bool | `false` |  |
+| twistlock.enabled | bool | `false` |  |
+| addons.argocd.enabled | bool | `false` |  |
+| addons.authservice.enabled | bool | `false` |  |
+| addons.gitlab.enabled | bool | `false` |  |
+| addons.gitlabRunner.enabled | bool | `false` |  |
+| addons.anchore.enabled | bool | `false` |  |
+| addons.sonarqube.enabled | bool | `false` |  |
+| addons.minioOperator.enabled | bool | `false` |  |
+| addons.minio.enabled | bool | `false` |  |
+| addons.mattermostoperator.enabled | bool | `false` |  |
+| addons.mattermost.enabled | bool | `false` |  |
+| addons.nexus.enabled | bool | `false` |  |
+| addons.velero.enabled | bool | `false` |  |
+| addons.keycloak.enabled | bool | `false` |  |
+| addons.vault.enabled | bool | `false` |  |
+
+## Contributing
+
+Please see the [contributing guide](./CONTRIBUTING.md) if you are interested in contributing.
 # fortify
 
-![Version: 0.0.3](https://img.shields.io/badge/Version-0.0.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 21.1.2.0005](https://img.shields.io/badge/AppVersion-21.1.2.0005-informational?style=flat-square)
+![Version: 0.0.7-bb.0](https://img.shields.io/badge/Version-0.0.7--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 22.1.1.0006](https://img.shields.io/badge/AppVersion-22.1.1.0006-informational?style=flat-square)
 
 A Helm chart for Microfocus Fortify SSC
 
@@ -32,13 +101,14 @@ helm install fortify chart/
 |-----|------|---------|-------------|
 | image.repository | string | `"registry1.dso.mil/ironbank/microfocus/fortify/ssc"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.tag | string | `"21.1.2.0005"` |  |
+| image.tag | string | `"22.1.1.0006"` |  |
 | image.imagePullSecrets | string | `"private-registry"` |  |
 | enforce_secure_transport | bool | `false` |  |
 | jdbc_driver | string | `"https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.21/mysql-connector-java-8.0.21.jar"` |  |
 | default_cert_alias | string | `"dsop"` |  |
 | hostname | string | `"fortify.bigbang.dev"` |  |
 | replicaCount | int | `1` |  |
+| runAsRootGroup | bool | `true` |  |
 | key_store_password | string | `""` |  |
 | key_store_cert_password | string | `""` |  |
 | port.http | int | `8080` |  |
@@ -49,8 +119,8 @@ helm install fortify chart/
 | resources.requests.memory | string | `"1Gi"` |  |
 | initContainer.image | string | `"registry.dso.mil/platform-one/big-bang/apps/third-party/fortify/mysql-client"` |  |
 | initContainer.tag | string | `"8.0.21"` |  |
-| initContainer.keystoreImage | string | `"registry1.dso.mil/ironbank/redhat/openjdk/openjdk11@sha256"` |  |
-| initContainer.keystoreTag | string | `"cb85e62c80b885dab309bb2450595261b53d5d588e29d43b1e0b9576209369bf"` |  |
+| initContainer.keystoreImage | string | `"registry1.dso.mil/ironbank/redhat/openjdk/openjdk13"` |  |
+| initContainer.keystoreTag | string | `"1.13.0"` |  |
 | initContainer.resources.limits.cpu | string | `"500m"` |  |
 | initContainer.resources.limits.memory | string | `"128Mi"` |  |
 | initContainer.resources.requests.cpu | string | `"250m"` |  |
@@ -63,7 +133,7 @@ helm install fortify chart/
 | mysql.enabled | bool | `true` |  |
 | mysql.image.registry | string | `"registry1.dso.mil"` |  |
 | mysql.image.repository | string | `"ironbank/bitnami/mysql8"` |  |
-| mysql.image.tag | string | `"8.0.27"` |  |
+| mysql.image.tag | string | `"8.0.29-debian-10-r37"` |  |
 | mysql.image.pullSecrets[0] | string | `"private-registry"` |  |
 | mysql.auth.rootPassword | string | `"root"` |  |
 | mysql.auth.username | string | `"admin"` |  |

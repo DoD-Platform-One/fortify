@@ -1,72 +1,3 @@
-# flux-fortify
-
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.x](https://img.shields.io/badge/AppVersion-8.x-informational?style=flat-square)
-
-Flux compatible Helm chart for fortify
-
-## Learn More
-* [Application Overview](docs/overview.md)
-* [Other Documentation](docs/)
-
-## Pre-Requisites
-
-* Kubernetes Cluster deployed
-* Kubernetes config installed in `~/.kube/config`
-* Helm installed
-
-Install Helm
-
-https://helm.sh/docs/intro/install/
-
-## Deployment
-
-* Clone down the repository
-* cd into directory
-```bash
-helm install flux-fortify chart/
-```
-
-## Values
-
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| fortify.enabled | bool | `true` |  |
-| fortify.git.repo | string | `"https://repo1.dso.mil/platform-one/big-bang/apps/third-party/fortify"` |  |
-| fortify.git.path | string | `"chart"` |  |
-| fortify.flux | object | `{}` |  |
-| fortify.ingress.gateway | string | `""` |  |
-| networkPolicies.enabled | bool | `true` |  |
-| jaeger.enabled | bool | `false` |  |
-| kiali.enabled | bool | `false` |  |
-| clusterAuditor.enabled | bool | `false` |  |
-| gatekeeper.enabled | bool | `false` |  |
-| kyverno.enabled | bool | `false` |  |
-| tempo.enabled | bool | `false` |  |
-| promtail.enabled | bool | `false` |  |
-| loki.enabled | bool | `false` |  |
-| eckoperator.enabled | bool | `false` |  |
-| logging.enabled | bool | `false` |  |
-| fluentbit.enabled | bool | `false` |  |
-| monitoring.enabled | bool | `false` |  |
-| twistlock.enabled | bool | `false` |  |
-| addons.argocd.enabled | bool | `false` |  |
-| addons.authservice.enabled | bool | `false` |  |
-| addons.gitlab.enabled | bool | `false` |  |
-| addons.gitlabRunner.enabled | bool | `false` |  |
-| addons.anchore.enabled | bool | `false` |  |
-| addons.sonarqube.enabled | bool | `false` |  |
-| addons.minioOperator.enabled | bool | `false` |  |
-| addons.minio.enabled | bool | `false` |  |
-| addons.mattermostoperator.enabled | bool | `false` |  |
-| addons.mattermost.enabled | bool | `false` |  |
-| addons.nexus.enabled | bool | `false` |  |
-| addons.velero.enabled | bool | `false` |  |
-| addons.keycloak.enabled | bool | `false` |  |
-| addons.vault.enabled | bool | `false` |  |
-
-## Contributing
-
-Please see the [contributing guide](./CONTRIBUTING.md) if you are interested in contributing.
 # fortify
 
 ![Version: 0.0.7-bb.0](https://img.shields.io/badge/Version-0.0.7--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 22.1.1.0006](https://img.shields.io/badge/AppVersion-22.1.1.0006-informational?style=flat-square)
@@ -153,6 +84,75 @@ helm install fortify chart/
 | databaseSecret.useRoot | bool | `false` |  |
 | fortifySecret.use_secret | bool | `false` |  |
 | fortifySecret.name | string | `"fortify-secret"` |  |
+
+## Contributing
+
+Please see the [contributing guide](./CONTRIBUTING.md) if you are interested in contributing.
+# flux-fortify
+
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.x](https://img.shields.io/badge/AppVersion-8.x-informational?style=flat-square)
+
+Flux compatible Helm chart for fortify
+
+## Learn More
+* [Application Overview](docs/overview.md)
+* [Other Documentation](docs/)
+
+## Pre-Requisites
+
+* Kubernetes Cluster deployed
+* Kubernetes config installed in `~/.kube/config`
+* Helm installed
+
+Install Helm
+
+https://helm.sh/docs/intro/install/
+
+## Deployment
+
+* Clone down the repository
+* cd into directory
+```bash
+helm install flux-fortify chart/
+```
+
+## Values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| fortify.enabled | bool | `true` |  |
+| fortify.git.repo | string | `"https://repo1.dso.mil/platform-one/big-bang/apps/third-party/fortify"` |  |
+| fortify.git.path | string | `"chart"` |  |
+| fortify.flux | object | `{}` |  |
+| fortify.ingress.gateway | string | `""` |  |
+| networkPolicies.enabled | bool | `true` |  |
+| jaeger.enabled | bool | `false` |  |
+| kiali.enabled | bool | `false` |  |
+| clusterAuditor.enabled | bool | `false` |  |
+| gatekeeper.enabled | bool | `false` |  |
+| kyverno.enabled | bool | `false` |  |
+| tempo.enabled | bool | `false` |  |
+| promtail.enabled | bool | `false` |  |
+| loki.enabled | bool | `false` |  |
+| eckoperator.enabled | bool | `false` |  |
+| logging.enabled | bool | `false` |  |
+| fluentbit.enabled | bool | `false` |  |
+| monitoring.enabled | bool | `false` |  |
+| twistlock.enabled | bool | `false` |  |
+| addons.argocd.enabled | bool | `false` |  |
+| addons.authservice.enabled | bool | `false` |  |
+| addons.gitlab.enabled | bool | `false` |  |
+| addons.gitlabRunner.enabled | bool | `false` |  |
+| addons.anchore.enabled | bool | `false` |  |
+| addons.sonarqube.enabled | bool | `false` |  |
+| addons.minioOperator.enabled | bool | `false` |  |
+| addons.minio.enabled | bool | `false` |  |
+| addons.mattermostoperator.enabled | bool | `false` |  |
+| addons.mattermost.enabled | bool | `false` |  |
+| addons.nexus.enabled | bool | `false` |  |
+| addons.velero.enabled | bool | `false` |  |
+| addons.keycloak.enabled | bool | `false` |  |
+| addons.vault.enabled | bool | `false` |  |
 
 ## Contributing
 

@@ -32,7 +32,7 @@ spec:
       containers:
       - env:
         - name: CATALINA_OPTS
-          value: -XX:+UseContainerSupport -XX:MaxRAMPercentage=86.0
+          value: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=86.0 -Dcom.redhat.fips=false"
         - name: JDBC_DRIVER_URI
           value: {{ .Values.jdbc_driver }}
         - name: HTTP_SERVER_CERTIFICATE_VERIFICATION

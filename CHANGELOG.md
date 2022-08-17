@@ -3,6 +3,15 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [0.0.9-bb.0] - 2022-08-10
+### Updated
+- Image updated for MySql Chart archive from `9.2.5` to `9.2.6`
+
+## [0.0.8-bb.0] - 2022-08-09
+### Updated
+- Image updated for ssc to `22.1.2.0004`
+- Image updated for MySql Chart archive from `9.2.1` to `9.2.5`
+
 ## [0.0.7-bb.0] - 2022-07-21
 ### Updated
 - Image updated for ssc to `22.1.1.0006`

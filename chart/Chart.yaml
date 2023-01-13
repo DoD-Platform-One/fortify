@@ -2,7 +2,7 @@ apiVersion: v2
 name: fortify
 description: A Helm chart for Microfocus Fortify SSC
 type: application
-version: 0.0.9-bb.1
+version: 0.0.9-bb.2
 appVersion: 22.1.2.0004
 dependencies:
 - name: mysql

@@ -26,8 +26,6 @@ resources:
     cpu: 1
     memory: 1Gi
 initContainer:
-  image: registry.dso.mil/platform-one/big-bang/apps/third-party/fortify/mysql-client
-  tag: 8.0.21
   keystoreImage: registry1.dso.mil/ironbank/redhat/openjdk/openjdk13
   keystoreTag: 1.13.0
   resources:

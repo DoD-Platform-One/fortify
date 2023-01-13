@@ -1,6 +1,6 @@
 # fortify
 
-![Version: 0.0.9-bb.1](https://img.shields.io/badge/Version-0.0.9--bb.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 22.1.2.0004](https://img.shields.io/badge/AppVersion-22.1.2.0004-informational?style=flat-square)
+![Version: 0.0.9-bb.2](https://img.shields.io/badge/Version-0.0.9--bb.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 22.1.2.0004](https://img.shields.io/badge/AppVersion-22.1.2.0004-informational?style=flat-square)
 
 A Helm chart for Microfocus Fortify SSC
 
@@ -48,8 +48,6 @@ helm install fortify chart/
 | resources.limits.memory | string | `"4Gi"` |  |
 | resources.requests.cpu | int | `1` |  |
 | resources.requests.memory | string | `"1Gi"` |  |
-| initContainer.image | string | `"registry.dso.mil/platform-one/big-bang/apps/third-party/fortify/mysql-client"` |  |
-| initContainer.tag | string | `"8.0.21"` |  |
 | initContainer.keystoreImage | string | `"registry1.dso.mil/ironbank/redhat/openjdk/openjdk13"` |  |
 | initContainer.keystoreTag | string | `"1.13.0"` |  |
 | initContainer.resources.limits.cpu | string | `"500m"` |  |

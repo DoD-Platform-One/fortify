@@ -94,7 +94,7 @@ spec:
             {{- else }}
             name: {{ .Values.databaseSecret.name | quote }}
             {{- end }}
-        image: "{{ .Values.initContainer.image }}:{{ .Values.initContainer.tag }}"
+        image: "{{ .Values.mysql.image.registry }}/{{ .Values.mysql.image.repository }}:{{ .Values.mysql.image.tag }}"
         name: seed-data-loader
         resources:
           {{- toYaml .Values.initContainer.resources | nindent 10 }}

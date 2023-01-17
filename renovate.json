@@ -43,6 +43,13 @@
       "registryUrlTemplate": "https://registry1.dso.mil"
     },
     {
+      "fileMatch": ["^chart/Chart\\.yaml$"],
+      "matchStrings": [
+        "image:[^\\S\\r\\n]+(?<depName>.+):(?<currentValue>.+)"
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
       "fileMatch": ["^chart/values\\.yaml$"],
       "matchStrings": [
         "mysql:\\s+image:\\s+registry:\\s+[^/]+/(?<regName>.+)\\s+repository:\\s+[^/]+/(?<repName>.+)\\s+tag:\\s+(?<currentValue>.+)"

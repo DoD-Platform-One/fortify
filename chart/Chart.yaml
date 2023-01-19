@@ -9,3 +9,12 @@ dependencies:
   condition: mysql.enabled
   version: '9.3.4'
   repository: https://charts.bitnami.com/bitnami
+annotations:
+  bigbang.dev/applicationVersions: |
+    - Fortify: 22.1.2.0004
+  helm.sh/images: |
+    - name: velero-plugin-for-csi
+      image: registry1.dso.mil/ironbank/microfocus/fortify/ssc:22.1.2.0004
+    - name: mysql8
+      condition: mysql.enabled
+      image: registry1.dso.mil/ironbank/bitnami/mysql8:8.0.29-debian-10-r37

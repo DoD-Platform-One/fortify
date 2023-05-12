@@ -3,6 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [0.1.0-bb.0] - 2023-03-16
+### Changed
+- ironbank/microfocus/fortify/ssc updated from 22.1.2.0004 to 22.2.1.0008
+- changed autoconfig settings to be blank. Can re-add once bigbang has a license to test with
+### Updated
+- Updated mysql to 9.6.0
+
 ## [0.0.9-bb.2] - 2022-09-28
 ### Updated
 - Deprecated `initContainer.image` and `initContainer.tag`.  Init container now uses the mysql image from Iron Bank.

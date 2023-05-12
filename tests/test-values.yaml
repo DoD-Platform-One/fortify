@@ -8,20 +8,6 @@ databaseSecret:
 key_store_password: dsoppassword
 key_store_cert_password : dsoppassword
 fortify_autoconfig: |
-  appProperties:
-    host.validation: false
-    searchIndex.location: '/app/tomcat/fortify/ssc/ssc_search_index'
-
-  datasourceProperties:
-    jdbc.url: "jdbc:mysql://fortify-mysql:3306/fortify?useSSL=false&connectionCollation=<collation>&rewriteBatchedStatements=true&max_allowed_packet=1073741824&sql_mode=TRADITIONAL"
-    db.driver.class: com.mysql.cj.jdbc.Driver
-    db.username: root
-    db.password: root
-    db.dialect: com.fortify.manager.util.hibernate.MySQLDialect
-    db.like.specialCharacters: '%_\\'
-
-  dbMigrationProperties:
-    migration.enabled: true
-
+  # Need a license to use autoconfig
 fortify_license: |
   <License>

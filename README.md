@@ -1,6 +1,6 @@
 # fortify
 
-![Version: 0.1.0-bb.0](https://img.shields.io/badge/Version-0.1.0--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 22.2.1.0008](https://img.shields.io/badge/AppVersion-22.2.1.0008-informational?style=flat-square)
+![Version: 0.2.0-bb.0](https://img.shields.io/badge/Version-0.2.0--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.1.0007](https://img.shields.io/badge/AppVersion-23.1.1.0007-informational?style=flat-square)
 
 A Helm chart for Microfocus Fortify SSC
 
@@ -32,7 +32,7 @@ helm install fortify chart/
 |-----|------|---------|-------------|
 | image.repository | string | `"registry1.dso.mil/ironbank/microfocus/fortify/ssc"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.tag | string | `"22.2.1.0008"` |  |
+| image.tag | string | `"23.1.1.0007"` |  |
 | image.imagePullSecrets | string | `"private-registry"` |  |
 | enforce_secure_transport | bool | `false` |  |
 | jdbc_driver | string | `"https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.21/mysql-connector-java-8.0.21.jar"` |  |

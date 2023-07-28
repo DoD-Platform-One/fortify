@@ -36,10 +36,7 @@ promtail:
 loki:
   enabled: false
 
-eckoperator:
-  enabled: false
-
-logging:
+eckOperator:
   enabled: false
 
 fluentbit:

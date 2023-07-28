@@ -2,19 +2,19 @@ apiVersion: v2
 name: fortify
 description: A Helm chart for Microfocus Fortify SSC
 type: application
-version: 0.1.0-bb.0
-appVersion: 22.2.1.0008
+version: 0.2.0-bb.0
+appVersion: 23.1.1.0007
 dependencies:
 - name: mysql
   condition: mysql.enabled
-  version: '9.6.0'
+  version: '9.10.9'
   repository: https://charts.bitnami.com/bitnami
 annotations:
   bigbang.dev/applicationVersions: |
-    - Fortify: 22.1.2.0004
+    - Fortify: 23.1.1.0007
   helm.sh/images: |
     - name: ssc
-      image: registry1.dso.mil/ironbank/microfocus/fortify/ssc:22.2.1.0008
+      image: registry1.dso.mil/ironbank/microfocus/fortify/ssc:23.1.1.0007
     - name: keystore
       image: registry1.dso.mil/ironbank/redhat/openjdk/openjdk13:1.13.0
     - name: mysql8

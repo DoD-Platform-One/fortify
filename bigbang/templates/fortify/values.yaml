@@ -18,8 +18,9 @@ storage:
 databaseSecret:
   useRoot: true
 
+trust_store_password: dsoppassword
 key_store_password: dsoppassword
-key_store_cert_password : dsoppassword
+key_store_cert_password: dsoppassword
 fortify_autoconfig: |
   # Need License for AutoConfig to work
 fortify_license: |

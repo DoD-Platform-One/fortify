@@ -1,3 +1,4 @@
+{{- $context := merge (dict "component" "service") . -}}
 {{- if .Values.istio.enabled -}}
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
@@ -11,18 +12,20 @@ metadata:
     app.kubernetes.io/version: {{ .Values.image.tag | quote }}
 spec:
   gateways:
-  {{- range .Values.istio.gateways }}
+  {{- range .Values.istio.fortify.gateways }}
     - {{ . }}
   {{- end }}
   hosts:
-    - {{ .Values.hostname }}
+  {{- range .Values.istio.fortify.hosts }}
+  - {{ tpl . $}}
+  {{- end }}
   http:
   - match:
     - uri:
         prefix: /
     route:
     - destination:
-        host: {{ .Chart.Name }}-service
+        host: {{ include "ssc.fullcomponentname" $context }}
         port:
           number: 80
 {{- end }}

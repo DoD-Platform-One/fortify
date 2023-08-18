@@ -2,7 +2,7 @@ apiVersion: v2
 name: fortify-ssc
 description: A Helm chart for Fortify Software Security Center application
 type: application
-version: 0.2.0-bb.1
+version: 0.2.0-bb.3
 appVersion: 23.1.2.0005
 keywords:
 - fortify
@@ -15,7 +15,7 @@ sources:
 engine: gotpl
 dependencies:
 - name: mysql
-  version: '9.10.10'
+  version: '9.11.1'
   repository: file://./deps/mysql
 annotations:
   bigbang.dev/applicationVersions: |

@@ -1,29 +1,39 @@
----
+{{- $context := merge (dict "component" "service") . -}}
+{{- $type := .Values.service.type -}}
 apiVersion: v1
 kind: Service
 metadata:
+  name: {{ include "ssc.fullcomponentname" $context }}
   labels:
-    app.kubernetes.io/component: service
-    app.kubernetes.io/instance: fortify
-    app.kubernetes.io/managed-by: flux
-    app.kubernetes.io/name: {{ .Release.Name | quote }}
-    app.kubernetes.io/version: {{ .Values.image.tag | quote }}
-  name: {{ .Chart.Name }}-service
-  namespace: {{ .Release.Namespace }}
+    {{- include "ssc.labels" $context | nindent 4 -}}
+{{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 -}}
+{{- end }}
 spec:
-  ports:
-  - name: http-web
-    nodePort: 0
-    port: 80
-    protocol: TCP
-    targetPort: http-web
-  - name: https-web
-    nodePort: 0
-    port: 443
-    protocol: TCP
-    targetPort: https-web
+  type: {{ .Values.service.type }}
+{{- with .Values.service.clusterIP }}
+  clusterIP: {{ . }}
+{{- end }}
+{{- with .Values.service.loadBalancerIP }}
+  loadBalancerIP: {{ . }}
+{{- end }}
   selector:
-    app.kubernetes.io/component: webapp
-    app.kubernetes.io/instance: fortify
-    app.kubernetes.io/name: {{ .Release.Name | quote }}
-  type: ClusterIP
+    {{- include "ssc.selector" (merge (dict "component" "webapp") . ) | nindent 4 }}
+  ports:
+  {{- with .Values.service.httpPort }}
+    - name: http-web
+      targetPort: http-web
+    {{- if eq $type "ClusterIP" }}
+      nodePort: 0
+    {{- end }}
+      port: {{ . | int }}
+      protocol: TCP
+  {{- end }}
+    - name: https-web
+      targetPort: https-web
+    {{- if eq $type "ClusterIP" }}
+      nodePort: 0
+    {{- end }}
+      port: {{ required "The service.httpsPort config value is required!" .Values.service.httpsPort | int }}
+      protocol: TCP

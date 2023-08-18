@@ -1,7 +1,8 @@
+{{- $context := merge (dict "component" "tomcat-template") . -}}
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: {{ .Chart.Name }}-tomcat-template
+  name: {{ include "ssc.fullcomponentname" $context }}
   labels:
     app.kubernetes.io/component: tomcat-template
     app.kubernetes.io/instance: fortify

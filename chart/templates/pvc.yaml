@@ -1,19 +1,21 @@
----
+{{- $context := merge (dict "component" "pvc") . -}}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Chart.Name }}-pvc
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "ssc.fullcomponentname" $context }}
   labels:
-    app.kubernetes.io/component: pvc
-    app.kubernetes.io/instance: fortify
-    app.kubernetes.io/managed-by: flux
-    app.kubernetes.io/name: {{ .Release.Name | quote }}
-    app.kubernetes.io/version: {{ .Values.image.tag | quote }}
+    {{- include "ssc.labels" $context | nindent 4 }}
 spec:
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
+{{- with .Values.persistentVolumeClaim.storageClassName }}
+  storageClassName: "{{ . }}"
+{{- end }}
   resources:
     requests:
-      storage: {{ .Values.storage.volume }}
+      storage: {{ required "The persistentVolumeClaim.size config value is required!" .Values.persistentVolumeClaim.size }}
+{{- with .Values.persistentVolumeClaim.selector }}
+  selector:
+    {{- toYaml . | nindent 4 }}
+{{- end }}

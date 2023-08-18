@@ -1,23 +1,135 @@
-# fortify Image
+# Default values for ssc chart.
+# This is a YAML-formatted file.
+
+
+# image is a map of the global Kubernetes image settings
 image:
-  repository: registry1.dso.mil/ironbank/microfocus/fortify/ssc
-  pullPolicy: IfNotPresent
-  tag: 23.1.1.0007
-  imagePullSecrets: "private-registry"
 
-enforce_secure_transport: false
-jdbc_driver: https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.21/mysql-connector-java-8.0.21.jar
-default_cert_alias: dsop
+  # repositoryPrefix is a prefix for SSC images and can be used to pull images from a private registry
+  repositoryPrefix: "registry1.dso.mil/ironbank/microfocus/fortify/"
 
-# configurable parameters
-hostname: "fortify.bigbang.dev"
-replicaCount: 1
-runAsRootGroup: true # Likely required for the container to run. OPA exception needed
-key_store_password: "" # Required to be at least 8 characters
-key_store_cert_password : "" # Required to be at least 8 characters
-port:
-  http: 8080
-  https: 8443
+  # pullPolicy is Kubernetes image pull policy, supported values are Always, IfNotPresent, and Never
+  pullPolicy: Always
+
+  # buildNumber is an image build number to pull, pull the latest build for release if empty, must be a string
+  # buildNumber: ""
+
+  # webapp is a name for SSC webapp image, the name will be prefixed by repositoryPrefix
+  webapp: "ssc"
+
+  tag: "23.1"
+
+
+# imagePullSecrets is a list of Kubernetes image pull secrets, for details, see the Kubernetes documentation
+# (https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
+imagePullSecrets: 
+  - name: "private-registry"
+
+# nameOverride is a value to override service name, defaults to the helm chart name (ssc)
+nameOverride: "fortify-ssc"
+
+# fullnameOverride is a value to override fully-qualified service, defaults to "{deployment_name}-{service_name}"
+fullnameOverride: "fortify-ssc"
+
+
+# service is a map of the Kubernetes service resource options used to expose the SSC service
+service:
+
+  # type is Kubernetes service type (required), supported values" "ClusterIP", "NodePort", "LoadBalancer"
+  type: ClusterIP
+
+  # httpPort is an external HTTP port of the service, the meaning depends on selected service type, disabled if empty
+  httpPort: 80
+
+  # httpsPort is an external HTTPS port of the service (required)
+  httpsPort: 443
+
+  # clusterIP is fixed service cluster IP address, if empty, Kubernetes assigns a value
+  clusterIP: ""
+
+  # loadBalancerIP is fixed load balancer IP address, if empty, the Kubernetes cloud provider assigns a value
+  loadBalancerIP: ""
+
+  # annotations is a map of annotations applied to the service
+  annotations: {}
+
+
+# urlHost is a fully qualified DNS name for externally accessing the application (required)
+urlHost: "fortify.bigbang.dev"
+
+# urlPort is HTTPS port for externally accessing the application, if zero, a value of service.httpsPort is used instead
+urlPort: 0
+
+# sscPathPrefix is URL path prefix where the SSC application will be accessible
+sscPathPrefix: "/"
+
+# httpClientCertificateVerification is configuring HTTPS client certificate verification, supported values: "none", "optional", "required"
+httpClientCertificateVerification: "none"
+
+
+# secretRef is a reference to externally managed Kubernetes secret (required)
+secretRef:
+
+  # name is a name of externally managed Kubernetes secret to be used for configuration (required)
+  name: ""
+
+  # keys is a map of key names for externally managed Kubernetes secret (required)
+  keys:
+
+    # sscLicenseEntry is a key name for a Fortify licence (required)
+    sscLicenseEntry: "fortify.license"
+
+    # sscAutoconfigEntry is a key name for an SSC autoconfig file (required)
+    sscAutoconfigEntry: "ssc.autoconfig"
+
+    # sscSecretKeyEntry is key name for an SSC secret.key file
+    sscSecretKeyEntry: ""
+
+    # httpCertificateKeystoreFileEntry is a key name for a keystore with certificate and private key for HTTPS (required)
+    httpCertificateKeystoreFileEntry: "ssc-service.jks"
+
+    # httpCertificateKeystorePasswordEntry is a key name for a password of the HTTPS keystore (required)
+    httpCertificateKeystorePasswordEntry: "ssc-service.jks.password"
+
+    # httpCertificateKeystorePasswordEntry is a key name for a password of the HTTPS private key (required)
+    httpCertificateKeyPasswordEntry: "ssc-service.jks.key.password"
+
+    # httpTruststoreFileEntry is a key name for a truststore used by client certificate verification
+    httpTruststoreFileEntry: ""
+
+    # httpTruststorePasswordEntry is a key name for a password of the client certificate verification truststore
+    httpTruststorePasswordEntry: ""
+
+    # jvmTruststoreFileEntry is a key name for a JVM truststore
+    jvmTruststoreFileEntry: "truststore"
+
+    # jvmTruststorePasswordEntry is a key name for a password of the JVM truststore
+    jvmTruststorePasswordEntry: "truststore.password"
+
+
+# persistentVolumeClaim is a set of SSC's persistent volume claim options
+persistentVolumeClaim:
+
+  # size is a requested size of the persistent volume (required)
+  size: "4Gi"
+
+  # storageClassName is a storage class name to be used for the persistent volume
+  storageClassName: ""
+
+  # selector is a Kubernetes PersistentVolumeClaim selector
+  selector: {}
+
+
+# environment is a list of additional environment variables for the Pod, uses Kubernetes Pod spec syntax
+environment: []
+
+# jvmMaxRAMPercentage is a percentage of memory limit to be used for JVM heap
+jvmMaxRAMPercentage: 85
+
+# jvmExtraOptions is a set of additional options passed to Java process
+jvmExtraOptions: "-Dcom.redhat.fips=false"
+
+# resources is Kubernetes Pod resources specification
 resources:
   limits:
     cpu: 2
@@ -25,6 +137,85 @@ resources:
   requests:
     cpu: 1
     memory: 1Gi
+
+# user is configuration for user and group IDs to be used for runAsUser, runAsGroup and fsGroup in PodSecurityContext
+user:
+  uid: 1111
+  gid: 0
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# MySQL Dependency Values
+mysql:
+  global:
+    imageRegistry: "registry1.dso.mil/ironbank"
+    imagePullSecrets:
+      - private-registry
+  image:
+    repository: bitnami/mysql8
+    tag: 8.0.29-debian-10-r37
+  auth:
+    rootPassword: "password"
+    database: "ssc_db"
+  primary:
+    configuration: |-
+      [mysqld]
+      default_authentication_plugin=mysql_native_password
+      skip-name-resolve
+      explicit_defaults_for_timestamp
+      basedir=/opt/bitnami/mysql
+      plugin_dir=/opt/bitnami/mysql/lib/plugin
+      port=3306
+      socket=/opt/bitnami/mysql/tmp/mysql.sock
+      datadir=/bitnami/mysql/data
+      tmpdir=/opt/bitnami/mysql/tmp
+      bind-address=0.0.0.0
+      pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+      log-error=/opt/bitnami/mysql/logs/mysqld.log
+      character-set-server=latin1
+      collation-server=latin1_general_cs
+      slow_query_log=0
+      slow_query_log_file=/opt/bitnami/mysql/logs/mysqld.log
+      long_query_time=10.0
+      default_storage_engine=INNODB
+      innodb_buffer_pool_size=512M
+      innodb_lock_wait_timeout=300
+      innodb_log_file_size=512M
+      max_allowed_packet=1G
+      sql-mode="TRADITIONAL"
+
+      [mysqldump]
+      max_allowed_packet=1G
+
+      [client]
+      port=3306
+      socket=/opt/bitnami/mysql/tmp/mysql.sock
+      default-character-set=UTF8
+      plugin_dir=/opt/bitnami/mysql/lib/plugin
+
+      [manager]
+      port=3306
+      socket=/opt/bitnami/mysql/tmp/mysql.sock
+      pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+
+
+# Big Bang Additions
+domain: bigbang.dev
+istio:
+  enabled: false
+  mtls:
+    # -- STRICT = Allow only mutual TLS traffic,
+    # PERMISSIVE = Allow both plain text and mutual TLS traffic
+    mode: STRICT
+  fortify:
+    gateways:
+    - "istio-system/public"
+    hosts:
+    - "fortify.{{ .Values.domain }}"
+  injection: disabled
+
 initContainer:
   keystoreImage: registry1.dso.mil/ironbank/redhat/openjdk/openjdk13
   keystoreTag: 1.13.0
@@ -36,59 +227,6 @@ initContainer:
       cpu: 250m
       memory: 64Mi
 
-# I dont like to add this a configmap which will fail the rule encoded at rest
-fortify_autoconfig: |
-  appProperties:
-    host.validation: false
-    searchIndex.location: '/fortify/ssc/index'
-  datasourceProperties:
-    jdbc.url: "jdbc:mysql://fortify-mysql:3306/fortify?useSSL=false&connectionCollation=<collation>&rewriteBatchedStatements=true&max_allowed_packet=1073741824&sql_mode=TRADITIONAL"
-    db.driver.class: com.mysql.cj.jdbc.Driver
-    db.username: <DB-USER>
-    db.password: <DB-PASSWORD>
-    db.dialect: com.fortify.manager.util.hibernate.MySQLDialect
-    db.like.specialCharacters: '%_\\'
-  dbMigrationProperties:
-    migration.enabled: true
-
-fortify_license: |
-    Full License
-
-# Please read the docs to create java keystore and convert it into base64
-fortify_java_keystore:
-  use: false
-  keystore: "ZHVtbXkK" # base64 of keystore
-
-# No data will be stored on the EBS you can keep it small
-storage:
-  volume: 50Gi
-
-mysql:
-  enabled: true
-  image:
-    registry: "registry1.dso.mil"
-    repository: "ironbank/bitnami/mysql8"
-    tag: "8.0.29-debian-10-r37"
-    pullSecrets:
-      - private-registry
-  auth:
-    rootPassword: "root"
-    username: "admin"
-    password: "admin"
-  fullnameOverride: fortify-mysql
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
-# Big Bang Additions
-istio:
-  enabled: false
-  gateways:
-    - istio-system/main
-
 networkPolicies:
   enabled: false
   egress: []
@@ -99,19 +237,36 @@ databaseSecret:
   use_secret: false
   name: db-credentials-mysql
   useRoot: false # Use root credentials to create database if required
-  # Secret contains following values:
-  # DBHOST
-  # DBPASSWORD
-  # DBUSER
-  # DBROOTUSER (optional)
-  # DBROOTPASSWORD (optional)
+
+# Please read the docs to create java keystore and convert it into base64
+fortify_java_keystore:
+  use: false
+  keystore: "ZHVtbXkK" # base64 of keystore
+
+default_cert_alias: tomcat
 
 fortifySecret:
   use_secret: false
   name: fortify-secret
-  # Secret contains following values:
-  # certificate-key-password
-  # certificate-keystore-password
-  # scc.autoconfig
-  # fortify.license
-  # Note: certificate-keystore is generated by init container
+
+
+trust_store_password: dsoppassword
+key_store_password: dsoppassword
+key_store_cert_password : dsoppassword
+fortify_autoconfig: |
+    appProperties:
+      host.validation: false
+
+    datasourceProperties:
+      db.username: root
+      db.password: password
+
+      jdbc.url: 'jdbc:mysql://fortify-mysql:3306/ssc_db?sessionVariables=collation_connection=latin1_general_cs&rewriteBatchedStatements=true'
+
+    dbMigrationProperties:
+
+      migration.enabled: true
+      migration.username: root
+      migration.password: password
+fortify_license: |
+  <License>

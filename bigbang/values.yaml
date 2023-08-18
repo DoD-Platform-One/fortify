@@ -1,22 +1,47 @@
 fortify:
+  # -- Toggle deployment of fortify
   enabled: true
   git:
     repo: https://repo1.dso.mil/platform-one/big-bang/apps/third-party/fortify
+    branch: $CI_COMMIT_BRANCH
     path: chart
+
+  # -- Flux reconciliation overrides specifically for the Jaeger Package
   flux: {}
+
+  # -- Redirect the package ingress to a specific Istio Gateway (listed in `istio.gateways`).  The default is "public".
   ingress:
     gateway: ""
 
-# Toggle for network polocies
-networkPolicies:
-  enabled: true
+  sso:
+    # -- Toggle SSO for Harbor on and off
+    enabled: false
+
+    # -- OIDC Client ID to use for Harbor
+    client_id: ""
+
+    # -- OIDC Client Secret to use for Harbor
+    client_secret: ""
+
+  # -- Values to pass through to Habor chart: https://repo1.dso.mil/big-bang/apps/third-party/fortify/
+  values: {}
+
+  # -- Post Renderers.  See docs/postrenders.md
+  postRenderers: []
+
+# For development
+istio:
+  ingressGateways:
+    passthrough-ingressgateway:
+      enabled: false
+      type: "NodePort"
 
 # Toggle for Bigbang Core packages set true to install
 jaeger:
   enabled: false
 
 kiali:
-  enabled: false
+  enabled: true
 
 clusterAuditor:
   enabled: false
@@ -25,25 +50,28 @@ gatekeeper:
   enabled: false
 
 kyverno:
-  enabled: false
+  enabled: true
 
 tempo:
-  enabled: false
+  enabled: true
 
 promtail:
-  enabled: false
+  enabled: true
+
+grafana:
+  enabled: true
 
 loki:
-  enabled: false
+  enabled: true
 
 eckOperator:
   enabled: false
 
 fluentbit:
-  enabled: false
+  enabled: true
 
 monitoring:
-  enabled: false
+  enabled: true
 
 twistlock:
   enabled: false
@@ -63,7 +91,7 @@ addons:
   sonarqube:
     enabled: false
   minioOperator:
-    enabled: false
+    enabled: true
   minio:
     enabled: false
   mattermostoperator:

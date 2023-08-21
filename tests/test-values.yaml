@@ -33,3 +33,6 @@ mysql:
       requests:
         cpu: 1
         memory: 500Mi
+
+bbtests:
+  enabled: true

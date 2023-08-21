@@ -1,5 +1,5 @@
-{{- if and .Values.networkPolicies.enabled (not .Values.postgresql.enabled) }}
-# For external postgres server
+{{- if .Values.networkPolicies.enabled }}
+# For external server
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:

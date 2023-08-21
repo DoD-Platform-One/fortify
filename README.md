@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 0.2.0-bb.4](https://img.shields.io/badge/Version-0.2.0--bb.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
+![Version: 0.2.0-bb.5](https://img.shields.io/badge/Version-0.2.0--bb.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -113,7 +113,7 @@ helm install fortify-ssc chart/
 | fortifySecret.name | string | `"fortify-secret"` |  |
 | bbtests.enabled | bool | `false` |  |
 | bbtests.cypress.artifacts | bool | `true` |  |
-| bbtests.cypress.envs.cypress_url | string | `"http://fortify-service:80"` |  |
+| bbtests.cypress.envs.cypress_url | string | `"http://fortify-ssc-service:80"` |  |
 | bbtests.cypress.envs.cypress_token | string | `"change_me"` |  |
 | bbtests.scripts.image | string | `"registry1.dso.mil/bigbang-ci/gitlab-tester:0.0.4"` |  |
 | bbtests.scripts.envs | object | `{}` |  |

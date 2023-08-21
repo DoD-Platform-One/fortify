@@ -2,13 +2,17 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: ingress-in-namespace
+  name: allow-in-ns
   namespace: {{ .Release.Namespace }}
 spec:
   podSelector: {}
   policyTypes:
     - Ingress
+    - Egress
   ingress:
     - from:
-      - podSelector: {}
+        - podSelector: {}
+  egress:
+    - to:
+        - podSelector: {}
 {{- end }}

@@ -1,0 +1,19 @@
+{{- include "gluon.tests.cypress-configmap.overrides" (list . "fortify-test.cypress-configmap") }}
+{{- define "fortify-test.cypress-configmap" }}
+metadata:
+  labels:
+    helm.sh/chart: fortify
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/part-of: fortify
+{{- end }}
+---
+{{- include "gluon.tests.cypress-runner.overrides" (list . "fortify-test.cypress-runner") -}}
+{{- define "fortify-test.cypress-runner" -}}
+metadata:
+  labels:
+    helm.sh/chart: fortify
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/part-of: fortify
+{{- end }}

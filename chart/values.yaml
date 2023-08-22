@@ -130,10 +130,12 @@ jvmMaxRAMPercentage: 85
 jvmExtraOptions: "-Dcom.redhat.fips=false"
 
 # resources is Kubernetes Pod resources specification
+# Recommended resources can be found here - https://www.microfocus.com/documentation/fortify-ScanCentral-DAST/2120/Fortify_Sys_Reqs_21.2.0.pdf
+# Check page 33 and 41 for recommended resources depending on the type of scan (DAST vs SSC)
 resources:
   limits:
-    cpu: 2
-    memory: 4Gi
+    cpu: 4
+    memory: 16Gi
   requests:
     cpu: 1
     memory: 1Gi
@@ -199,6 +201,33 @@ mysql:
       port=3306
       socket=/opt/bitnami/mysql/tmp/mysql.sock
       pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+    # resources for MySQL, recommended resources can be found here - https://www.microfocus.com/documentation/fortify-ScanCentral-DAST/2120/Fortify_Sys_Reqs_21.2.0.pdf
+    # Page 22 for MySQL
+    resources:
+      limits:
+        cpu: 8
+        memory: 64Gi
+      requests:
+        cpu: 1
+        memory: 500Mi
+  secondary:
+    # Page 22 for MySQL
+    resources:
+      limits:
+        cpu: 8
+        memory: 64Gi
+      requests:
+        cpu: 1
+        memory: 500Mi
+  metrics:
+    # pulled from the chart example with some higher limits
+    resources:
+      limits:
+        cpu: 2
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 256Mi
 
 
 # Big Bang Additions

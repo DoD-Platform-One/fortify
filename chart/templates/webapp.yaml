@@ -104,22 +104,22 @@ spec:
                 - all
             readOnlyRootFilesystem: true
       initContainers:
-      - name: keystore-gen
-        image: "{{ .Values.initContainer.keystoreImage }}:{{ .Values.initContainer.keystoreTag }}"
-        imagePullPolicy: IfNotPresent
-        command:
-        - /bin/sh
-        args:
-        - /script/gen.sh
-        volumeMounts:
-        - name: keystore-script
-          mountPath: /script
-        - name: shared
-          mountPath: /shared
-        - name: secrets-volume
-          mountPath: /secrets
-        resources:
-          {{- toYaml .Values.initContainer.resources | nindent 10 }}
+        - name: keystore-gen
+          image: "{{ .Values.initContainer.keystoreImage }}:{{ .Values.initContainer.keystoreTag }}"
+          imagePullPolicy: IfNotPresent
+          command:
+          - /bin/sh
+          args:
+          - /script/gen.sh
+          volumeMounts:
+          - name: keystore-script
+            mountPath: /script
+          - name: shared
+            mountPath: /shared
+          - name: secrets-volume
+            mountPath: /secrets
+          resources:
+            {{- toYaml .Values.initContainer.resources | nindent 12 }}
       volumes:
         - name: secrets-volume
           secret:

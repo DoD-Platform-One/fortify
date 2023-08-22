@@ -8,13 +8,22 @@ jvmMaxRAMPercentage: 85
 resources:
   limits:
     cpu: 4
-    memory: 8Gi
+    memory: 16Gi
   requests:
-    cpu: 2
-    memory: 2Gi
+    cpu: 1
+    memory: 1Gi
 
 databaseSecret:
   useRoot: true
+
+initContainer:
+  resources:
+    limits:
+      cpu: 500m
+      memory: 128Mi
+    requests:
+      cpu: 250m
+      memory: 64Mi
 
 trust_store_password: dsoppassword
 key_store_password: dsoppassword
@@ -33,6 +42,22 @@ mysql:
       requests:
         cpu: 1
         memory: 500Mi
+  secondary:
+    resources:
+      limits:
+        cpu: 2
+        memory: 1Gi
+      requests:
+        cpu: 1
+        memory: 500Mi
+  metrics:
+    resources:
+      limits:
+        cpu: 2
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 256Mi
 
 bbtests:
   enabled: true

@@ -101,10 +101,10 @@ secretRef:
     httpTruststorePasswordEntry: ""
 
     # jvmTruststoreFileEntry is a key name for a JVM truststore
-    jvmTruststoreFileEntry: "truststore"
+    jvmTruststoreFileEntry: ""
 
     # jvmTruststorePasswordEntry is a key name for a password of the JVM truststore
-    jvmTruststorePasswordEntry: "truststore.password"
+    jvmTruststorePasswordEntry: ""
 
 
 # persistentVolumeClaim is a set of SSC's persistent volume claim options
@@ -246,8 +246,8 @@ istio:
   injection: disabled
 
 initContainer:
-  keystoreImage: registry1.dso.mil/ironbank/redhat/openjdk/openjdk13
-  keystoreTag: 1.13.0
+  keystoreImage: registry1.dso.mil/ironbank/google/golang/golang-1.20
+  keystoreTag: 1.20.7
   resources:
     limits:
       cpu: 500m

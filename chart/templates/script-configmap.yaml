@@ -18,18 +18,9 @@ data:
     export TRUSTSTORE_PASSWORD=$(cat /secrets/truststore.password)
     
     openssl req -newkey rsa:4096 -nodes -keyout /tmp/key.pem -x509 -days 365 -out /tmp/certificate.pem -subj "/CN={{ .Values.urlHost }}"
-    openssl pkcs12 -export -name {{ .Values.default_cert_alias }} -in /tmp/certificate.pem -inkey /tmp/key.pem -out /tmp/keystore.p12 -password pass:${KEY_PASSWORD}
+    openssl pkcs12 -export -name {{ .Values.default_cert_alias }} -in /tmp/certificate.pem -inkey /tmp/key.pem -out /tmp/{{ .Values.secretRef.keys.httpCertificateKeystoreFileEntry }} -password pass:${KEYSTORE_PASSWORD}
     
-    echo "keytool -importkeystore -destkeystore /tmp/{{ .Values.secretRef.keys.httpCertificateKeystoreFileEntry }}  -srckeystore /tmp/keystore.p12 -srcstoretype pkcs12 -alias {{ .Values.default_cert_alias }} -srcstorepass ${KEY_PASSWORD} -deststorepass ${KEYSTORE_PASSWORD}"
-    keytool -importkeystore -destkeystore /tmp/{{ .Values.secretRef.keys.httpCertificateKeystoreFileEntry }}  -srckeystore /tmp/keystore.p12 -srcstoretype pkcs12 -alias {{ .Values.default_cert_alias }} -srcstorepass ${KEY_PASSWORD} -deststorepass ${KEYSTORE_PASSWORD}
-    echo "keytool -import -trustcacerts -file /tmp/certificate.pem -alias \"{{ .Values.default_cert_alias }}\" -keystore /tmp/{{ .Values.secretRef.keys.jvmTruststoreFileEntry }}  -storepass ${TRUSTSTORE_PASSWORD} -noprompt"
-    keytool -import -trustcacerts -file /tmp/certificate.pem -alias "{{ .Values.default_cert_alias }}" -keystore /tmp/{{ .Values.secretRef.keys.jvmTruststoreFileEntry }}  -storepass ${TRUSTSTORE_PASSWORD} -noprompt
-
     cp /tmp/{{ .Values.secretRef.keys.httpCertificateKeystoreFileEntry }}  /shared/{{ .Values.secretRef.keys.httpCertificateKeystoreFileEntry }}  
-    cp /tmp/{{ .Values.secretRef.keys.jvmTruststoreFileEntry }}  /shared/{{ .Values.secretRef.keys.jvmTruststoreFileEntry }}  
-
-    echo "keytool -list -alias {{ .Values.default_cert_alias }} -storepass ${KEYSTORE_PASSWORD} -keystore /shared/{{ .Values.secretRef.keys.httpCertificateKeystoreFileEntry }} "
-    keytool -list -alias {{ .Values.default_cert_alias }} -storepass ${KEYSTORE_PASSWORD} -keystore /shared/{{ .Values.secretRef.keys.httpCertificateKeystoreFileEntry }} 
 
     cp /secrets/* /shared/
     ls -lah /shared

@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 0.2.0-bb.11](https://img.shields.io/badge/Version-0.2.0--bb.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
+![Version: 0.2.0-bb.12](https://img.shields.io/badge/Version-0.2.0--bb.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -61,8 +61,8 @@ helm install fortify-ssc chart/
 | secretRef.keys.httpCertificateKeyPasswordEntry | string | `"ssc-service.jks.key.password"` |  |
 | secretRef.keys.httpTruststoreFileEntry | string | `""` |  |
 | secretRef.keys.httpTruststorePasswordEntry | string | `""` |  |
-| secretRef.keys.jvmTruststoreFileEntry | string | `"truststore"` |  |
-| secretRef.keys.jvmTruststorePasswordEntry | string | `"truststore.password"` |  |
+| secretRef.keys.jvmTruststoreFileEntry | string | `""` |  |
+| secretRef.keys.jvmTruststorePasswordEntry | string | `""` |  |
 | persistentVolumeClaim.size | string | `"4Gi"` |  |
 | persistentVolumeClaim.storageClassName | string | `""` |  |
 | persistentVolumeClaim.selector | object | `{}` |  |
@@ -85,14 +85,26 @@ helm install fortify-ssc chart/
 | mysql.auth.rootPassword | string | `"password"` |  |
 | mysql.auth.database | string | `"ssc_db"` |  |
 | mysql.primary.configuration | string | `"[mysqld]\ndefault_authentication_plugin=mysql_native_password\nskip-name-resolve\nexplicit_defaults_for_timestamp\nbasedir=/opt/bitnami/mysql\nplugin_dir=/opt/bitnami/mysql/lib/plugin\nport=3306\nsocket=/opt/bitnami/mysql/tmp/mysql.sock\ndatadir=/bitnami/mysql/data\ntmpdir=/opt/bitnami/mysql/tmp\nbind-address=0.0.0.0\npid-file=/opt/bitnami/mysql/tmp/mysqld.pid\nlog-error=/opt/bitnami/mysql/logs/mysqld.log\ncharacter-set-server=latin1\ncollation-server=latin1_general_cs\nslow_query_log=0\nslow_query_log_file=/opt/bitnami/mysql/logs/mysqld.log\nlong_query_time=10.0\ndefault_storage_engine=INNODB\ninnodb_buffer_pool_size=512M\ninnodb_lock_wait_timeout=300\ninnodb_log_file_size=512M\nmax_allowed_packet=1G\nsql-mode=\"TRADITIONAL\"\n\n[mysqldump]\nmax_allowed_packet=1G\n\n[client]\nport=3306\nsocket=/opt/bitnami/mysql/tmp/mysql.sock\ndefault-character-set=UTF8\nplugin_dir=/opt/bitnami/mysql/lib/plugin\n\n[manager]\nport=3306\nsocket=/opt/bitnami/mysql/tmp/mysql.sock\npid-file=/opt/bitnami/mysql/tmp/mysqld.pid"` |  |
+| mysql.primary.resources.limits.cpu | int | `8` |  |
+| mysql.primary.resources.limits.memory | string | `"64Gi"` |  |
+| mysql.primary.resources.requests.cpu | int | `1` |  |
+| mysql.primary.resources.requests.memory | string | `"500Mi"` |  |
+| mysql.secondary.resources.limits.cpu | int | `8` |  |
+| mysql.secondary.resources.limits.memory | string | `"64Gi"` |  |
+| mysql.secondary.resources.requests.cpu | int | `1` |  |
+| mysql.secondary.resources.requests.memory | string | `"500Mi"` |  |
+| mysql.metrics.resources.limits.cpu | int | `2` |  |
+| mysql.metrics.resources.limits.memory | string | `"1Gi"` |  |
+| mysql.metrics.resources.requests.cpu | string | `"100m"` |  |
+| mysql.metrics.resources.requests.memory | string | `"256Mi"` |  |
 | domain | string | `"bigbang.dev"` |  |
 | istio.enabled | bool | `false` |  |
 | istio.mtls.mode | string | `"STRICT"` | STRICT = Allow only mutual TLS traffic, PERMISSIVE = Allow both plain text and mutual TLS traffic |
 | istio.fortify.gateways[0] | string | `"istio-system/public"` |  |
 | istio.fortify.hosts[0] | string | `"fortify.{{ .Values.domain }}"` |  |
 | istio.injection | string | `"disabled"` |  |
-| initContainer.keystoreImage | string | `"registry1.dso.mil/ironbank/redhat/openjdk/openjdk13"` |  |
-| initContainer.keystoreTag | string | `"1.13.0"` |  |
+| initContainer.keystoreImage | string | `"registry1.dso.mil/ironbank/google/golang/golang-1.20"` |  |
+| initContainer.keystoreTag | string | `"1.20.7"` |  |
 | initContainer.resources.limits.cpu | string | `"500m"` |  |
 | initContainer.resources.limits.memory | string | `"128Mi"` |  |
 | initContainer.resources.requests.cpu | string | `"250m"` |  |

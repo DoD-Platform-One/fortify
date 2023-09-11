@@ -1,9 +1,9 @@
 dependencies:
 - name: mysql
   repository: file://./deps/mysql
-  version: 9.11.1
+  version: 9.12.0
 - name: gluon
   repository: oci://registry1.dso.mil/bigbang
   version: 0.3.2
-digest: sha256:262d905beaf0002f5af0f3b858987e205d2ff9fa565c6e6b07adeb1480b18945
-generated: "2023-08-18T22:00:22.571168-05:00"
+digest: sha256:54e538613d6a1734927bc16f5b5f885cf2489145c77b333c1d0934974af21f0e
+generated: "2023-09-11T09:12:09.9135-05:00"

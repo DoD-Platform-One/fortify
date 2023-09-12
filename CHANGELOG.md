@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [0.2.0-bb.13] - 2023-09-12
+### Changed
+- docker.io/bitnami/mysql updated from 8.0.34 to 8.1.0
+- gluon updated from 0.3.2 to 0.4.0
+- ironbank/google/golang/golang-1.20 updated from 1.20.7 to 1.20.8
+
 ## [0.2.0-bb.12] - 2023-08-24
 ### Updated
 - updated init container image used by gen.sh

@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 0.2.0-bb.12](https://img.shields.io/badge/Version-0.2.0--bb.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
+![Version: 0.2.0-bb.13](https://img.shields.io/badge/Version-0.2.0--bb.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -104,7 +104,7 @@ helm install fortify-ssc chart/
 | istio.fortify.hosts[0] | string | `"fortify.{{ .Values.domain }}"` |  |
 | istio.injection | string | `"disabled"` |  |
 | initContainer.keystoreImage | string | `"registry1.dso.mil/ironbank/google/golang/golang-1.20"` |  |
-| initContainer.keystoreTag | string | `"1.20.7"` |  |
+| initContainer.keystoreTag | string | `"1.20.8"` |  |
 | initContainer.resources.limits.cpu | string | `"500m"` |  |
 | initContainer.resources.limits.memory | string | `"128Mi"` |  |
 | initContainer.resources.requests.cpu | string | `"250m"` |  |

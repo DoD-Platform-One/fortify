@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 0.2.0-bb.13](https://img.shields.io/badge/Version-0.2.0--bb.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
+![Version: 0.2.0-bb.14](https://img.shields.io/badge/Version-0.2.0--bb.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -78,6 +78,7 @@ helm install fortify-ssc chart/
 | nodeSelector | object | `{}` |  |
 | tolerations | list | `[]` |  |
 | affinity | object | `{}` |  |
+| mysql.enabled | bool | `true` |  |
 | mysql.global.imageRegistry | string | `"registry1.dso.mil/ironbank"` |  |
 | mysql.global.imagePullSecrets[0] | string | `"private-registry"` |  |
 | mysql.image.repository | string | `"bitnami/mysql8"` |  |

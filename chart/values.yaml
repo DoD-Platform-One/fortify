@@ -151,6 +151,7 @@ affinity: {}
 
 # MySQL Dependency Values
 mysql:
+  enabled: true
   global:
     imageRegistry: "registry1.dso.mil/ironbank"
     imagePullSecrets:

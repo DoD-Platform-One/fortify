@@ -2,7 +2,7 @@ fortify:
   # -- Toggle deployment of fortify
   enabled: true
   git:
-    repo: https://repo1.dso.mil/platform-one/big-bang/apps/third-party/fortify
+    repo: https://repo1.dso.mil/platform-one/big-bang/product/packages/fortify
     branch: $CI_COMMIT_BRANCH
     path: chart
 
@@ -23,7 +23,7 @@ fortify:
     # -- OIDC Client Secret to use for Harbor
     client_secret: ""
 
-  # -- Values to pass through to Habor chart: https://repo1.dso.mil/big-bang/apps/third-party/fortify/
+  # -- Values to pass through to Habor chart: https://repo1.dso.mil/big-bang/product/packages/fortify/
   values: {}
 
   # -- Post Renderers.  See docs/postrenders.md

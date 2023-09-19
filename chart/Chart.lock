@@ -1,9 +1,9 @@
 dependencies:
 - name: mysql
-  repository: file://./deps/mysql
+  repository: oci://registry-1.docker.io/bitnamicharts
   version: 9.12.0
 - name: gluon
   repository: oci://registry1.dso.mil/bigbang
   version: 0.4.0
-digest: sha256:c96d868a49714b4ec5f0a9cfcf5dce8bd25942607366e90972dc1ae15cc81a23
-generated: "2023-09-12T10:10:32.453327-05:00"
+digest: sha256:29898ee7967868da8f0e205abac14c14a5b246ec2afcca07a909ff3b9e2ff7c6
+generated: "2023-09-18T12:10:30.056109475-06:00"

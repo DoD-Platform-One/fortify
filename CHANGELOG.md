@@ -3,6 +3,14 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [0.2.0-bb.17] - 2023-09-19
+### Updated
+- added the DEVELOPMENT_MAINTENANCE.md
+- changed some defaults to match the upstream
+- restored the /etc mount
+- added kpt management
+- note that there is a [requirement now for mysql 8, sql server 2017, or oracle 12c or newer](https://www.microfocus.com/documentation/fortify-core-documents/2310/Fortify_Sys_Reqs_23.1.0/index.htm#SSC/SSC_Databases.htm?TocPath=Fortify%2520Software%2520Security%2520Center%2520Server%2520Requirements%257C_____4)
+
 ## [0.2.0-bb.16] - 2023-09-14
 ### Updated
 - switching mysql to oci

@@ -1,9 +1,9 @@
 apiVersion: v2
-name: fortify-ssc
 description: A Helm chart for Fortify Software Security Center application
-type: application
-version: 0.2.0-bb.16
+name: fortify-ssc
+version: 0.2.0-bb.17
 appVersion: 23.1.2.0005
+type: application
 keywords:
 - fortify
 - ssc
@@ -27,7 +27,7 @@ annotations:
   helm.sh/images: |
     - name: ssc
       image: registry1.dso.mil/ironbank/microfocus/fortify/ssc:23.1.2.0005
-    - name: mysql8
+    - name: mysql
       image: registry1.dso.mil/ironbank/bitnami/mysql8:8.0.29-debian-10-r37
     - name: golang-1.20
       image: registry1.dso.mil/ironbank/google/golang/golang-1.20:1.20.8

@@ -124,7 +124,7 @@ persistentVolumeClaim:
 environment: []
 
 # jvmMaxRAMPercentage is a percentage of memory limit to be used for JVM heap
-jvmMaxRAMPercentage: 85
+jvmMaxRAMPercentage: 86
 
 # jvmExtraOptions is a set of additional options passed to Java process
 jvmExtraOptions: "-Dcom.redhat.fips=false"

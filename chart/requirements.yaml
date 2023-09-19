@@ -1,0 +1,8 @@
+dependencies:
+- name: gluon
+  version: "0.4.0"
+  repository: "oci://registry1.dso.mil/bigbang"
+- name: mysql
+  # TODO: this should be changed to registry1.dso.mil/ironbank/mysql when/if it is available (at modern versions)
+  version: "9.12.0"
+  repository: "oci://registry-1.docker.io/bitnamicharts"

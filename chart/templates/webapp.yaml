@@ -95,6 +95,8 @@ spec:
             - mountPath: /app/tomcat/conf/server-tpl.xml
               subPath: server-tpl.xml
               name: tomcat-template
+            - name: etc-volume
+              mountPath: "/app/etc"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           securityContext:
@@ -139,6 +141,9 @@ spec:
         - name: tomcat-template
           configMap:
             name: {{ include "ssc.fullcomponentname" (merge (dict "component" "tomcat-template") . ) }}
+        - name: etc-volume
+          emptyDir:
+            sizeLimit: 1Mi
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}

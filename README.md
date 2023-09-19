@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 0.2.0-bb.16](https://img.shields.io/badge/Version-0.2.0--bb.16-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
+![Version: 0.2.0-bb.17](https://img.shields.io/badge/Version-0.2.0--bb.17-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -67,7 +67,7 @@ helm install fortify-ssc chart/
 | persistentVolumeClaim.storageClassName | string | `""` |  |
 | persistentVolumeClaim.selector | object | `{}` |  |
 | environment | list | `[]` |  |
-| jvmMaxRAMPercentage | int | `85` |  |
+| jvmMaxRAMPercentage | int | `86` |  |
 | jvmExtraOptions | string | `"-Dcom.redhat.fips=false"` |  |
 | resources.limits.cpu | int | `4` |  |
 | resources.limits.memory | string | `"16Gi"` |  |

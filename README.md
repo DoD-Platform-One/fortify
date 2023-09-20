@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 0.2.0-bb.17](https://img.shields.io/badge/Version-0.2.0--bb.17-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
+![Version: 0.2.0-bb.18](https://img.shields.io/badge/Version-0.2.0--bb.18-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -39,6 +39,7 @@ helm install fortify-ssc chart/
 | image.pullPolicy | string | `"Always"` |  |
 | image.webapp | string | `"ssc"` |  |
 | image.tag | string | `"23.1"` |  |
+| securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | imagePullSecrets[0].name | string | `"private-registry"` |  |
 | nameOverride | string | `"fortify-ssc"` |  |
 | fullnameOverride | string | `"fortify-ssc"` |  |
@@ -90,14 +91,19 @@ helm install fortify-ssc chart/
 | mysql.primary.resources.limits.memory | string | `"64Gi"` |  |
 | mysql.primary.resources.requests.cpu | int | `1` |  |
 | mysql.primary.resources.requests.memory | string | `"500Mi"` |  |
+| mysql.primary.containerSecurityContext.enabled | bool | `true` |  |
+| mysql.primary.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | mysql.secondary.resources.limits.cpu | int | `8` |  |
 | mysql.secondary.resources.limits.memory | string | `"64Gi"` |  |
 | mysql.secondary.resources.requests.cpu | int | `1` |  |
 | mysql.secondary.resources.requests.memory | string | `"500Mi"` |  |
+| mysql.secondary.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | mysql.metrics.resources.limits.cpu | int | `2` |  |
 | mysql.metrics.resources.limits.memory | string | `"1Gi"` |  |
 | mysql.metrics.resources.requests.cpu | string | `"100m"` |  |
 | mysql.metrics.resources.requests.memory | string | `"256Mi"` |  |
+| mysql.metrics.securityContext.enabled | bool | `true` |  |
+| mysql.metrics.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | domain | string | `"bigbang.dev"` |  |
 | istio.enabled | bool | `false` |  |
 | istio.mtls.mode | string | `"STRICT"` | STRICT = Allow only mutual TLS traffic, PERMISSIVE = Allow both plain text and mutual TLS traffic |
@@ -110,6 +116,7 @@ helm install fortify-ssc chart/
 | initContainer.resources.limits.memory | string | `"128Mi"` |  |
 | initContainer.resources.requests.cpu | string | `"250m"` |  |
 | initContainer.resources.requests.memory | string | `"64Mi"` |  |
+| initContainer.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | networkPolicies.enabled | bool | `false` |  |
 | networkPolicies.egress | list | `[]` |  |
 | networkPolicies.egressDns | list | `[]` |  |

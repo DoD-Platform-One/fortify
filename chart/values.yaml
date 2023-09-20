@@ -19,6 +19,10 @@ image:
 
   tag: "23.1"
 
+securityContext:
+  capabilities:
+    drop: 
+      - ALL
 
 # imagePullSecrets is a list of Kubernetes image pull secrets, for details, see the Kubernetes documentation
 # (https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
@@ -211,6 +215,11 @@ mysql:
       requests:
         cpu: 1
         memory: 500Mi
+    containerSecurityContext:
+      enabled: true
+      capabilities:
+        drop: 
+          - ALL
   secondary:
     # Page 22 for MySQL
     resources:
@@ -220,6 +229,11 @@ mysql:
       requests:
         cpu: 1
         memory: 500Mi
+    containerSecurityContext:
+      enabled: true
+      capabilities:
+        drop: 
+          - ALL
   metrics:
     # pulled from the chart example with some higher limits
     resources:
@@ -229,6 +243,11 @@ mysql:
       requests:
         cpu: 100m
         memory: 256Mi
+    containerSecurityContext:
+      enabled: true
+      capabilities:
+        drop: 
+          - ALL
 
 
 # Big Bang Additions
@@ -256,6 +275,10 @@ initContainer:
     requests:
       cpu: 250m
       memory: 64Mi
+  securityContext:
+    capabilities:
+      drop: 
+        - ALL
 
 networkPolicies:
   enabled: false

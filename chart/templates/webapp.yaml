@@ -101,14 +101,14 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           securityContext:
             allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - all
+            {{- toYaml .Values.securityContext | nindent 12 }}
             readOnlyRootFilesystem: true
       initContainers:
         - name: keystore-gen
           image: "{{ .Values.initContainer.keystoreImage }}:{{ .Values.initContainer.keystoreTag }}"
           imagePullPolicy: IfNotPresent
+          securityContext:
+            {{- toYaml .Values.initContainer.securityContext | nindent 12 }}
           command:
           - /bin/sh
           args:

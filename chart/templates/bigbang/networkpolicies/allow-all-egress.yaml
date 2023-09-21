@@ -1,5 +1,5 @@
-{{- if .Values.networkPolicies.enabled }}
-# For external server
+{{- if and .Values.networkPolicies.enabled (not .Values.mysql.enabled) }}
+# For external mysql server
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -12,8 +12,11 @@ spec:
   egress:
   - to:
     - ipBlock:
+        # This should be replaced with the IP of mysqlql.mysqlqlServer
+        #cidr: {{ .Values.mysqlql.mysqlqlServer }}/32
         cidr: 0.0.0.0/0
         # ONLY Block requests to AWS metadata IP
         except:
           - 169.254.169.254/32
 {{- end }}
+

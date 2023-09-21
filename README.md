@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 0.2.0-bb.18](https://img.shields.io/badge/Version-0.2.0--bb.18-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
+![Version: 0.2.0-bb.19](https://img.shields.io/badge/Version-0.2.0--bb.19-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -97,13 +97,14 @@ helm install fortify-ssc chart/
 | mysql.secondary.resources.limits.memory | string | `"64Gi"` |  |
 | mysql.secondary.resources.requests.cpu | int | `1` |  |
 | mysql.secondary.resources.requests.memory | string | `"500Mi"` |  |
-| mysql.secondary.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| mysql.secondary.containerSecurityContext.enabled | bool | `true` |  |
+| mysql.secondary.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | mysql.metrics.resources.limits.cpu | int | `2` |  |
 | mysql.metrics.resources.limits.memory | string | `"1Gi"` |  |
 | mysql.metrics.resources.requests.cpu | string | `"100m"` |  |
 | mysql.metrics.resources.requests.memory | string | `"256Mi"` |  |
-| mysql.metrics.securityContext.enabled | bool | `true` |  |
-| mysql.metrics.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| mysql.metrics.containerSecurityContext.enabled | bool | `true` |  |
+| mysql.metrics.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | domain | string | `"bigbang.dev"` |  |
 | istio.enabled | bool | `false` |  |
 | istio.mtls.mode | string | `"STRICT"` | STRICT = Allow only mutual TLS traffic, PERMISSIVE = Allow both plain text and mutual TLS traffic |
@@ -118,9 +119,8 @@ helm install fortify-ssc chart/
 | initContainer.resources.requests.memory | string | `"64Mi"` |  |
 | initContainer.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | networkPolicies.enabled | bool | `false` |  |
-| networkPolicies.egress | list | `[]` |  |
-| networkPolicies.egressDns | list | `[]` |  |
-| networkPolicies.ingress | list | `[]` |  |
+| networkPolicies.ingressLabels.app | string | `"istio-ingressgateway"` |  |
+| networkPolicies.ingressLabels.istio | string | `"ingressgateway"` |  |
 | cache.enabled | bool | `false` |  |
 | cache.expireHours | int | `24` |  |
 | databaseSecret.use_secret | bool | `false` |  |

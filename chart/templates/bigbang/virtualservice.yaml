@@ -20,12 +20,9 @@ spec:
   - {{ tpl . $}}
   {{- end }}
   http:
-  - match:
-    - uri:
-        prefix: /
-    route:
+  - route:
     - destination:
-        host: {{ include "ssc.fullcomponentname" $context }}
+        host: {{ include "ssc.fullcomponentname" $context }}.{{ .Release.Namespace }}.svc.cluster.local
         port:
           number: 80
 {{- end }}

@@ -282,12 +282,12 @@ initContainer:
 
 networkPolicies:
   enabled: false
-  egress: []
-  egressDns: []
-  ingress: []
+  ingressLabels:
+    app: istio-ingressgateway
+    istio: ingressgateway
 
 # cache layer configurations
-# if this feature enabled, harbor will cache the resource
+# if this feature enabled, Fortify will cache the resource
 # `project/project_metadata/repository/artifact/manifest` in the redis
 # which help to improve the performance of high concurrent pulling manifest.
 cache:
@@ -324,7 +324,7 @@ bbtests:
     artifacts: true
     envs:
       cypress_url: "http://fortify-ssc-service:80"
-      cypress_token: "change_me"
+      cypress_new_pwd: "BigBang@2023!"
   scripts:
     image: "registry1.dso.mil/bigbang-ci/gitlab-tester:0.0.4"
     envs: {}

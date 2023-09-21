@@ -32,8 +32,8 @@ spec:
               containerPort: 8443
               protocol: TCP
           readinessProbe:
-            initialDelaySeconds: 30
-            periodSeconds: 20
+            initialDelaySeconds: 120
+            periodSeconds: 30
             httpGet:
               path: /images/favicon.ico
               port: http-web
@@ -46,6 +46,8 @@ spec:
               value: "{{ printf "https://%s%s" $urlAuthority $urlPathPrefix }}"
             - name: HTTP_SERVER_SSC_PATH_PREFIX
               value: "{{ $urlPathPrefix }}"
+            - name: COM_FORTIFY_SSC_ENFORCESECURETRANSPORT
+              value: "false"
             - name: CATALINA_OPTS
               value: "-XX:+UseContainerSupport -XX:MaxRAMPercentage={{ required "The jvmMaxRAMPercentage config value is required!" .Values.jvmMaxRAMPercentage | int }}.0 {{ .Values.jvmExtraOptions }}"
             - name: HTTP_SERVER_CERTIFICATE_VERIFICATION

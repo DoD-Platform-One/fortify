@@ -29,7 +29,20 @@ trust_store_password: dsoppassword
 key_store_password: dsoppassword
 key_store_cert_password : dsoppassword
 fortify_autoconfig: |
-  # Need a license to use autoconfig
+    appProperties:
+      host.validation: false
+
+    datasourceProperties:
+      db.username: root
+      db.password: password
+
+      jdbc.url: 'jdbc:mysql://fortify-mysql:3306/ssc_db?sessionVariables=collation_connection=latin1_general_cs&rewriteBatchedStatements=true'
+
+    dbMigrationProperties:
+
+      migration.enabled: true
+      migration.username: root
+      migration.password: password
 fortify_license: |
   <License>
 

@@ -333,7 +333,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
     ingress: []
   
   # cache layer configurations
-  # if this feature enabled, harbor will cache the resource
+  # if this feature enabled, Fortify will cache the resource
   # `project/project_metadata/repository/artifact/manifest` in the redis
   # which help to improve the performance of high concurrent pulling manifest.
   cache:

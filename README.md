@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 0.2.0-bb.19](https://img.shields.io/badge/Version-0.2.0--bb.19-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
+![Version: 0.2.0-bb.20](https://img.shields.io/badge/Version-0.2.0--bb.20-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -80,6 +80,7 @@ helm install fortify-ssc chart/
 | tolerations | list | `[]` |  |
 | affinity | object | `{}` |  |
 | mysql.enabled | bool | `true` |  |
+| mysql.fullnameOverride | string | `""` |  |
 | mysql.global.imageRegistry | string | `"registry1.dso.mil/ironbank"` |  |
 | mysql.global.imagePullSecrets[0] | string | `"private-registry"` |  |
 | mysql.image.repository | string | `"bitnami/mysql8"` |  |
@@ -134,7 +135,7 @@ helm install fortify-ssc chart/
 | bbtests.enabled | bool | `false` |  |
 | bbtests.cypress.artifacts | bool | `true` |  |
 | bbtests.cypress.envs.cypress_url | string | `"http://fortify-ssc-service:80"` |  |
-| bbtests.cypress.envs.cypress_token | string | `"change_me"` |  |
+| bbtests.cypress.envs.cypress_new_pwd | string | `"BigBang@2023!"` |  |
 | bbtests.scripts.image | string | `"registry1.dso.mil/bigbang-ci/gitlab-tester:0.0.4"` |  |
 | bbtests.scripts.envs | object | `{}` |  |
 | trust_store_password | string | `"dsoppassword"` |  |

@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [0.2.0-bb.20] - 2023-09-22
+### Updated
+- fixed a bug around the mysql credentials when using an out of cluster db
+
 ## [0.2.0-bb.19] - 2023-09-20
 ### Updated
 - added the COM_FORTIFY_SSC_ENFORCESECURETRANSPORT variable to enable 8080 port for Istio TLS termination.

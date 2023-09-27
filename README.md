@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 1.1.2311007-bb.0](https://img.shields.io/badge/Version-1.1.2311007--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
+![Version: 1.1.2311007-bb.1](https://img.shields.io/badge/Version-1.1.2311007--bb.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -39,7 +39,19 @@ helm install fortify-ssc chart/
 | image.pullPolicy | string | `"Always"` |  |
 | image.webapp | string | `"ssc"` |  |
 | image.tag | string | `"23.1"` |  |
+| securityContext.enabled | bool | `true` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| securityContext.fsGroup | int | `1111` |  |
+| securityContext.fsGroupChangePolicy | string | `"OnRootMismatch"` |  |
+| securityContext.runAsUser | int | `1111` |  |
+| securityContext.runAsGroup | int | `1111` |  |
+| securityContext.runAsNonRoot | bool | `true` |  |
+| containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| containerSecurityContext.fsGroup | int | `1111` |  |
+| containerSecurityContext.fsGroupChangePolicy | string | `"OnRootMismatch"` |  |
+| containerSecurityContext.runAsUser | int | `1111` |  |
+| containerSecurityContext.runAsGroup | int | `1111` |  |
+| containerSecurityContext.runAsNonRoot | bool | `true` |  |
 | imagePullSecrets[0].name | string | `"private-registry"` |  |
 | nameOverride | string | `"fortify-ssc"` |  |
 | fullnameOverride | string | `"fortify-ssc"` |  |
@@ -75,7 +87,7 @@ helm install fortify-ssc chart/
 | resources.requests.cpu | int | `1` |  |
 | resources.requests.memory | string | `"1Gi"` |  |
 | user.uid | int | `1111` |  |
-| user.gid | int | `0` |  |
+| user.gid | int | `1111` |  |
 | nodeSelector | object | `{}` |  |
 | tolerations | list | `[]` |  |
 | affinity | object | `{}` |  |
@@ -90,22 +102,34 @@ helm install fortify-ssc chart/
 | mysql.primary.configuration | string | `"[mysqld]\ndefault_authentication_plugin=mysql_native_password\nskip-name-resolve\nexplicit_defaults_for_timestamp\nbasedir=/opt/bitnami/mysql\nplugin_dir=/opt/bitnami/mysql/lib/plugin\nport=3306\nsocket=/opt/bitnami/mysql/tmp/mysql.sock\ndatadir=/bitnami/mysql/data\ntmpdir=/opt/bitnami/mysql/tmp\nbind-address=0.0.0.0\npid-file=/opt/bitnami/mysql/tmp/mysqld.pid\nlog-error=/opt/bitnami/mysql/logs/mysqld.log\ncharacter-set-server=latin1\ncollation-server=latin1_general_cs\nslow_query_log=0\nslow_query_log_file=/opt/bitnami/mysql/logs/mysqld.log\nlong_query_time=10.0\ndefault_storage_engine=INNODB\ninnodb_buffer_pool_size=512M\ninnodb_lock_wait_timeout=300\ninnodb_log_file_size=512M\nmax_allowed_packet=1G\nsql-mode=\"TRADITIONAL\"\n\n[mysqldump]\nmax_allowed_packet=1G\n\n[client]\nport=3306\nsocket=/opt/bitnami/mysql/tmp/mysql.sock\ndefault-character-set=UTF8\nplugin_dir=/opt/bitnami/mysql/lib/plugin\n\n[manager]\nport=3306\nsocket=/opt/bitnami/mysql/tmp/mysql.sock\npid-file=/opt/bitnami/mysql/tmp/mysqld.pid"` |  |
 | mysql.primary.resources.limits.cpu | int | `8` |  |
 | mysql.primary.resources.limits.memory | string | `"64Gi"` |  |
-| mysql.primary.resources.requests.cpu | int | `1` |  |
-| mysql.primary.resources.requests.memory | string | `"500Mi"` |  |
+| mysql.primary.resources.requests.cpu | int | `4` |  |
+| mysql.primary.resources.requests.memory | string | `"16Gi"` |  |
+| mysql.primary.podSecurityContext.enabled | bool | `true` |  |
+| mysql.primary.podSecurityContext.fsGroup | int | `1001` |  |
 | mysql.primary.containerSecurityContext.enabled | bool | `true` |  |
 | mysql.primary.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| mysql.primary.containerSecurityContext.runAsUser | int | `1001` |  |
+| mysql.primary.containerSecurityContext.runAsNonRoot | bool | `true` |  |
 | mysql.secondary.resources.limits.cpu | int | `8` |  |
 | mysql.secondary.resources.limits.memory | string | `"64Gi"` |  |
-| mysql.secondary.resources.requests.cpu | int | `1` |  |
-| mysql.secondary.resources.requests.memory | string | `"500Mi"` |  |
+| mysql.secondary.resources.requests.cpu | int | `4` |  |
+| mysql.secondary.resources.requests.memory | string | `"16Gi"` |  |
+| mysql.secondary.podSecurityContext.enabled | bool | `true` |  |
+| mysql.secondary.podSecurityContext.fsGroup | int | `1001` |  |
 | mysql.secondary.containerSecurityContext.enabled | bool | `true` |  |
 | mysql.secondary.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| mysql.secondary.containerSecurityContext.runAsUser | int | `1001` |  |
+| mysql.secondary.containerSecurityContext.runAsNonRoot | bool | `true` |  |
 | mysql.metrics.resources.limits.cpu | int | `2` |  |
 | mysql.metrics.resources.limits.memory | string | `"1Gi"` |  |
 | mysql.metrics.resources.requests.cpu | string | `"100m"` |  |
 | mysql.metrics.resources.requests.memory | string | `"256Mi"` |  |
+| mysql.metrics.podSecurityContext.enabled | bool | `true` |  |
+| mysql.metrics.podSecurityContext.fsGroup | int | `1001` |  |
 | mysql.metrics.containerSecurityContext.enabled | bool | `true` |  |
 | mysql.metrics.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| mysql.metrics.containerSecurityContext.runAsUser | int | `1001` |  |
+| mysql.metrics.containerSecurityContext.runAsNonRoot | bool | `true` |  |
 | domain | string | `"bigbang.dev"` |  |
 | istio.enabled | bool | `false` |  |
 | istio.mtls.mode | string | `"STRICT"` | STRICT = Allow only mutual TLS traffic, PERMISSIVE = Allow both plain text and mutual TLS traffic |
@@ -118,7 +142,13 @@ helm install fortify-ssc chart/
 | initContainer.resources.limits.memory | string | `"128Mi"` |  |
 | initContainer.resources.requests.cpu | string | `"250m"` |  |
 | initContainer.resources.requests.memory | string | `"64Mi"` |  |
-| initContainer.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| initContainer.containerSecurityContext.enabled | bool | `true` |  |
+| initContainer.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| initContainer.containerSecurityContext.fsGroup | int | `1111` |  |
+| initContainer.containerSecurityContext.fsGroupChangePolicy | string | `"OnRootMismatch"` |  |
+| initContainer.containerSecurityContext.runAsUser | int | `1111` |  |
+| initContainer.containerSecurityContext.runAsGroup | int | `1111` |  |
+| initContainer.containerSecurityContext.runAsNonRoot | bool | `true` |  |
 | networkPolicies.enabled | bool | `false` |  |
 | networkPolicies.ingressLabels.app | string | `"istio-ingressgateway"` |  |
 | networkPolicies.ingressLabels.istio | string | `"ingressgateway"` |  |

@@ -20,9 +20,25 @@ image:
   tag: "23.1"
 
 securityContext:
+  enabled: true
   capabilities:
     drop: 
       - ALL
+  fsGroup: 1111
+  fsGroupChangePolicy: OnRootMismatch
+  runAsUser: 1111
+  runAsGroup: 1111
+  runAsNonRoot: true
+
+containerSecurityContext:
+  capabilities:
+    drop: 
+      - ALL
+  fsGroup: 1111
+  fsGroupChangePolicy: OnRootMismatch
+  runAsUser: 1111
+  runAsGroup: 1111
+  runAsNonRoot: true
 
 # imagePullSecrets is a list of Kubernetes image pull secrets, for details, see the Kubernetes documentation
 # (https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
@@ -147,7 +163,7 @@ resources:
 # user is configuration for user and group IDs to be used for runAsUser, runAsGroup and fsGroup in PodSecurityContext
 user:
   uid: 1111
-  gid: 0
+  gid: 1111
 
 nodeSelector: {}
 tolerations: []
@@ -214,13 +230,18 @@ mysql:
         cpu: 8
         memory: 64Gi
       requests:
-        cpu: 1
-        memory: 500Mi
+        cpu: 4
+        memory: 16Gi
+    podSecurityContext:
+      enabled: true
+      fsGroup: 1001
     containerSecurityContext:
       enabled: true
       capabilities:
         drop: 
           - ALL
+      runAsUser: 1001
+      runAsNonRoot: true
   secondary:
     # Page 22 for MySQL
     resources:
@@ -228,13 +249,18 @@ mysql:
         cpu: 8
         memory: 64Gi
       requests:
-        cpu: 1
-        memory: 500Mi
+        cpu: 4
+        memory: 16Gi
+    podSecurityContext:
+      enabled: true
+      fsGroup: 1001
     containerSecurityContext:
       enabled: true
       capabilities:
         drop: 
           - ALL
+      runAsUser: 1001
+      runAsNonRoot: true
   metrics:
     # pulled from the chart example with some higher limits
     resources:
@@ -244,12 +270,16 @@ mysql:
       requests:
         cpu: 100m
         memory: 256Mi
+    podSecurityContext:
+      enabled: true
+      fsGroup: 1001
     containerSecurityContext:
       enabled: true
       capabilities:
         drop: 
           - ALL
-
+      runAsUser: 1001
+      runAsNonRoot: true
 
 # Big Bang Additions
 domain: bigbang.dev
@@ -276,10 +306,18 @@ initContainer:
     requests:
       cpu: 250m
       memory: 64Mi
-  securityContext:
+
+  containerSecurityContext:
+    enabled: true
     capabilities:
       drop: 
         - ALL
+    fsGroup: 1111
+    fsGroupChangePolicy: OnRootMismatch
+    runAsUser: 1111
+    runAsGroup: 1111
+    runAsNonRoot: true
+
 
 networkPolicies:
   enabled: false
@@ -329,7 +367,6 @@ bbtests:
   scripts:
     image: "registry1.dso.mil/bigbang-ci/gitlab-tester:0.0.4"
     envs: {}
-
 
 trust_store_password: dsoppassword
 key_store_password: dsoppassword

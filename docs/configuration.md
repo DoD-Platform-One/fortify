@@ -48,7 +48,7 @@
 
   * Login into fortify web UI using default user credentails `username/password: admin/admin`. It will promt you to update your password immediately.
 
-    ![initial_login](doc/images/initial_login.png)
+    ![initial_login](docs/images/initial_login.png)
 
     
 
@@ -58,26 +58,26 @@
 
   * Navigate to administration page and select configuration on left sidebar on the administration page.
 
-    ![admin_config](doc/images/admin_config.png)
+    ![admin_config](docs/images/admin_config.png)
   
   * Select SSO in the configuration section, It will show a drop down menu for SSO options.
 
-    ![admin_configuration](doc/images/admin_configuration.png)
+    ![admin_configuration](docs/images/admin_configuration.png)
 
   * From the drop down select SAML, by default most of the values are populated already.
 
-    ![saml_sso_option](doc/images/saml_sso_option.png)
+    ![saml_sso_option](docs/images/saml_sso_option.png)
 
   * set the keystore password and signing and encryption key.
 
-    ![fortify_saml_config](doc/images/fortify_saml_config.png)
+    ![fortify_saml_config](docs/images/fortify_saml_config.png)
 
   * Save the config.
 
   * Now go to argocd and kill the fortify pod.( Note: Just kill the pod to restart service and wait for approx:3 min).
 
-    ![fortify_argo_deployment](doc/images/fortify_argo_deployment.png)
+    ![fortify_argo_deployment](docs/images/fortify_argo_deployment.png)
 
-    ![reload_fortify](doc/images/reload_fortify.png)
+    ![reload_fortify](docs/images/reload_fortify.png)
 
   * Now try to access your fortify URL, it will redirect back to keycloak.

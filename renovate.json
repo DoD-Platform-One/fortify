@@ -52,7 +52,7 @@
     {
       "fileMatch": ["^chart/values\\.yaml$"],
       "matchStrings": [
-        "mysql:\\s+image:\\s+registry:\\s+[^/]+/(?<regName>.+)\\s+repository:\\s+[^/]+/(?<repName>.+)\\s+tag:\\s+(?<currentValue>.+)"
+        "image:\\s+repository:\\s+[^/]+/(?<repName>.+)\\s+tag:\\s+(?<currentValue>.+)"
       ],
       "depNameTemplate": "registry1.dso.mil/ironbank/bitnami/mysql8",
       "datasourceTemplate": "docker",

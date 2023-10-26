@@ -126,6 +126,14 @@ secretRef:
     # jvmTruststorePasswordEntry is a key name for a password of the JVM truststore
     jvmTruststorePasswordEntry: ""
 
+ssc:
+  config:
+    http:
+      min_threads: 1
+      max_threads: 4
+    https:
+      min_threads: 4
+      max_threads: 150
 
 # persistentVolumeClaim is a set of SSC's persistent volume claim options
 persistentVolumeClaim:

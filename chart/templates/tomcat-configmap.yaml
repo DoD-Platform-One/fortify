@@ -51,7 +51,8 @@ data:
                 Java AJP  Connector: /docs/config/ajp.html
                 APR (HTTP/AJP) Connector: /docs/apr.html
             -->
-            <Connector maxThreads="4" minSpareThreads="1"
+            {{- with .Values.ssc.config }}
+            <Connector maxThreads="{{ .http.max_threads }}" minSpareThreads="{{ .http.min_threads }}"
                     port="8080"
                     protocol="org.apache.coyote.http11.Http11Nio2Protocol"
                     server="Apache"
@@ -60,7 +61,7 @@ data:
                     secure="false"
             />
 
-            <Connector maxThreads="150" minSpareThreads="4"
+            <Connector maxThreads="{{ .https.max_threads }}" minSpareThreads="{{ .https.min_threads }}"
                     port="8443"
                     protocol="org.apache.coyote.http11.Http11Nio2Protocol"
                     server="Apache"
@@ -72,6 +73,7 @@ data:
                     SSLEnabled="true"
                     sslImplementationName="org.apache.tomcat.util.net.jsse.JSSEImplementation"
             >
+            {{- end }}
                 <SSLHostConfig
                         protocols="${HTTP_SERVER_TLS_PROTOCOLS}"
                         ciphers="${HTTP_SERVER_TLS_CIPHERS??}"

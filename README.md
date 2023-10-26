@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 1.1.2311007-bb.3](https://img.shields.io/badge/Version-1.1.2311007--bb.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
+![Version: 1.1.2311007-bb.4](https://img.shields.io/badge/Version-1.1.2311007--bb.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -76,6 +76,10 @@ helm install fortify-ssc chart/
 | secretRef.keys.httpTruststorePasswordEntry | string | `""` |  |
 | secretRef.keys.jvmTruststoreFileEntry | string | `""` |  |
 | secretRef.keys.jvmTruststorePasswordEntry | string | `""` |  |
+| ssc.config.http.min_threads | int | `1` |  |
+| ssc.config.http.max_threads | int | `4` |  |
+| ssc.config.https.min_threads | int | `4` |  |
+| ssc.config.https.max_threads | int | `150` |  |
 | persistentVolumeClaim.size | string | `"4Gi"` |  |
 | persistentVolumeClaim.storageClassName | string | `""` |  |
 | persistentVolumeClaim.selector | object | `{}` |  |

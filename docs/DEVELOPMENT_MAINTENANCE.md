@@ -100,6 +100,8 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 - add script-configmap.yaml
 - add secrets.yaml
 - add tomcat-configuration.yaml
+- modify tomcat-configuration.yaml
+  - Allow setting Tomcat server min/max threads within server configuration configmap
 - modify webapp.yaml
   - set spec.template.spec.containers["webapp"].readinessProbe.initialDelaySeconds to `30`
   - set spec.template.spec.containers["webapp"].readinessProbe.periodSeconds to `20`
@@ -215,6 +217,17 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
     requests:
       cpu: 1
       memory: 1Gi
+  ```
+- allow overriding mix and max threads allowed by ssc server with:
+  ```yaml
+  ssc:
+    config:
+      http:
+        min_threads: 1
+        max_threads: 4
+      https:
+        min_threads: 4
+        max_threads: 150
   ```
 - add this to the bottom
   ```yaml

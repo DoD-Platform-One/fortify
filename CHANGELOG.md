@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.1.2311007-bb.5] - 2023-10-20
+### Updated
+- Added non-root-group to sql
+- Image updated for MySql to `8.0.34-debian-11-r2`
+
 ## [1.1.2311007-bb.4] - 2023-10-25
 ### Updated
 - Allow overriding mix and max threads for ssc tomcat server

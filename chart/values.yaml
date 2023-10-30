@@ -249,6 +249,7 @@ mysql:
         drop: 
           - ALL
       runAsUser: 1001
+      runAsGroup: 1001
       runAsNonRoot: true
   secondary:
     # Page 22 for MySQL
@@ -268,6 +269,7 @@ mysql:
         drop: 
           - ALL
       runAsUser: 1001
+      runAsGroup: 1001
       runAsNonRoot: true
   metrics:
     # pulled from the chart example with some higher limits
@@ -287,6 +289,7 @@ mysql:
         drop: 
           - ALL
       runAsUser: 1001
+      runAsGroup: 1001
       runAsNonRoot: true
 
 # Big Bang Additions

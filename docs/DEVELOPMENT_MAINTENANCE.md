@@ -240,7 +240,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
         - private-registry
     image:
       repository: bitnami/mysql8
-      tag: 8.0.29-debian-10-r37
+      tag: 8.0.34-debian-11-r2
     auth:
       rootPassword: "password"
       database: "ssc_db"

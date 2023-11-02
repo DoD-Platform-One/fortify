@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.1.2311007-bb.6] - 2023-11-01
+### Changed
+- gluon updated from 0.4.1 to 0.4.4
+- mysql updated from 9.12.3 to 9.14.1
+- ironbank/google/golang/golang-1.20 updated from 1.20.8 to 1.20.10
+
 ## [1.1.2311007-bb.5] - 2023-10-20
 ### Updated
 - Added non-root-group to sql

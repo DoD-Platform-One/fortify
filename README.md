@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 1.1.2311007-bb.5](https://img.shields.io/badge/Version-1.1.2311007--bb.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
+![Version: 1.1.2311007-bb.6](https://img.shields.io/badge/Version-1.1.2311007--bb.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -113,6 +113,7 @@ helm install fortify-ssc chart/
 | mysql.primary.containerSecurityContext.enabled | bool | `true` |  |
 | mysql.primary.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | mysql.primary.containerSecurityContext.runAsUser | int | `1001` |  |
+| mysql.primary.containerSecurityContext.runAsGroup | int | `1001` |  |
 | mysql.primary.containerSecurityContext.runAsNonRoot | bool | `true` |  |
 | mysql.secondary.resources.limits.cpu | int | `8` |  |
 | mysql.secondary.resources.limits.memory | string | `"64Gi"` |  |
@@ -123,6 +124,7 @@ helm install fortify-ssc chart/
 | mysql.secondary.containerSecurityContext.enabled | bool | `true` |  |
 | mysql.secondary.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | mysql.secondary.containerSecurityContext.runAsUser | int | `1001` |  |
+| mysql.secondary.containerSecurityContext.runAsGroup | int | `1001` |  |
 | mysql.secondary.containerSecurityContext.runAsNonRoot | bool | `true` |  |
 | mysql.metrics.resources.limits.cpu | int | `2` |  |
 | mysql.metrics.resources.limits.memory | string | `"1Gi"` |  |
@@ -133,6 +135,7 @@ helm install fortify-ssc chart/
 | mysql.metrics.containerSecurityContext.enabled | bool | `true` |  |
 | mysql.metrics.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | mysql.metrics.containerSecurityContext.runAsUser | int | `1001` |  |
+| mysql.metrics.containerSecurityContext.runAsGroup | int | `1001` |  |
 | mysql.metrics.containerSecurityContext.runAsNonRoot | bool | `true` |  |
 | domain | string | `"bigbang.dev"` |  |
 | istio.enabled | bool | `false` |  |

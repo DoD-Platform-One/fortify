@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.1.2311007-bb.7] - 2023-11-01
+### Changed
+- Enabling Video cypress artifacts to be saved through new version of Gluon
+
 ## [1.1.2311007-bb.6] - 2023-11-01
 ### Changed
 - gluon updated from 0.4.1 to 0.4.4

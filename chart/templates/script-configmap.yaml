@@ -25,6 +25,9 @@ data:
     cp /secrets/* /shared/
     ls -lah /shared
 
+    # Debug logging to show the autoconfig being used
+    cat /sharted/ssc.autoconfig
+
     # adding to give time for mysql to startup
     echo "sleeping to give mysql time to start as init containers do no have network access to validate connection....."
     sleep 60

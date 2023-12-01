@@ -187,7 +187,7 @@ mysql:
       - private-registry
   image:
     repository: bitnami/mysql8
-    tag: 8.0.34-debian-11-r2
+    tag: 8.0.35-debian-11-r1
   auth:
     rootPassword: "password"
     database: "ssc_db"

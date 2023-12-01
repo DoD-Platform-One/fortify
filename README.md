@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 1.1.2311007-bb.7](https://img.shields.io/badge/Version-1.1.2311007--bb.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
+![Version: 1.1.2311007-bb.8](https://img.shields.io/badge/Version-1.1.2311007--bb.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -100,7 +100,7 @@ helm install fortify-ssc chart/
 | mysql.global.imageRegistry | string | `"registry1.dso.mil/ironbank"` |  |
 | mysql.global.imagePullSecrets[0] | string | `"private-registry"` |  |
 | mysql.image.repository | string | `"bitnami/mysql8"` |  |
-| mysql.image.tag | string | `"8.0.34-debian-11-r2"` |  |
+| mysql.image.tag | string | `"8.0.35-debian-11-r1"` |  |
 | mysql.auth.rootPassword | string | `"password"` |  |
 | mysql.auth.database | string | `"ssc_db"` |  |
 | mysql.primary.configuration | string | `"[mysqld]\ndefault_authentication_plugin=mysql_native_password\nskip-name-resolve\nexplicit_defaults_for_timestamp\nbasedir=/opt/bitnami/mysql\nplugin_dir=/opt/bitnami/mysql/lib/plugin\nport=3306\nsocket=/opt/bitnami/mysql/tmp/mysql.sock\ndatadir=/bitnami/mysql/data\ntmpdir=/opt/bitnami/mysql/tmp\nbind-address=0.0.0.0\npid-file=/opt/bitnami/mysql/tmp/mysqld.pid\nlog-error=/opt/bitnami/mysql/logs/mysqld.log\ncharacter-set-server=latin1\ncollation-server=latin1_general_cs\nslow_query_log=0\nslow_query_log_file=/opt/bitnami/mysql/logs/mysqld.log\nlong_query_time=10.0\ndefault_storage_engine=INNODB\ninnodb_buffer_pool_size=512M\ninnodb_lock_wait_timeout=300\ninnodb_log_file_size=512M\nmax_allowed_packet=1G\nsql-mode=\"TRADITIONAL\"\n\n[mysqldump]\nmax_allowed_packet=1G\n\n[client]\nport=3306\nsocket=/opt/bitnami/mysql/tmp/mysql.sock\ndefault-character-set=UTF8\nplugin_dir=/opt/bitnami/mysql/lib/plugin\n\n[manager]\nport=3306\nsocket=/opt/bitnami/mysql/tmp/mysql.sock\npid-file=/opt/bitnami/mysql/tmp/mysqld.pid"` |  |

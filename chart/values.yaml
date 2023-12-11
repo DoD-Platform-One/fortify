@@ -309,7 +309,7 @@ istio:
 
 initContainer:
   keystoreImage: registry1.dso.mil/ironbank/google/golang/golang-1.20
-  keystoreTag: 1.20.10
+  keystoreTag: 1.20.11
   resources:
     limits:
       cpu: 500m
@@ -375,6 +375,13 @@ bbtests:
     envs:
       cypress_url: "http://fortify-ssc-service:80"
       cypress_new_pwd: "BigBang@2023!"
+    resources:
+      requests:
+        cpu: "1"
+        memory: "1Gi"
+      limits:
+        cpu: "2"
+        memory: "2Gi"
   scripts:
     image: "registry1.dso.mil/bigbang-ci/gitlab-tester:0.0.4"
     envs: {}

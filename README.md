@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 1.1.2311007-bb.8](https://img.shields.io/badge/Version-1.1.2311007--bb.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
+![Version: 1.1.2311007-bb.9](https://img.shields.io/badge/Version-1.1.2311007--bb.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.1.2.0005](https://img.shields.io/badge/AppVersion-23.1.2.0005-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -144,7 +144,7 @@ helm install fortify-ssc chart/
 | istio.fortify.hosts[0] | string | `"fortify.{{ .Values.domain }}"` |  |
 | istio.injection | string | `"disabled"` |  |
 | initContainer.keystoreImage | string | `"registry1.dso.mil/ironbank/google/golang/golang-1.20"` |  |
-| initContainer.keystoreTag | string | `"1.20.10"` |  |
+| initContainer.keystoreTag | string | `"1.20.11"` |  |
 | initContainer.resources.limits.cpu | string | `"500m"` |  |
 | initContainer.resources.limits.memory | string | `"128Mi"` |  |
 | initContainer.resources.requests.cpu | string | `"250m"` |  |
@@ -173,6 +173,10 @@ helm install fortify-ssc chart/
 | bbtests.cypress.artifacts | bool | `true` |  |
 | bbtests.cypress.envs.cypress_url | string | `"http://fortify-ssc-service:80"` |  |
 | bbtests.cypress.envs.cypress_new_pwd | string | `"BigBang@2023!"` |  |
+| bbtests.cypress.resources.requests.cpu | string | `"1"` |  |
+| bbtests.cypress.resources.requests.memory | string | `"1Gi"` |  |
+| bbtests.cypress.resources.limits.cpu | string | `"2"` |  |
+| bbtests.cypress.resources.limits.memory | string | `"2Gi"` |  |
 | bbtests.scripts.image | string | `"registry1.dso.mil/bigbang-ci/gitlab-tester:0.0.4"` |  |
 | bbtests.scripts.envs | object | `{}` |  |
 | trust_store_password | string | `"dsoppassword"` |  |

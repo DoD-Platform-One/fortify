@@ -330,7 +330,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
   
   initContainer:
     keystoreImage: registry1.dso.mil/ironbank/google/golang/golang-1.20
-    keystoreTag: 1.20.8
+    keystoreTag: 1.20.11
     resources:
       limits:
         cpu: 500m

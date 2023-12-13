@@ -30,3 +30,10 @@ spec:
       port: {{ . | int }}
       protocol: TCP
   {{- end }}
+    - name: https-web
+      targetPort: https-web
+    {{- if eq $type "ClusterIP" }}
+      nodePort: 0
+    {{- end }}
+      port: {{ required "The service.httpsPort config value is required!" .Values.service.httpsPort | int }}
+      protocol: TCP

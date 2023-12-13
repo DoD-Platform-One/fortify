@@ -35,12 +35,12 @@ spec:
             initialDelaySeconds: 120
             periodSeconds: 30
             httpGet:
-              path: /images/favicon.ico
+              path: "{{ $urlPathPrefix }}/images/favicon.ico"
               port: http-web
               scheme: HTTP
               httpHeaders:
                 - name: Host
-                  value: {{ include "ssc.fullcomponentname" (merge (dict "component" "service") . ) }}
+                  value: {{ $urlAuthority }}
           env:
             - name: SSC_AUTOCONFIG_HOST_URL
               value: "{{ printf "https://%s%s" $urlAuthority $urlPathPrefix }}"
@@ -145,6 +145,7 @@ spec:
             name: {{ include "ssc.fullcomponentname" (merge (dict "component" "tomcat-template") . ) }}
         - name: etc-volume
           emptyDir:
+            medium: Memory
             sizeLimit: 1Mi
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

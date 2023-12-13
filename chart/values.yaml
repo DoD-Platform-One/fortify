@@ -17,7 +17,7 @@ image:
   # webapp is a name for SSC webapp image, the name will be prefixed by repositoryPrefix
   webapp: "ssc"
 
-  tag: "23.1"
+  tag: "23.2"
 
 securityContext:
   enabled: true
@@ -173,7 +173,9 @@ user:
   uid: 1111
   gid: 1111
 
-nodeSelector: {}
+nodeSelector:
+  kubernetes.io/os: linux
+  kubernetes.io/arch: amd64
 tolerations: []
 affinity: {}
 
@@ -309,7 +311,7 @@ istio:
 
 initContainer:
   keystoreImage: registry1.dso.mil/ironbank/google/golang/golang-1.20
-  keystoreTag: 1.20.11
+  keystoreTag: 1.20.12
   resources:
     limits:
       cpu: 500m

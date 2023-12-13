@@ -5,7 +5,7 @@ metadata:
 upstream:
   type: git
   git:
-    commit: 1f9bcae7359a44335b38fec54efeab04d9ebda91
+    commit: 1bb22451f1fb659cf7f93132cbb7af59547f456c
     repo: https://github.com/fortify/helm3-charts
     directory: /charts/ssc
-    ref: ssc-1.1.2311007
+    ref: ssc-1.1.2320154

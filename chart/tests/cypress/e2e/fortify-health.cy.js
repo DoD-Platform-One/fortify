@@ -17,7 +17,7 @@ context('Assertions', () => {
       // wait to load page
       cy.wait(1000)
       // validate home page
-      cy.contains('SOFTWARE SECURITY CENTER')
+      cy.contains('SOFTWARE SECURITY CENTER', { matchCase: false })
       // login with default creds
 
       cy.get('input[placeholder="Username"]').type('admin')

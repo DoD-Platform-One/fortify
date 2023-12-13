@@ -18,7 +18,7 @@ Notes:
 1. Merge/Sync the new helm chart with the existing Fortify package code. A graphical diff tool like [Meld](https://meldmerge.org/) is useful. Reference the "Modifications made to upstream chart" section below. Be careful not to overwrite Big Bang Package changes that need to be kept. Note that some files will have combinations of changes that you will overwrite and changes that you keep. Stay alert. The hardest file to update is the `/chart/values.yaml` because the changes are many and complicated.
     1. An easy way to do this is with KPT
         ```bash
-        kpt pkg update chart --strategy force-delete-replace
+        kpt pkg update chart@FIND_YOUR_UPSTREAM_VERSION_NUMBER --strategy force-delete-replace
         ```
     1. Then to reduce the number of changes you have to work through run the following:
         ```bash
@@ -27,17 +27,75 @@ Notes:
         git checkout chart/templates/tests/
         git checkout chart/charts/
         git checkout chart/Chart.lock
-        git checkout chart/requirements.yaml
+        git checkout chart/Chart.yaml
         git checkout chart/templates/script-configmap.yaml
         git checkout chart/templates/secrets.yaml
         git checkout chart/templates/tomcat-configmap.yaml
         ```
-1. In `/chart/requirements.yaml` update the gluon library to the latest version.
+1. In `/chart/Chart.yaml` update the gluon library to the latest version.
 1. Run a helm dependency command to update the chart/charts/*.tgz archives and create a new requirements.lock file. You will commit the tar archives along with the requirements.lock that was generated.
     ```bash
     helm dependency update ./chart
     ```
-1. In `/chart/values.yaml` update image.tag to the new version. Renovate might have arleady done this for you.
+1. In `/chart/values.yaml` update image.tag to the new version. Renovate might have arleady done this for you. Also update the `bigbang.dev/applicationVersions`
+   ```
+     bigbang.dev/applicationVersions: |
+    - Fortify: 23.2.0.0154
+   ```
+1. Revert some settings in `chart/templates/webapp.yaml`:
+Increase Readiness Probe times and use HTTP vs HTTPS:
+   ```
+    readinessProbe:
+      initialDelaySeconds: 120
+      periodSeconds: 30
+      httpGet:
+        path: "{{ $urlPathPrefix }}/images/favicon.ico"
+        port: http-web
+        scheme: HTTP
+   ```
+Disable SECURE TRANSPORT
+   ```
+      - name: COM_FORTIFY_SSC_ENFORCESECURETRANSPORT
+        value: "false"
+   ```
+Revert Volumes and Mountpaths. These have change to automated the start up process of generating Keys
+   ```
+             volumeMounts:
+            - name: shared
+              readOnly: true
+              mountPath: "/app/secrets"
+            - name: persistent-volume
+              mountPath: "/fortify"
+            - mountPath: /app/tomcat/conf/server-tpl.xml
+              subPath: server-tpl.xml
+              name: tomcat-template
+            - name: etc-volume
+              mountPath: "/app/etc"
+...
+      volumes:
+        - name: secrets-volume
+          secret:
+            {{- if not .Values.databaseSecret.use_secret }}
+            secretName: {{ include "ssc.fullcomponentname" (merge (dict "component" "secret") . ) }}
+            {{- else }}
+             secretName: {{ required "The secretRef.name config value is required!" .Values.secretRef.name }}
+            {{- end }}
+        - name: persistent-volume
+          persistentVolumeClaim:
+            claimName: {{ include "ssc.fullcomponentname" (merge (dict "component" "pvc") . ) }}
+        - name: shared
+          emptyDir: {}
+        - name: keystore-script
+          configMap:
+            name: {{ include "ssc.fullcomponentname" (merge (dict "component" "keystore-script") . ) }}
+        - name: tomcat-template
+          configMap:
+            name: {{ include "ssc.fullcomponentname" (merge (dict "component" "tomcat-template") . ) }}
+        - name: etc-volume
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Mi
+```
 1. Update /CHANGELOG.md with an entry for "upgrade Fortify to app version X.X.X chart version X.X.X-bb.X". Or, whatever description is appropriate.
 1. Update the /README.md following the [gluon library script](https://repo1.dso.mil/platform-one/big-bang/apps/library-charts/gluon/-/blob/master/docs/bb-package-readme.md)
 1. Update /chart/Chart.yaml to the appropriate versions. The annotation version should match the `appVersion`.
@@ -48,10 +106,25 @@ Notes:
       bigbang.dev/applicationVersions: |
         - Fortify: 23.1.2.0005
     ```
+SecurityContext should pull from values
+   ```
+  securityContext:
+    allowPrivilegeEscalation: false
+    {{- toYaml .Values.containerSecurityContext | nindent 12 }}
+    readOnlyRootFilesystem: true
+```
+Add InitContainer:
+```
+```
 1. Update /chart/Chart.yaml `annotations."helm.sh/images"` section to fix references to updated packages (if needed)
 1. Use a development environment to deploy and test Fortify. See more detailed testing instructions below. Also test an upgrade by deploying the old version first and then deploying the new version.
 1. When the Package pipeline runs expect the cypress tests to fail due to UI changes.
 1. Update the /README.md again if you have made any additional changes during the upgrade/testing process.
+1. Revert changes to `chart/Values.yaml`
+  ```
+  repositoryPrefix: "registry1.dso.mil/ironbank/microfocus/fortify/"
+  # buildNumber: "" (this way it pulls from Chart.appVersion)
+  ```
 
 
 # Testing a new Fortify version
@@ -77,6 +150,12 @@ Notes:
         # Need a license to use autoconfig
       fortify_license: |
         <License>
+    ```
+More SecurityContext
+    ```
+      {{- if .Values.securityContext.enabled }}
+      securityContext: {{- omit .Values.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
     ```
 1. Access Fortify UI from a browser (whatever you put in your hosts file) and login with `admin` `admin`
 1. You should get asked for a license which we don't have.

@@ -4,6 +4,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.2.0-bb.0] - 2023-12-12
+### Changed
+- ironbank/google/golang/golang-1.20 updated from 1.20.11 to 1.20.12
+- ironbank/microfocus/fortify/ssc updated from 23.1.2.0005 to 23.2.0.0154
+
 ## [1.1.2311007-bb.9] - 2023-12-02
 ### Changed
 - mysql updated from 9.14.2 to 9.14.4

@@ -4,7 +4,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
-## [1.2.0-bb.0] - 2023-12-12
+## [1.1.2320154-bb.1] - 2024-01-16
+### Changed
+- Updated gluon to 0.4.7
+- Removed cypress config as it is now coming from gluon
+- Updated cypress test as it was doing configuration in addition to testing
+
+## [1.1.2320154-bb.0] - 2023-12-12
 ### Changed
 - ironbank/google/golang/golang-1.20 updated from 1.20.11 to 1.20.12
 - ironbank/microfocus/fortify/ssc updated from 23.1.2.0005 to 23.2.0.0154

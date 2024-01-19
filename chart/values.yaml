@@ -376,7 +376,8 @@ bbtests:
     artifacts: true
     envs:
       cypress_url: "http://fortify-ssc-service:80"
-      cypress_new_pwd: "BigBang@2023!"
+      cypress_user: "admin"
+      cypress_password: "admin"
     resources:
       requests:
         cpu: "1"

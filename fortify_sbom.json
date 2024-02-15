@@ -1,7 +1,7 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:9f60ad7d-0e68-47a4-a367-394d1597c735",
+  "serialNumber": "urn:uuid:8c55ce2a-c3ee-41e8-a659-c75270def38d",
   "version": 1,
   "metadata": {
     "tools": null,
@@ -27917,7 +27917,141 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:maven/org.glassfish.jaxb/jaxb-xjc@2.3.8?package-id=13cd07a10febfcf2",
+          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:maven/com.sun.xml.bind/jaxb-xjc@2.3.8?package-id=dbeea07a4174d8dc",
+          "group": "com.sun.xml.bind",
+          "name": "jaxb-xjc",
+          "version": "2.3.8",
+          "licenses": [
+            {
+              "license": {
+                "name": "http://www.eclipse.org/org/documents/edl-v10.php"
+              }
+            }
+          ],
+          "cpe": "cpe:2.3:a:eclipse-foundation:jaxb-xjc:2.3.8:*:*:*:*:*:*:*",
+          "purl": "pkg:maven/com.sun.xml.bind/jaxb-xjc@2.3.8",
+          "externalReferences": [
+            {
+              "url": "",
+              "type": "build-meta",
+              "hashes": [
+                {
+                  "alg": "SHA-1",
+                  "content": "e2c5ea833184686d8222ad9f766d5092aa48b255"
+                }
+              ]
+            }
+          ],
+          "properties": [
+            {
+              "name": "syft:package:foundBy",
+              "value": "java-archive-cataloger"
+            },
+            {
+              "name": "syft:package:language",
+              "value": "java"
+            },
+            {
+              "name": "syft:package:type",
+              "value": "java-archive"
+            },
+            {
+              "name": "syft:package:metadataType",
+              "value": "java-archive"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse-foundation:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse_foundation:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse_foundation:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jaxb-xjc:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jaxb-xjc:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jaxb_xjc:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jaxb_xjc:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:bind:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:bind:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jaxb:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jaxb:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:sun:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:sun:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:xml:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:xml:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:location:0:layerID",
+              "value": "sha256:81ad854198c291e77fd173b470cf828bbb084c0b8df37dfaf6fd97f81e29340c"
+            },
+            {
+              "name": "syft:location:0:path",
+              "value": "/app/ssc/WEB-INF/externallib/birtrunner/jaxb-xjc-2.3.8.jar"
+            },
+            {
+              "name": "syft:metadata:-:artifactID",
+              "value": "jaxb-xjc"
+            },
+            {
+              "name": "syft:metadata:-:groupID",
+              "value": "com.sun.xml.bind"
+            },
+            {
+              "name": "syft:metadata:virtualPath",
+              "value": "/app/ssc/WEB-INF/externallib/birtrunner/jaxb-xjc-2.3.8.jar"
+            }
+          ]
+        },
+        {
+          "type": "library",
+          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:maven/org.glassfish.jaxb/jaxb-xjc@2.3.8?package-id=48178268a686afbc",
           "group": "org.glassfish.jaxb",
           "name": "jaxb-xjc",
           "version": "2.3.8",
@@ -28081,140 +28215,6 @@
             },
             {
               "name": "syft:location:0:path",
-              "value": "/app/ssc/WEB-INF/externallib/birtrunner/jaxb-xjc-2.3.8.jar"
-            },
-            {
-              "name": "syft:metadata:-:artifactID",
-              "value": "jaxb-xjc"
-            },
-            {
-              "name": "syft:metadata:-:groupID",
-              "value": "org.glassfish.jaxb"
-            },
-            {
-              "name": "syft:metadata:virtualPath",
-              "value": "/app/ssc/WEB-INF/externallib/birtrunner/jaxb-xjc-2.3.8.jar"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:maven/com.sun.xml.bind/jaxb-xjc@2.3.8?package-id=4e50d740c46bb46f",
-          "group": "com.sun.xml.bind",
-          "name": "jaxb-xjc",
-          "version": "2.3.8",
-          "licenses": [
-            {
-              "license": {
-                "name": "http://www.eclipse.org/org/documents/edl-v10.php"
-              }
-            }
-          ],
-          "cpe": "cpe:2.3:a:eclipse-foundation:jaxb-xjc:2.3.8:*:*:*:*:*:*:*",
-          "purl": "pkg:maven/com.sun.xml.bind/jaxb-xjc@2.3.8",
-          "externalReferences": [
-            {
-              "url": "",
-              "type": "build-meta",
-              "hashes": [
-                {
-                  "alg": "SHA-1",
-                  "content": "e2c5ea833184686d8222ad9f766d5092aa48b255"
-                }
-              ]
-            }
-          ],
-          "properties": [
-            {
-              "name": "syft:package:foundBy",
-              "value": "java-archive-cataloger"
-            },
-            {
-              "name": "syft:package:language",
-              "value": "java"
-            },
-            {
-              "name": "syft:package:type",
-              "value": "java-archive"
-            },
-            {
-              "name": "syft:package:metadataType",
-              "value": "java-archive"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse-foundation:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse_foundation:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse_foundation:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jaxb-xjc:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jaxb-xjc:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jaxb_xjc:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jaxb_xjc:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:bind:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:bind:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jaxb:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jaxb:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:sun:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:sun:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:xml:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:xml:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:location:0:layerID",
-              "value": "sha256:81ad854198c291e77fd173b470cf828bbb084c0b8df37dfaf6fd97f81e29340c"
-            },
-            {
-              "name": "syft:location:0:path",
               "value": "/app/ssc/WEB-INF/externallib/iidmigrator/jaxb-xjc-2.3.8.jar"
             },
             {
@@ -28223,7 +28223,7 @@
             },
             {
               "name": "syft:metadata:-:groupID",
-              "value": "com.sun.xml.bind"
+              "value": "org.glassfish.jaxb"
             },
             {
               "name": "syft:metadata:virtualPath",
@@ -78690,6 +78690,7 @@
         },
         {
           "type": "operating-system",
+          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:os:rhel@9.3",
           "name": "rhel",
           "version": "9.3",
           "description": "Red Hat Enterprise Linux 9.3 (Plow)",
@@ -88577,6 +88578,7 @@
         },
         {
           "type": "operating-system",
+          "bom-ref": "registry1.dso.mil/ironbank/bitnami/mysql8@8.0.35-debian-11-r1:os:rhel@9.3",
           "name": "rhel",
           "version": "9.3",
           "description": "Red Hat Enterprise Linux 9.3 (Plow)",
@@ -113640,6 +113642,7 @@
         },
         {
           "type": "operating-system",
+          "bom-ref": "registry1.dso.mil/ironbank/google/golang/golang-1.20@1.20.12:os:rhel@9.3",
           "name": "rhel",
           "version": "9.3",
           "description": "Red Hat Enterprise Linux 9.3 (Plow)",

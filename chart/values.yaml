@@ -1,6 +1,8 @@
 # Default values for ssc chart.
 # This is a YAML-formatted file.
 
+# Default to false, override in openshift-test-values.yaml 
+openshift: false
 
 # image is a map of the global Kubernetes image settings
 image:

@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 1.1.2320154-bb.1](https://img.shields.io/badge/Version-1.1.2320154--bb.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.2.0.0154](https://img.shields.io/badge/AppVersion-23.2.0.0154-informational?style=flat-square)
+![Version: 1.1.2320154-bb.2](https://img.shields.io/badge/Version-1.1.2320154--bb.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.2.0.0154](https://img.shields.io/badge/AppVersion-23.2.0.0154-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -35,6 +35,7 @@ helm install fortify-ssc chart/
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| openshift | bool | `false` |  |
 | image.repositoryPrefix | string | `"registry1.dso.mil/ironbank/microfocus/fortify/"` |  |
 | image.pullPolicy | string | `"Always"` |  |
 | image.webapp | string | `"ssc"` |  |
@@ -173,7 +174,8 @@ helm install fortify-ssc chart/
 | bbtests.enabled | bool | `false` |  |
 | bbtests.cypress.artifacts | bool | `true` |  |
 | bbtests.cypress.envs.cypress_url | string | `"http://fortify-ssc-service:80"` |  |
-| bbtests.cypress.envs.cypress_new_pwd | string | `"BigBang@2023!"` |  |
+| bbtests.cypress.envs.cypress_user | string | `"admin"` |  |
+| bbtests.cypress.envs.cypress_password | string | `"admin"` |  |
 | bbtests.cypress.resources.requests.cpu | string | `"1"` |  |
 | bbtests.cypress.resources.requests.memory | string | `"1Gi"` |  |
 | bbtests.cypress.resources.limits.cpu | string | `"2"` |  |

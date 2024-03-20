@@ -1,7 +1,7 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:984c63f5-a3bd-4ddd-9034-bb747a1373ca",
+  "serialNumber": "urn:uuid:38580785-e348-48bf-bb18-580c6d92b335",
   "version": 1,
   "metadata": {
     "tools": null,
@@ -13166,31 +13166,20 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:maven/org.ehcache.modules/ehcache-impl@3.10.8?package-id=e1b2cd8cf23ded83",
+          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:maven/org.ehcache.modules/ehcache-impl@3.10.8?package-id=033e9912cde7fe93",
           "group": "org.ehcache.modules",
           "name": "ehcache-impl",
           "version": "3.10.8",
           "licenses": [
             {
               "license": {
-                "name": "LICENSE"
+                "name": "The Apache Software License, Version 2.0",
+                "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
               }
             }
           ],
-          "cpe": "cpe:2.3:a:EhcacheActivator:ehcache-impl:3.10.8:*:*:*:*:*:*:*",
+          "cpe": "cpe:2.3:a:ehcache-impl:ehcache-impl:3.10.8:*:*:*:*:*:*:*",
           "purl": "pkg:maven/org.ehcache.modules/ehcache-impl@3.10.8",
-          "externalReferences": [
-            {
-              "url": "",
-              "type": "build-meta",
-              "hashes": [
-                {
-                  "alg": "SHA-1",
-                  "content": "f0d50ede46609db78413ca7f4250d348a597b101"
-                }
-              ]
-            }
-          ],
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -13207,14 +13196,6 @@
             {
               "name": "syft:package:metadataType",
               "value": "java-archive"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:EhcacheActivator:ehcache_impl:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:ehcache-impl:ehcache-impl:3.10.8:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:cpe23",
@@ -13245,22 +13226,6 @@
               "value": "cpe:2.3:a:modules:ehcache_impl:3.10.8:*:*:*:*:*:*:*"
             },
             {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:core:ehcache-impl:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:core:ehcache_impl:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:osgi:ehcache-impl:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:osgi:ehcache_impl:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
               "name": "syft:location:0:layerID",
               "value": "sha256:81ad854198c291e77fd173b470cf828bbb084c0b8df37dfaf6fd97f81e29340c"
             },
@@ -13278,7 +13243,7 @@
             },
             {
               "name": "syft:metadata:virtualPath",
-              "value": "/app/ssc/WEB-INF/lib/ehcache-3.10.8.jar"
+              "value": "/app/ssc/WEB-INF/lib/ehcache-3.10.8.jar:org.ehcache.modules:ehcache-impl"
             }
           ]
         },
@@ -13395,20 +13360,31 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:maven/org.ehcache.modules/ehcache-xml@3.10.8?package-id=d8d630a04db242ae",
+          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:maven/org.ehcache.modules/ehcache-xml@3.10.8?package-id=855368985870cffd",
           "group": "org.ehcache.modules",
           "name": "ehcache-xml",
           "version": "3.10.8",
           "licenses": [
             {
               "license": {
-                "name": "The Apache Software License, Version 2.0",
-                "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                "name": "LICENSE"
               }
             }
           ],
-          "cpe": "cpe:2.3:a:ehcache-xml:ehcache-xml:3.10.8:*:*:*:*:*:*:*",
+          "cpe": "cpe:2.3:a:EhcacheActivator:ehcache-xml:3.10.8:*:*:*:*:*:*:*",
           "purl": "pkg:maven/org.ehcache.modules/ehcache-xml@3.10.8",
+          "externalReferences": [
+            {
+              "url": "",
+              "type": "build-meta",
+              "hashes": [
+                {
+                  "alg": "SHA-1",
+                  "content": "f0d50ede46609db78413ca7f4250d348a597b101"
+                }
+              ]
+            }
+          ],
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -13425,6 +13401,14 @@
             {
               "name": "syft:package:metadataType",
               "value": "java-archive"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:EhcacheActivator:ehcache_xml:3.10.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:ehcache-xml:ehcache-xml:3.10.8:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:cpe23",
@@ -13455,6 +13439,22 @@
               "value": "cpe:2.3:a:modules:ehcache_xml:3.10.8:*:*:*:*:*:*:*"
             },
             {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:core:ehcache-xml:3.10.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:core:ehcache_xml:3.10.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:osgi:ehcache-xml:3.10.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:osgi:ehcache_xml:3.10.8:*:*:*:*:*:*:*"
+            },
+            {
               "name": "syft:location:0:layerID",
               "value": "sha256:81ad854198c291e77fd173b470cf828bbb084c0b8df37dfaf6fd97f81e29340c"
             },
@@ -13472,7 +13472,7 @@
             },
             {
               "name": "syft:metadata:virtualPath",
-              "value": "/app/ssc/WEB-INF/lib/ehcache-3.10.8.jar:org.ehcache.modules:ehcache-xml"
+              "value": "/app/ssc/WEB-INF/lib/ehcache-3.10.8.jar"
             }
           ]
         },
@@ -28099,8 +28099,8 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:maven/org.glassfish.jaxb/jaxb-xjc@2.3.8?package-id=48178268a686afbc",
-          "group": "org.glassfish.jaxb",
+          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:maven/com.sun.xml.bind/jaxb-xjc@2.3.8?package-id=4e50d740c46bb46f",
+          "group": "com.sun.xml.bind",
           "name": "jaxb-xjc",
           "version": "2.3.8",
           "licenses": [
@@ -28111,7 +28111,7 @@
             }
           ],
           "cpe": "cpe:2.3:a:eclipse-foundation:jaxb-xjc:2.3.8:*:*:*:*:*:*:*",
-          "purl": "pkg:maven/org.glassfish.jaxb/jaxb-xjc@2.3.8",
+          "purl": "pkg:maven/com.sun.xml.bind/jaxb-xjc@2.3.8",
           "externalReferences": [
             {
               "url": "",
@@ -28155,22 +28155,6 @@
             },
             {
               "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse-foundation:jaxb:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse_foundation:jaxb:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:glassfish:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:glassfish:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
               "value": "cpe:2.3:a:jaxb-xjc:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
             },
             {
@@ -28195,10 +28179,6 @@
             },
             {
               "name": "syft:cpe23",
-              "value": "cpe:2.3:a:glassfish:jaxb:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
               "value": "cpe:2.3:a:bind:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
             },
             {
@@ -28207,23 +28187,11 @@
             },
             {
               "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jaxb-xjc:jaxb:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
               "value": "cpe:2.3:a:jaxb:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:cpe23",
               "value": "cpe:2.3:a:jaxb:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jaxb_xjc:jaxb:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse:jaxb:2.3.8:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:cpe23",
@@ -28242,22 +28210,6 @@
               "value": "cpe:2.3:a:xml:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
             },
             {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:bind:jaxb:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jaxb:jaxb:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:sun:jaxb:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:xml:jaxb:2.3.8:*:*:*:*:*:*:*"
-            },
-            {
               "name": "syft:location:0:layerID",
               "value": "sha256:81ad854198c291e77fd173b470cf828bbb084c0b8df37dfaf6fd97f81e29340c"
             },
@@ -28271,7 +28223,7 @@
             },
             {
               "name": "syft:metadata:-:groupID",
-              "value": "org.glassfish.jaxb"
+              "value": "com.sun.xml.bind"
             },
             {
               "name": "syft:metadata:virtualPath",

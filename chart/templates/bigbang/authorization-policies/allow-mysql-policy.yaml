@@ -1,0 +1,18 @@
+{{- if and .Values.istio.enabled .Values.istio.hardened.enabled -}}
+{{- $namespace := $.Release.Namespace -}}
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-mysql
+  namespace: {{ $namespace }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mysql
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        namespaces:
+        - {{ $namespace }}
+{{- end }}

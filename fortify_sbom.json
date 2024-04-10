@@ -1,7 +1,7 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:6970eef9-c83a-43da-8f0b-8bb8d0ad40bb",
+  "serialNumber": "urn:uuid:b6a39747-0c3f-43b4-81fd-000d60c8b06a",
   "version": 1,
   "metadata": {
     "tools": null,
@@ -12778,9 +12778,92 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:maven/org.ehcache.modules/ehcache-107@3.10.8?package-id=001404e00db6b343",
+          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:maven/org.ehcache.modules/ehcache-107@3.10.8?package-id=0b2ed0577aaba0ec",
           "group": "org.ehcache.modules",
           "name": "ehcache-107",
+          "version": "3.10.8",
+          "licenses": [
+            {
+              "license": {
+                "name": "The Apache Software License, Version 2.0",
+                "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+              }
+            }
+          ],
+          "cpe": "cpe:2.3:a:ehcache-107:ehcache-107:3.10.8:*:*:*:*:*:*:*",
+          "purl": "pkg:maven/org.ehcache.modules/ehcache-107@3.10.8",
+          "properties": [
+            {
+              "name": "syft:package:foundBy",
+              "value": "java-archive-cataloger"
+            },
+            {
+              "name": "syft:package:language",
+              "value": "java"
+            },
+            {
+              "name": "syft:package:type",
+              "value": "java-archive"
+            },
+            {
+              "name": "syft:package:metadataType",
+              "value": "java-archive"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:ehcache-107:ehcache_107:3.10.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:ehcache_107:ehcache-107:3.10.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:ehcache_107:ehcache_107:3.10.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:ehcache:ehcache-107:3.10.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:ehcache:ehcache_107:3.10.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:modules:ehcache-107:3.10.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:modules:ehcache_107:3.10.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:location:0:layerID",
+              "value": "sha256:81ad854198c291e77fd173b470cf828bbb084c0b8df37dfaf6fd97f81e29340c"
+            },
+            {
+              "name": "syft:location:0:path",
+              "value": "/app/ssc/WEB-INF/lib/ehcache-3.10.8.jar"
+            },
+            {
+              "name": "syft:metadata:-:artifactID",
+              "value": "ehcache-107"
+            },
+            {
+              "name": "syft:metadata:-:groupID",
+              "value": "org.ehcache.modules"
+            },
+            {
+              "name": "syft:metadata:virtualPath",
+              "value": "/app/ssc/WEB-INF/lib/ehcache-3.10.8.jar:org.ehcache.modules:ehcache-107"
+            }
+          ]
+        },
+        {
+          "type": "library",
+          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:maven/org.ehcache.modules/ehcache-api@3.10.8?package-id=4f01fc1e181d8439",
+          "group": "org.ehcache.modules",
+          "name": "ehcache-api",
           "version": "3.10.8",
           "licenses": [
             {
@@ -12789,8 +12872,8 @@
               }
             }
           ],
-          "cpe": "cpe:2.3:a:EhcacheActivator:ehcache-107:3.10.8:*:*:*:*:*:*:*",
-          "purl": "pkg:maven/org.ehcache.modules/ehcache-107@3.10.8",
+          "cpe": "cpe:2.3:a:EhcacheActivator:ehcache-api:3.10.8:*:*:*:*:*:*:*",
+          "purl": "pkg:maven/org.ehcache.modules/ehcache-api@3.10.8",
           "externalReferences": [
             {
               "url": "",
@@ -12822,110 +12905,11 @@
             },
             {
               "name": "syft:cpe23",
-              "value": "cpe:2.3:a:EhcacheActivator:ehcache_107:3.10.8:*:*:*:*:*:*:*"
+              "value": "cpe:2.3:a:EhcacheActivator:ehcache_api:3.10.8:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:cpe23",
-              "value": "cpe:2.3:a:ehcache-107:ehcache-107:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:ehcache-107:ehcache_107:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:ehcache_107:ehcache-107:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:ehcache_107:ehcache_107:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:ehcache:ehcache-107:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:ehcache:ehcache_107:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:modules:ehcache-107:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:modules:ehcache_107:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:core:ehcache-107:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:core:ehcache_107:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:osgi:ehcache-107:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:osgi:ehcache_107:3.10.8:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:location:0:layerID",
-              "value": "sha256:81ad854198c291e77fd173b470cf828bbb084c0b8df37dfaf6fd97f81e29340c"
-            },
-            {
-              "name": "syft:location:0:path",
-              "value": "/app/ssc/WEB-INF/lib/ehcache-3.10.8.jar"
-            },
-            {
-              "name": "syft:metadata:-:artifactID",
-              "value": "ehcache-107"
-            },
-            {
-              "name": "syft:metadata:-:groupID",
-              "value": "org.ehcache.modules"
-            },
-            {
-              "name": "syft:metadata:virtualPath",
-              "value": "/app/ssc/WEB-INF/lib/ehcache-3.10.8.jar"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:maven/org.ehcache.modules/ehcache-api@3.10.8?package-id=6acf6934361ae027",
-          "group": "org.ehcache.modules",
-          "name": "ehcache-api",
-          "version": "3.10.8",
-          "licenses": [
-            {
-              "license": {
-                "name": "The Apache Software License, Version 2.0",
-                "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
-              }
-            }
-          ],
-          "cpe": "cpe:2.3:a:ehcache-api:ehcache-api:3.10.8:*:*:*:*:*:*:*",
-          "purl": "pkg:maven/org.ehcache.modules/ehcache-api@3.10.8",
-          "properties": [
-            {
-              "name": "syft:package:foundBy",
-              "value": "java-archive-cataloger"
-            },
-            {
-              "name": "syft:package:language",
-              "value": "java"
-            },
-            {
-              "name": "syft:package:type",
-              "value": "java-archive"
-            },
-            {
-              "name": "syft:package:metadataType",
-              "value": "java-archive"
+              "value": "cpe:2.3:a:ehcache-api:ehcache-api:3.10.8:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:cpe23",
@@ -12956,6 +12940,22 @@
               "value": "cpe:2.3:a:modules:ehcache_api:3.10.8:*:*:*:*:*:*:*"
             },
             {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:core:ehcache-api:3.10.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:core:ehcache_api:3.10.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:osgi:ehcache-api:3.10.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:osgi:ehcache_api:3.10.8:*:*:*:*:*:*:*"
+            },
+            {
               "name": "syft:location:0:layerID",
               "value": "sha256:81ad854198c291e77fd173b470cf828bbb084c0b8df37dfaf6fd97f81e29340c"
             },
@@ -12973,7 +12973,7 @@
             },
             {
               "name": "syft:metadata:virtualPath",
-              "value": "/app/ssc/WEB-INF/lib/ehcache-3.10.8.jar:org.ehcache.modules:ehcache-api"
+              "value": "/app/ssc/WEB-INF/lib/ehcache-3.10.8.jar"
             }
           ]
         },
@@ -28281,8 +28281,8 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:maven/com.sun.xml.bind/jaxb-xjc@2.3.8?package-id=3b9c1b38982a5731",
-          "group": "com.sun.xml.bind",
+          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:maven/org.glassfish.jaxb/jaxb-xjc@2.3.8?package-id=45d64d01425495fe",
+          "group": "org.glassfish.jaxb",
           "name": "jaxb-xjc",
           "version": "2.3.8",
           "licenses": [
@@ -28293,7 +28293,7 @@
             }
           ],
           "cpe": "cpe:2.3:a:eclipse-foundation:jaxb-xjc:2.3.8:*:*:*:*:*:*:*",
-          "purl": "pkg:maven/com.sun.xml.bind/jaxb-xjc@2.3.8",
+          "purl": "pkg:maven/org.glassfish.jaxb/jaxb-xjc@2.3.8",
           "externalReferences": [
             {
               "url": "",
@@ -28337,6 +28337,22 @@
             },
             {
               "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse-foundation:jaxb:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse_foundation:jaxb:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:glassfish:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:glassfish:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
               "value": "cpe:2.3:a:jaxb-xjc:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
             },
             {
@@ -28361,6 +28377,10 @@
             },
             {
               "name": "syft:cpe23",
+              "value": "cpe:2.3:a:glassfish:jaxb:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
               "value": "cpe:2.3:a:bind:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
             },
             {
@@ -28369,11 +28389,23 @@
             },
             {
               "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jaxb-xjc:jaxb:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
               "value": "cpe:2.3:a:jaxb:jaxb-xjc:2.3.8:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:cpe23",
               "value": "cpe:2.3:a:jaxb:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jaxb_xjc:jaxb:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse:jaxb:2.3.8:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:cpe23",
@@ -28392,6 +28424,22 @@
               "value": "cpe:2.3:a:xml:jaxb_xjc:2.3.8:*:*:*:*:*:*:*"
             },
             {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:bind:jaxb:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jaxb:jaxb:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:sun:jaxb:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:xml:jaxb:2.3.8:*:*:*:*:*:*:*"
+            },
+            {
               "name": "syft:location:0:layerID",
               "value": "sha256:81ad854198c291e77fd173b470cf828bbb084c0b8df37dfaf6fd97f81e29340c"
             },
@@ -28405,7 +28453,7 @@
             },
             {
               "name": "syft:metadata:-:groupID",
-              "value": "com.sun.xml.bind"
+              "value": "org.glassfish.jaxb"
             },
             {
               "name": "syft:metadata:virtualPath",
@@ -35153,7 +35201,7 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:rpm/rhel/libstdc\u002B\u002B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3\u0026package-id=67a908dedb55a534",
+          "bom-ref": "registry1.dso.mil/ironbank/microfocus/fortify/ssc@23.2.0.0154:pkg:rpm/rhel/libstdc%2B%2B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3\u0026package-id=67a908dedb55a534",
           "publisher": "Red Hat, Inc.",
           "name": "libstdc\u002B\u002B",
           "version": "11.4.1-2.1.el9",
@@ -35165,7 +35213,7 @@
             }
           ],
           "cpe": "cpe:2.3:a:libstdc\\\u002B\\\u002B:libstdc\\\u002B\\\u002B:11.4.1-2.1.el9:*:*:*:*:*:*:*",
-          "purl": "pkg:rpm/rhel/libstdc\u002B\u002B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3",
+          "purl": "pkg:rpm/rhel/libstdc%2B%2B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3",
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -84677,7 +84725,7 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/bitnami/mysql8@8.0.35-debian-11-r1:pkg:rpm/rhel/libstdc\u002B\u002B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3\u0026package-id=67a908dedb55a534",
+          "bom-ref": "registry1.dso.mil/ironbank/bitnami/mysql8@8.0.35-debian-11-r1:pkg:rpm/rhel/libstdc%2B%2B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3\u0026package-id=67a908dedb55a534",
           "publisher": "Red Hat, Inc.",
           "name": "libstdc\u002B\u002B",
           "version": "11.4.1-2.1.el9",
@@ -84689,7 +84737,7 @@
             }
           ],
           "cpe": "cpe:2.3:a:libstdc\\\u002B\\\u002B:libstdc\\\u002B\\\u002B:11.4.1-2.1.el9:*:*:*:*:*:*:*",
-          "purl": "pkg:rpm/rhel/libstdc\u002B\u002B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3",
+          "purl": "pkg:rpm/rhel/libstdc%2B%2B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3",
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -98730,7 +98778,7 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/google/golang/golang-1.20@1.20.12:pkg:rpm/rhel/libstdc\u002B\u002B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3\u0026package-id=67a908dedb55a534",
+          "bom-ref": "registry1.dso.mil/ironbank/google/golang/golang-1.20@1.20.12:pkg:rpm/rhel/libstdc%2B%2B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3\u0026package-id=67a908dedb55a534",
           "publisher": "Red Hat, Inc.",
           "name": "libstdc\u002B\u002B",
           "version": "11.4.1-2.1.el9",
@@ -98742,7 +98790,7 @@
             }
           ],
           "cpe": "cpe:2.3:a:libstdc\\\u002B\\\u002B:libstdc\\\u002B\\\u002B:11.4.1-2.1.el9:*:*:*:*:*:*:*",
-          "purl": "pkg:rpm/rhel/libstdc\u002B\u002B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3",
+          "purl": "pkg:rpm/rhel/libstdc%2B%2B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3",
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -105354,7 +105402,7 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/google/golang/golang-1.20@1.20.12:pkg:rpm/rhel/perl-Text-Tabs\u002BWrap@2013.0523-460.el9?arch=noarch\u0026upstream=perl-Text-Tabs\u002BWrap-2013.0523-460.el9.src.rpm\u0026distro=rhel-9.3\u0026package-id=efb2818777dc0213",
+          "bom-ref": "registry1.dso.mil/ironbank/google/golang/golang-1.20@1.20.12:pkg:rpm/rhel/perl-Text-Tabs%2BWrap@2013.0523-460.el9?arch=noarch\u0026upstream=perl-Text-Tabs%2BWrap-2013.0523-460.el9.src.rpm\u0026distro=rhel-9.3\u0026package-id=efb2818777dc0213",
           "publisher": "Red Hat, Inc.",
           "name": "perl-Text-Tabs\u002BWrap",
           "version": "2013.0523-460.el9",
@@ -105366,7 +105414,7 @@
             }
           ],
           "cpe": "cpe:2.3:a:perl-Text-Tabs\\\u002BWrap:perl-Text-Tabs\\\u002BWrap:2013.0523-460.el9:*:*:*:*:*:*:*",
-          "purl": "pkg:rpm/rhel/perl-Text-Tabs\u002BWrap@2013.0523-460.el9?arch=noarch\u0026upstream=perl-Text-Tabs\u002BWrap-2013.0523-460.el9.src.rpm\u0026distro=rhel-9.3",
+          "purl": "pkg:rpm/rhel/perl-Text-Tabs%2BWrap@2013.0523-460.el9?arch=noarch\u0026upstream=perl-Text-Tabs%2BWrap-2013.0523-460.el9.src.rpm\u0026distro=rhel-9.3",
           "properties": [
             {
               "name": "syft:package:foundBy",

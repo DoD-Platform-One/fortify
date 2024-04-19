@@ -348,6 +348,7 @@ networkPolicies:
   ingressLabels:
     app: istio-ingressgateway
     istio: ingressgateway
+  additionalPolicies: []
 
 # cache layer configurations
 # if this feature enabled, Fortify will cache the resource

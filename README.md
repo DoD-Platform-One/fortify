@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 1.1.2320154-bb.4](https://img.shields.io/badge/Version-1.1.2320154--bb.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.2.0.0154](https://img.shields.io/badge/AppVersion-23.2.0.0154-informational?style=flat-square)
+![Version: 1.1.2320154-bb.5](https://img.shields.io/badge/Version-1.1.2320154--bb.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.2.0.0154](https://img.shields.io/badge/AppVersion-23.2.0.0154-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -12,7 +12,6 @@ A Helm chart for Fortify Software Security Center application
 ## Learn More
 * [Application Overview](docs/overview.md)
 * [Other Documentation](docs/)
-
 
 ## Pre-Requisites
 
@@ -63,7 +62,7 @@ helm install fortify-ssc chart/
 | service.clusterIP | string | `""` |  |
 | service.loadBalancerIP | string | `""` |  |
 | service.annotations | object | `{}` |  |
-| urlHost | string | `"fortify.bigbang.dev"` |  |
+| urlHost | string | `"fortify.dev.bigbang.mil"` |  |
 | urlPort | int | `0` |  |
 | sscPathPrefix | string | `"/"` |  |
 | httpClientCertificateVerification | string | `"none"` |  |
@@ -140,8 +139,13 @@ helm install fortify-ssc chart/
 | mysql.metrics.containerSecurityContext.runAsUser | int | `1001` |  |
 | mysql.metrics.containerSecurityContext.runAsGroup | int | `1001` |  |
 | mysql.metrics.containerSecurityContext.runAsNonRoot | bool | `true` |  |
-| domain | string | `"bigbang.dev"` |  |
+| domain | string | `"dev.bigbang.mil"` |  |
 | istio.enabled | bool | `false` |  |
+| istio.hardened.enabled | bool | `false` |  |
+| istio.hardened.customAuthorizationPolicies | list | `[]` |  |
+| istio.hardened.monitoring.enabled | bool | `true` |  |
+| istio.hardened.monitoring.namespaces[0] | string | `"monitoring"` |  |
+| istio.hardened.monitoring.principals[0] | string | `"cluster.local/ns/monitoring/sa/monitoring-monitoring-kube-prometheus"` |  |
 | istio.mtls.mode | string | `"STRICT"` | STRICT = Allow only mutual TLS traffic, PERMISSIVE = Allow both plain text and mutual TLS traffic |
 | istio.fortify.gateways[0] | string | `"istio-system/public"` |  |
 | istio.fortify.hosts[0] | string | `"fortify.{{ .Values.domain }}"` |  |

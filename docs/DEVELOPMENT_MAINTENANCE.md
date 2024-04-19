@@ -37,9 +37,9 @@ Notes:
     ```bash
     helm dependency update ./chart
     ```
-1. In `/chart/values.yaml` update image.tag to the new version. Renovate might have arleady done this for you. Also update the `bigbang.dev/applicationVersions`
+1. In `/chart/values.yaml` update image.tag to the new version. Renovate might have arleady done this for you. Also update the `dev.bigbang.mil/applicationVersions`
    ```
-     bigbang.dev/applicationVersions: |
+     dev.bigbang.mil/applicationVersions: |
     - Fortify: 23.2.0.0154
    ```
 1. Revert some settings in `chart/templates/webapp.yaml`:
@@ -248,7 +248,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 - switch the api version to v2
 - update the name to fortify-ssc
 - change version key to Big Bang composite version
-- add Big Bang annotations.bigbang.dev/applicationVersions and annotations.helm.sh/images keys to support release automation
+- add Big Bang annotations.dev.bigbang.mil/applicationVersions and annotations.helm.sh/images keys to support release automation
 - add the following
   ```yaml
   type: application
@@ -278,7 +278,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 - add an array element to imagePullSecrets with the name set to "private-registry"
 - set nameOverride to "fortify-ssc"
 - set fullnameOverride to "fortify-ssc"
-- set urlHost to "fortify.bigbang.dev"
+- set urlHost to "fortify.dev.bigbang.mil"
 - set secretRef.keys.sscLicenseEntry to "fortify.license"
 - set secretRef.keys.sscAutoconfigEntry to "fortify.autoconfig"
 - set secretRef.keys.httpCertificateKeystoreFileEntry to "ssc-service.jks"
@@ -393,7 +393,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
   
   
   # Big Bang Additions
-  domain: bigbang.dev
+  domain: dev.bigbang.mil
   istio:
     enabled: false
     mtls:

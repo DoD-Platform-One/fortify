@@ -77,7 +77,7 @@ service:
 
 
 # urlHost is a fully qualified DNS name for externally accessing the application (required)
-urlHost: "fortify.bigbang.dev"
+urlHost: "fortify.dev.bigbang.mil"
 
 # urlPort is HTTPS port for externally accessing the application, if zero, a value of service.httpsPort is used instead
 urlPort: 0
@@ -297,7 +297,7 @@ mysql:
       runAsNonRoot: true
 
 # Big Bang Additions
-domain: bigbang.dev
+domain: dev.bigbang.mil
 istio:
   enabled: false
   hardened:

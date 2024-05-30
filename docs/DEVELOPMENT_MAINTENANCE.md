@@ -142,14 +142,14 @@ Add InitContainer:
           path: "chart"
           tag: null
           branch: "replace-me-with-your-branch-name"
-    values:
-      trust_store_password: dsoppassword
-      key_store_password: dsoppassword
-      key_store_cert_password : dsoppassword
-      fortify_autoconfig: |
-        # Need a license to use autoconfig
-      fortify_license: |
-        <License>
+        values:
+          trust_store_password: dsoppassword
+          key_store_password: dsoppassword
+          key_store_cert_password : dsoppassword
+          fortify_autoconfig: |
+            # Need a license to use autoconfig
+          fortify_license: |
+            <License>
     ```
 More SecurityContext
     ```
@@ -171,6 +171,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 - add istio virtual service
 - add networkpolicies
 - add istio peerauthentications
+- add log4j2 configmap to override /fortify/ssc/conf/log4j2.xml
 
 ## chart/templates/tests/*
 - add templates for CI helm tests
@@ -208,6 +209,24 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
           mountPath: /secrets
         resources:
           {{- toYaml .Values.initContainer.resources | nindent 12 }}
+      - name: log4j-configmap-loader
+        image: registry1.dso.mil/ironbank/opensource/alpinelinux/alpine:3.20.0
+        imagePullPolicy: IfNotPresent
+        command:
+          - /bin/sh
+          - -c
+        args:
+          - mkdir -p /fortify/ssc/conf && cp /opt/bigbang/fortify/ssc/conf/log4j2.xml /fortify/ssc/conf/
+        securityContext:
+          {{- toYaml .Values.initContainer.containerSecurityContext | nindent 12 }}
+        resources:
+          {{- toYaml .Values.initContainer.resources | nindent 12 }}
+        volumeMounts:
+          - mountPath: /opt/bigbang/fortify/ssc/conf/log4j2.xml
+            name: log4j2-template
+            subPath: log4j2-tpl.xml
+          - mountPath: /fortify
+            name: persistent-volume
     ```
   - modify spec.template.spec.volumes["secrets-volume"]
     ```yaml
@@ -236,6 +255,12 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
     - name: tomcat-template
       configMap:
         name: {{ include "ssc.fullcomponentname" (merge (dict "component" "tomcat-template") . ) }}
+    ```
+  - add spec.template.spec.volumes["log4j2-template"]
+    ```yaml
+    - name: log4j2-template
+      configMap:
+        name: {{ include "ssc.fullcomponentname" (merge (dict "component" "log4j2-template") . ) }}
     ```
 
 ## chart/tests/*
@@ -307,6 +332,14 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
       https:
         min_threads: 4
         max_threads: 150
+  ```
+- allow changing root log level and optionally sending root logger's output to STDOUT with:
+  ```yaml
+  ssc:
+      config:
+        log4j:
+          rootLevel: "debug"
+          copyRootToStdout: true
   ```
 - add this to the bottom
   ```yaml

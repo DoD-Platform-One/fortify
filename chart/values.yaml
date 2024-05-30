@@ -137,6 +137,16 @@ ssc:
       min_threads: 4
       max_threads: 150
 
+    # The full SSC log4j2.xml configmap is available in this repo
+    # at chart/templates/bigbang/log4j2-configmap.yaml.
+    log4j:
+      # SSC's log level is [warn] by default. Any log4j2 log level works here.
+      # https://logging.apache.org/log4j/2.x/manual/architecture.html#log-levels
+      rootLevel: "warn"
+      # SSC logs to rolling files at $COM_FORTIFY_SSC_LOGPATH by default.
+      # Enable this to *also* send SSC logs to STDOUT.
+      copyRootToStdout: false
+
 # persistentVolumeClaim is a set of SSC's persistent volume claim options
 persistentVolumeClaim:
 

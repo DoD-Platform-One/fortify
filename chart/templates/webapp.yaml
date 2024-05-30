@@ -93,6 +93,10 @@ spec:
               readOnly: true
               mountPath: "/app/secrets"
             - name: persistent-volume
+              # Note that COM_FORTIFY_SSC_HOME points to a path within
+              # this persistent volume: /fortify/ssc.
+              # Injecting file-based SSC configs inside this
+              # persistent volume is thus handled via initContainers below.
               mountPath: "/fortify"
             - mountPath: /app/tomcat/conf/server-tpl.xml
               subPath: server-tpl.xml
@@ -124,6 +128,30 @@ spec:
             mountPath: /secrets
           resources:
             {{- toYaml .Values.initContainer.resources | nindent 12 }}
+          # Installs the contents of our log4j configmap to the target path
+          # within our persistent volume mount as we couldn't mount it as
+          # a second volume within the other volume's path.
+        - name: log4j-configmap-loader
+          image: registry1.dso.mil/ironbank/opensource/alpinelinux/alpine:3.20.0
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - mkdir -p /fortify/ssc/conf && cp /opt/bigbang/fortify/ssc/conf/log4j2.xml /fortify/ssc/conf/
+          securityContext:
+            {{- toYaml .Values.initContainer.containerSecurityContext | nindent 12 }}
+          resources:
+            {{- toYaml .Values.initContainer.resources | nindent 12 }}
+          volumeMounts:
+              # desired log4j config loaded in installed via templated configmap
+            - mountPath: /opt/bigbang/fortify/ssc/conf/log4j2.xml
+              name: log4j2-template
+              subPath: log4j2-tpl.xml
+              # fortify ssc looks for its configs inside the /fortify path due to
+              # $COM_FORTIFY_SSC_HOME=/fortify/ssc/conf
+            - mountPath: /fortify
+              name: persistent-volume
       volumes:
         - name: secrets-volume
           secret:
@@ -143,6 +171,9 @@ spec:
         - name: tomcat-template
           configMap:
             name: {{ include "ssc.fullcomponentname" (merge (dict "component" "tomcat-template") . ) }}
+        - name: log4j2-template
+          configMap:
+            name: {{ include "ssc.fullcomponentname" (merge (dict "component" "log4j2-template") . ) }}
         - name: etc-volume
           emptyDir:
             medium: Memory

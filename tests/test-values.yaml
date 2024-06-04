@@ -1,3 +1,12 @@
+# fortify-ssc-specific params
+config:
+  log4j:
+    # default is false in the actual release, but more logs are nice
+    # when investigating a failed test
+    copyRootToStdout: true
+    # set to debug when things get weird
+    rootLevel: "warn"
+
 # configurable parameters
 storage:
   volume: 5Gi

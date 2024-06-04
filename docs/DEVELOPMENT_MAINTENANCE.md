@@ -171,7 +171,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 - add istio virtual service
 - add networkpolicies
 - add istio peerauthentications
-- add log4j2 configmap to override /fortify/ssc/conf/log4j2.xml
+- add log4j2 configmap to override `/app/ssc/WEB-INF/init/log4j2.xml` which SSC will copy in at boot to its ultimate home at `/fortify/ssc/conf/log4j2.xml`
 
 ## chart/templates/tests/*
 - add templates for CI helm tests
@@ -209,24 +209,26 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
           mountPath: /secrets
         resources:
           {{- toYaml .Values.initContainer.resources | nindent 12 }}
-      - name: log4j-configmap-loader
+      - name: log4j-config-pinner
         image: registry1.dso.mil/ironbank/opensource/alpinelinux/alpine:3.20.0
         imagePullPolicy: IfNotPresent
         command:
           - /bin/sh
           - -c
+        env:
+          - name: BIGBANG_CUSTOM_LOG_CONFIG
+            value: "/app/ssc/WEB-INF/init"
+          - name: SSC_LOG_CONFIG_PATH
+            value: "/fortify/ssc/conf/log4j2.xml"
         args:
-          - mkdir -p /fortify/ssc/conf && cp /opt/bigbang/fortify/ssc/conf/log4j2.xml /fortify/ssc/conf/
+          - "echo \"[BigBang] | 📦 Removing any existing SSC logging configs from [${SSC_LOG_CONFIG_PATH}]. The SSC webapp container copies in our custom config on each boot from [${BIGBANG_CUSTOM_LOG_CONFIG}].\" && rm -f \"${SSC_LOG_CONFIG_PATH}\" && echo \"[BigBang] | 📦 Done removing log4j2.xml. Goodbye.\""
+        volumeMounts:
+          - mountPath: /fortify
+            name: persistent-volume
         securityContext:
           {{- toYaml .Values.initContainer.containerSecurityContext | nindent 12 }}
         resources:
           {{- toYaml .Values.initContainer.resources | nindent 12 }}
-        volumeMounts:
-          - mountPath: /opt/bigbang/fortify/ssc/conf/log4j2.xml
-            name: log4j2-template
-            subPath: log4j2-tpl.xml
-          - mountPath: /fortify
-            name: persistent-volume
     ```
   - modify spec.template.spec.volumes["secrets-volume"]
     ```yaml

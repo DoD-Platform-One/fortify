@@ -103,6 +103,12 @@ spec:
               name: tomcat-template
             - name: etc-volume
               mountPath: "/app/etc"
+            - mountPath: "/app/ssc/WEB-INF/init/log4j2.xml"
+              name: log4j2-template
+              # 📝 By placing our desired logging config in this initial "default log config file"
+              # location we ensure the runtime logging config is overwritten with our desired
+              # values.
+              subPath: log4j2.xml
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           securityContext:
@@ -128,30 +134,21 @@ spec:
             mountPath: /secrets
           resources:
             {{- toYaml .Values.initContainer.resources | nindent 12 }}
-          # Installs the contents of our log4j configmap to the target path
-          # within our persistent volume mount as we couldn't mount it as
-          # a second volume within the other volume's path.
-        - name: log4j-configmap-loader
+        - name: log4j-config-pinner
           image: registry1.dso.mil/ironbank/opensource/alpinelinux/alpine:3.20.0
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
           args:
-            - mkdir -p /fortify/ssc/conf && cp /opt/bigbang/fortify/ssc/conf/log4j2.xml /fortify/ssc/conf/
+            - "echo \"[BigBang] | 📦 Removing any existing SSC logging configs from [${COM_FORTIFY_SSC_HOME}/conf/log4j2.xml]. The SSC webapp container copies in our custom config on each boot from [/app/ssc/WEB-INF/init].\" && rm -f \"${COM_FORTIFY_SSC_HOME}/conf/log4j2.xml\" && echo \"[BigBang] | 📦 Done removing log4j2.xml. Goodbye.\""
+          volumeMounts:
+            - mountPath: /fortify
+              name: persistent-volume
           securityContext:
             {{- toYaml .Values.initContainer.containerSecurityContext | nindent 12 }}
           resources:
             {{- toYaml .Values.initContainer.resources | nindent 12 }}
-          volumeMounts:
-              # desired log4j config loaded in installed via templated configmap
-            - mountPath: /opt/bigbang/fortify/ssc/conf/log4j2.xml
-              name: log4j2-template
-              subPath: log4j2-tpl.xml
-              # fortify ssc looks for its configs inside the /fortify path due to
-              # $COM_FORTIFY_SSC_HOME=/fortify/ssc/conf
-            - mountPath: /fortify
-              name: persistent-volume
       volumes:
         - name: secrets-volume
           secret:

@@ -10,12 +10,19 @@ metadata:
     app.kubernetes.io/name: {{ .Release.Name | quote }}
     app.kubernetes.io/version: {{ .Values.image.tag | quote }}
 data:
-  # Initially copied in from /fortify/ssc/conf/log4j2.xml.
-  # Minor additions controllable via .Values.ssc.config.log4j:
-  # - The log level for the Root Logger (defaults to 'warn')
-  # - a new opt-in Appender for the Root Logger named console_ssc_bigbang
-  log4j2-tpl.xml: |-
+  log4j2.xml: |-
     <?xml version="1.0" encoding="UTF-8"?>
+    <!--
+      BigBang overrides to the original /app/ssc/WEB-INF/init/log4j2.xml.
+
+      This file will be copied from the above location at boot time over to
+      /fortify/ssc/conf/log4j2.xml, which is the file the actual running app
+      looks to for its logging config.
+
+      Minor additions controllable via .Values.ssc.config.log4j:
+      # - The log level for the Root Logger (defaults to 'warn')
+      # - a new opt-in Appender for the Root Logger named console_ssc_bigbang
+            -->
     <Configuration status="WARN" monitorInterval="10">
 
         <!-- Manual to configuration: http://logging.apache.org/log4j/2.x/manual/configuration.html -->

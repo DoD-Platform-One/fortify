@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.1.2320154-bb.7] - 2024-05-31
+### Added
+- Bugfix to previous release — log4j config customization was getting overwritten at boot but should now stay put.
+- Added a new CI test to confirm our custom config file is in force after a successful fortify SSC boot.
+
 ## [1.1.2320154-bb.6] - 2024-05-28
 ### Added
 - Configurable log level for Fortify SSC: `ssc.config.log4j.rootLevel: "warn"`

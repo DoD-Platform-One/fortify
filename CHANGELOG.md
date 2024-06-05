@@ -3,9 +3,22 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## [1.1.2320154-bb.7] - 2024-05-31
+## [1.1.2320154-bb.8] - 2024-06-04
+
 ### Added
+
+- Adds new developer documentation on the surprisingly complex how and why of our log4j configuration override workflow: [docs/log-configuration.md](docs/log-configuration.md)
+
+### Fixed
+- Bugfix to previous release — log4j config pinning init container failed as it was using a container that did not expose the COM_FORTIFY_SSC_HOME environment variable.
+- Improved wording of the CI test in `wait.sh` to allow operators to better judge the results of that CI test.
+ 
+## [1.1.2320154-bb.7] - 2024-05-31
+
+### Fixed
 - Bugfix to previous release — log4j config customization was getting overwritten at boot but should now stay put.
+ 
+### Added
 - Added a new CI test to confirm our custom config file is in force after a successful fortify SSC boot.
 
 ## [1.1.2320154-bb.6] - 2024-05-28

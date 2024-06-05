@@ -210,18 +210,13 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
         resources:
           {{- toYaml .Values.initContainer.resources | nindent 12 }}
       - name: log4j-config-pinner
-        image: registry1.dso.mil/ironbank/opensource/alpinelinux/alpine:3.20.0
+        image: "{{ .Values.image.repositoryPrefix }}{{ .Values.image.webapp }}:{{ include "ssc.image.tag" $context }}"
         imagePullPolicy: IfNotPresent
         command:
           - /bin/sh
           - -c
-        env:
-          - name: BIGBANG_CUSTOM_LOG_CONFIG
-            value: "/app/ssc/WEB-INF/init"
-          - name: SSC_LOG_CONFIG_PATH
-            value: "/fortify/ssc/conf/log4j2.xml"
         args:
-          - "echo \"[BigBang] | 📦 Removing any existing SSC logging configs from [${SSC_LOG_CONFIG_PATH}]. The SSC webapp container copies in our custom config on each boot from [${BIGBANG_CUSTOM_LOG_CONFIG}].\" && rm -f \"${SSC_LOG_CONFIG_PATH}\" && echo \"[BigBang] | 📦 Done removing log4j2.xml. Goodbye.\""
+          - "echo \"[BigBang] | 📦 Removing any existing SSC logging configs from [${COM_FORTIFY_SSC_HOME}/conf/log4j2.xml]. The SSC webapp container copies in our custom config on each boot from [/app/ssc/WEB-INF/init].\" && rm -f \"${COM_FORTIFY_SSC_HOME}/conf/log4j2.xml\" && echo \"[BigBang] | 📦 Done removing log4j2.xml. Goodbye.\""
         volumeMounts:
           - mountPath: /fortify
             name: persistent-volume

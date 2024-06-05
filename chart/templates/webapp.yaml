@@ -135,7 +135,7 @@ spec:
           resources:
             {{- toYaml .Values.initContainer.resources | nindent 12 }}
         - name: log4j-config-pinner
-          image: registry1.dso.mil/ironbank/opensource/alpinelinux/alpine:3.20.0
+          image: "{{ .Values.image.repositoryPrefix }}{{ .Values.image.webapp }}:{{ include "ssc.image.tag" $context }}"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh

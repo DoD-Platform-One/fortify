@@ -22,10 +22,10 @@ targetFile="/fortify/ssc/conf/log4j2.xml"
 targetResource="statefulset/fortify-ssc-webapp"
 targetNs="fortify"
 
+# kubectl params for health and log checks
 kubectlTimeout=5s
-
 kubectlErr="KUBECTL_ERROR"
-
+kubectlLogLinesMax=1
 
 # wait script timings
 elapsedSecs=0
@@ -64,7 +64,7 @@ slog() {
 
   for var in "${@}";
   do
-    echo -ne "  ${MAGENTA}${var}${YELLOW}=${CYAN}${!var}${ENDCOLOR}"
+    echo -ne "  ${MAGENTA}${var}${YELLOW}=\"${CYAN}${!var}${YELLOW}\"${ENDCOLOR}"
   done
 
   printf "\n"
@@ -91,21 +91,35 @@ check_available_replicas() {
 }
 
 wait_pod_alive() {
-   slog "${YELLOW}waiting for the fortify pod to finish starting up...${ENDCOLOR}" targetResource
+   slog "${YELLOW} [BigBang log4j config override pretest] Waiting for the fortify pod to finish starting up...${ENDCOLOR}" targetResource
    while true; do
       availableReplicas=$(check_available_replicas)
       if [[ $availableReplicas != "0" && $availableReplicas != "${kubectlErr}" ]]; then
-         slog "pod is alive and ready to be checked out." elapsedSecs availableReplicas
+         slog " [BigBang log4j config override pretest] Pod is alive and ready to be checked out." elapsedSecs availableReplicas
          break
       fi
-      slog "${CYAN}⏲️ fortify replicas not yet available for inspection. Sleeping until next retry." targetResource availableReplicas elapsedSecs intervalSecs timeoutSecs
+      slog "${CYAN}⏲️ [BigBang log4j config override pretest] Fortify replicas not yet available for inspection. Sleeping until next retry." targetResource availableReplicas elapsedSecs intervalSecs timeoutSecs
+
+      latestLogLines=$(get_latest_pod_logs)
+      slog "${CYAN}⏲️ [BigBang log4j config override test] Latest webapp pod log line(s) attached — look to see if it's hung or still moving:" latestLogLines kubectlTimeout
+
       sleep $intervalSecs
       elapsedSecs=$((elapsedSecs+intervalSecs))
       if [[ $elapsedSecs -ge $timeoutSecs ]]; then
-         slog "${RED}🛑 FATAL. Maximum wait time exceeded." elapsedSecs timeoutSecs
+         slog "${RED}🛑 [BigBang log4j config override pretest] FATAL. Maximum wait time exceeded." elapsedSecs timeoutSecs
          exit 1
       fi
    done
+}
+
+get_latest_pod_logs() {
+  # - grab the log for the fortify statefulset's webapp pod
+  # - limit to last 5 lines
+  kubectl -n $targetNs \
+    --request-timeout $kubectlTimeout \
+    logs "${targetResource}" \
+    --tail="${kubectlLogLinesMax}" \
+  || echo "${kubectlErr}"
 }
 
 wait_project() {
@@ -116,24 +130,28 @@ wait_project() {
    wait_pod_alive
 
    while true; do
-      slog "${GREEN}🔬 Checking for desired canary value..." wantValue targetFile intervalSecs elapsedSecs timeoutSecs
+      slog "${GREEN}🔬 [BigBang log4j config override test] Assert BigBang log4j config is in place: Checking for desired canary value..." wantValue targetFile intervalSecs elapsedSecs timeoutSecs
 
       ## check health of installed package
       configValueCheckResult=$(check_log4j_config)
 
       ## exit early if we get the desired value
       if [[ "${configValueCheckResult}" == "${wantValue}" ]]; then
-         slog "${BLUE}✅  Success! Target file contained the expected canary value." targetFile wantValue
+         slog "${BLUE}✅  [BigBang log4j config override test] Success! BigBang log4j config is in place. Target file contained the expected canary value." targetFile wantValue
          break
       fi
 
       ## repeat until time expires
-      slog "${CYAN}⏲️ Canary value not found. Sleeping until next retry." elapsedSecs intervalSecs timeoutSecs
+      slog "${CYAN}⏲️ [BigBang log4j config override test] BigBang log4j config is not in place. Canary value not found. Sleeping until next retry." elapsedSecs intervalSecs timeoutSecs
+
+      latestLogLines=$(get_latest_pod_logs)
+      slog "${CYAN}⏲️ [BigBang log4j config override test] Latest webapp pod log line(s) attached — look to see if it's hung or still moving:" latestLogLines kubectlTimeout
+
       sleep $intervalSecs
 
       elapsedSecs=$((elapsedSecs+intervalSecs))
       if [[ $elapsedSecs -ge $timeoutSecs ]]; then
-        slog "${RED}🛑 FATAL. Maximum wait time exceeded." elapsedSecs timeoutSecs
+        slog "${RED}🛑 [BigBang log4j config override test] FATAL. BigBang log4j config was not properly installed. Maximum wait time exceeded." elapsedSecs timeoutSecs
         exit 1
       fi
    done

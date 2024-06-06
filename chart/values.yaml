@@ -312,6 +312,21 @@ istio:
   enabled: false
   hardened:
     enabled: false
+    outboundTrafficPolicyMode: "REGISTRY_ONLY"
+    customServiceEntries: []
+      # - name: "google-whitelist"
+      #   enabled: true
+      #   spec:
+      #     hosts:
+      #       - "www.google.com"
+      #       - "google.com"
+      #       - "repo1.dso.mil"
+      #     location: MESH_EXTERNAL
+      #     ports:
+      #       - number: 443
+      #         protocol: TLS
+      #         name: https
+      #     resolution: DNS    
     customAuthorizationPolicies: []
     monitoring:
       enabled: true

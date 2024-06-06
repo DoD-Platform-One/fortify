@@ -18,49 +18,49 @@
 
 ## Post Install Configuration
 
-* **Prerequesites:**
+* **Prerequisites:**
 
-  * Keycloak is avaliable to fortify
+  * Keycloak is available to fortify
 
-    * Make sure you configurre valid redirect URL to
+    * Make sure you configure a valid redirect URL to
 
       `https://${FORTIFY_URL}/saml/SSO/alias/`
 
-    * Make sure you configure valid logout URL 
+    * Make sure you configure a valid logout URL 
 
     * `saml_single_logout_service_url_post`: `http://`${FORTIFY_URL}/saml/SingleLogout/alias/ssc`
 
-  * Keycloak relm metadata is avaliable from keycloack. to verify please try follow below steps
+  * Keycloak realm metadata is available from keycloak. To verify please try follow below steps
     * `curl https://${KEYCLOAK_DNS}/auth/realms/${REALM_NAME}/protocol/saml`
-    * with above command you should get a `200` response and also xml file with data to connec to IDP(Identity Provider(Keycloak))
+    * with above command you should get a `200` response and also xml file with data to connect to IDP(Identity Provider(Keycloak))
     
   * Keystore password
     * secret name ref: 
       * Name: `fortify-secret`
       * Data: `httpCertificateKeystorePassword`
     
-  * Cerificate password
+  * Certificate password
     * secret name ref: 
       * Name: `fortify-secret`
       * Data: `httpCertificateKeyPassword`
 
 * **Post Configuration:**
 
-  * Login into fortify web UI using default user credentails `username/password: admin/admin`. It will promt you to update your password immediately.
+  * Login into the Fortify web UI using the default user credentials `username/password: admin/admin`. It will prompt you to update your password immediately.
 
     ![initial_login](docs/images/initial_login.png)
 
     
 
-  * Complete login with new credentails
+  * Complete login with new credentials
 
   * Now you need to setup SSO with SAML
 
-  * Navigate to administration page and select configuration on left sidebar on the administration page.
+  * Navigate to administration page and select configuration on left sidebar of the administration page.
 
     ![admin_config](docs/images/admin_config.png)
   
-  * Select SSO in the configuration section, It will show a drop down menu for SSO options.
+  * Select SSO in the configuration section, it will show a drop down menu for SSO options.
 
     ![admin_configuration](docs/images/admin_configuration.png)
 

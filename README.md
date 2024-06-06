@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 1.1.2320154-bb.8](https://img.shields.io/badge/Version-1.1.2320154--bb.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.2.0.0154](https://img.shields.io/badge/AppVersion-23.2.0.0154-informational?style=flat-square)
+![Version: 1.1.2320154-bb.9](https://img.shields.io/badge/Version-1.1.2320154--bb.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23.2.0.0154](https://img.shields.io/badge/AppVersion-23.2.0.0154-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -144,6 +144,8 @@ helm install fortify-ssc chart/
 | domain | string | `"dev.bigbang.mil"` |  |
 | istio.enabled | bool | `false` |  |
 | istio.hardened.enabled | bool | `false` |  |
+| istio.hardened.outboundTrafficPolicyMode | string | `"REGISTRY_ONLY"` |  |
+| istio.hardened.customServiceEntries | list | `[]` |  |
 | istio.hardened.customAuthorizationPolicies | list | `[]` |  |
 | istio.hardened.monitoring.enabled | bool | `true` |  |
 | istio.hardened.monitoring.namespaces[0] | string | `"monitoring"` |  |

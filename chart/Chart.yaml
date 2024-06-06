@@ -1,7 +1,7 @@
 apiVersion: v2
 description: A Helm chart for Fortify Software Security Center application
 name: fortify-ssc
-version: 1.1.2320154-bb.8
+version: 1.1.2320154-bb.9
 appVersion: 23.2.0.0154
 type: application
 keywords:
@@ -9,7 +9,7 @@ keywords:
 - ssc
 - sast
 home: https://www.microfocus.com/en-us/solutions/application-security
-icon: https://avatars.githubusercontent.com/u/28990234?s=200&v=4
+icon: https://avatars.githubusercontent.com/u/28990234?s=200&v=ok
 sources:
 - https://github.com/fortify/helm3-charts
 engine: gotpl

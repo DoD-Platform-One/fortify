@@ -3,6 +3,14 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.1.2320154-bb.10] - 2024-06-08
+### Changed
+- gluon updated from 0.4.7 to 0.5.0
+- mysql updated from 9.14.4 to 11.1.2
+- ironbank/bitnami/mysql8 updated from 8.0.35 to 8.0.36
+- ironbank/google/golang/golang-1.20 updated from 1.20.12 to 1.20.14
+- ironbank/microfocus/fortify/ssc updated from 23.2.0.0154 to 24.2.0.0186
+
 ## [1.1.2320154-bb.9] - 2024-06-06
 ### Added
 - Sidecar and service entry resource for whitelist

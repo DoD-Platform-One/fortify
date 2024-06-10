@@ -40,7 +40,7 @@ Notes:
 1. In `/chart/values.yaml` update image.tag to the new version. Renovate might have arleady done this for you. Also update the `dev.bigbang.mil/applicationVersions`
    ```
      dev.bigbang.mil/applicationVersions: |
-    - Fortify: 23.2.0.0154
+    - Fortify: 24.2.0.0186
    ```
 1. Revert some settings in `chart/templates/webapp.yaml`:
 Increase Readiness Probe times and use HTTP vs HTTPS:
@@ -104,7 +104,7 @@ Revert Volumes and Mountpaths. These have change to automated the start up proce
     appVersion: X.X.X.X
     annotations:
       bigbang.dev/applicationVersions: |
-        - Fortify: 23.1.2.0005
+        - Fortify: 24.2.0.0186
     ```
 SecurityContext should pull from values
    ```

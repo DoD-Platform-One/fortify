@@ -19,7 +19,7 @@ image:
   # webapp is a name for SSC webapp image, the name will be prefixed by repositoryPrefix
   webapp: "ssc"
 
-  tag: "23.2"
+  tag: "24.2.0.0186"
 
 securityContext:
   enabled: true
@@ -201,7 +201,7 @@ mysql:
       - private-registry
   image:
     repository: bitnami/mysql8
-    tag: 8.0.35-debian-11-r1
+    tag: 8.0.36-debian-11-r1
   auth:
     rootPassword: "password"
     database: "ssc_db"
@@ -347,7 +347,7 @@ istio:
 
 initContainer:
   keystoreImage: registry1.dso.mil/ironbank/google/golang/golang-1.20
-  keystoreTag: 1.20.12
+  keystoreTag: 1.20.14
   resources:
     limits:
       cpu: 500m

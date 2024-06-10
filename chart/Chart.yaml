@@ -1,8 +1,8 @@
 apiVersion: v2
 description: A Helm chart for Fortify Software Security Center application
 name: fortify-ssc
-version: 1.1.2320154-bb.9
-appVersion: 23.2.0.0154
+version: 1.1.2320154-bb.10
+appVersion: 24.2.0.0186
 type: application
 keywords:
 - fortify
@@ -17,18 +17,18 @@ dependencies:
 - name: mysql
   # TODO: this should be changed to registry1.dso.mil/ironbank/mysql when/if it is available (at modern versions)
   condition: mysql.enabled
-  version: '9.14.4'
+  version: '11.1.2'
   repository: oci://registry-1.docker.io/bitnamicharts
 - name: gluon
-  version: 0.4.7
+  version: 0.5.0
   repository: oci://registry1.dso.mil/bigbang
 annotations:
   bigbang.dev/applicationVersions: |
-    - Fortify: 23.2.0.0154
+    - Fortify: 24.2.0.0186
   helm.sh/images: |
     - name: ssc
-      image: registry1.dso.mil/ironbank/microfocus/fortify/ssc:23.2.0.0154
+      image: registry1.dso.mil/ironbank/microfocus/fortify/ssc:24.2.0.0186
     - name: mysql
-      image: registry1.dso.mil/ironbank/bitnami/mysql8:8.0.35-debian-11-r1
+      image: registry1.dso.mil/ironbank/bitnami/mysql8:8.0.36-debian-11-r1
     - name: golang-1.20
-      image: registry1.dso.mil/ironbank/google/golang/golang-1.20:1.20.12
+      image: registry1.dso.mil/ironbank/google/golang/golang-1.20:1.20.14

@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 1.1.2320154-bb.10](https://img.shields.io/badge/Version-1.1.2320154--bb.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 24.2.0.0186](https://img.shields.io/badge/AppVersion-24.2.0.0186-informational?style=flat-square)
+![Version: 1.1.2320154-bb.11](https://img.shields.io/badge/Version-1.1.2320154--bb.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 24.2.0.0186](https://img.shields.io/badge/AppVersion-24.2.0.0186-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 

@@ -81,7 +81,7 @@ Our current solution has more moving parts than we'd like. Here they are.
 
 ## Sounds complicated. How do we make sure our custom log config is actually in force?
 
-We've added a BigBang package CI test has been added to [tests/wait.sh](../../tests/wait.sh). Its job is to wait for fortify's helm install to finish and then check the runtime log config at `$COM_FORTIFY_SSC_HOME/config/log4j2.xml` to ensure that our custom "this file was put here by BigBang!" test shows up as expected.
+We've added a BigBang package CI test has been added to [tests/wait.sh](../tests/wait.sh). Its job is to wait for fortify's helm install to finish and then check the runtime log config at `$COM_FORTIFY_SSC_HOME/config/log4j2.xml` to ensure that our custom "this file was put here by BigBang!" test shows up as expected.
 
 ## Won't this break awkwardly once a major Fortify upgrade changes the location and contents of their log4j config file handling?
 

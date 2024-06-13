@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.1.2320154-bb.13] - 2024-06-13
+### Removed
+- resource overrides from test values
+
 ## [1.1.2320154-bb.12] - 2024-06-13
 ### Added
 - Fixed link to tests/wait.sh that was breaking bb-docs: [docs/log-configuration.md](docs/log-configuration.md)

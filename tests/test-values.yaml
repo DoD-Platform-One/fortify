@@ -13,14 +13,6 @@ storage:
 # jvmMaxRAMPercentage is a percentage of memory limit to be used for JVM heap
 jvmMaxRAMPercentage: 85
 
-# resources is Kubernetes Pod resources specification
-resources:
-  limits:
-    cpu: 1
-    memory: 1Gi
-  requests:
-    cpu: 1
-    memory: 1Gi
 
 databaseSecret:
   useRoot: true

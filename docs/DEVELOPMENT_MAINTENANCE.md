@@ -171,7 +171,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 - add istio virtual service
 - add networkpolicies
 - add istio peerauthentications
-- add log4j2 configmap to override `/app/ssc/WEB-INF/init/log4j2.xml` which SSC will copy in at boot to its ultimate home at `/fortify/ssc/conf/log4j2.xml`
+- add opt-in custom log4j2 configmap to be mounted at `/opt/bigbang/log4j2-config-override.xml`.
 
 ## chart/templates/tests/*
 - add templates for CI helm tests
@@ -207,21 +207,6 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
           mountPath /shared
         - name: secrets-volume
           mountPath: /secrets
-        resources:
-          {{- toYaml .Values.initContainer.resources | nindent 12 }}
-      - name: log4j-config-pinner
-        image: "{{ .Values.image.repositoryPrefix }}{{ .Values.image.webapp }}:{{ include "ssc.image.tag" $context }}"
-        imagePullPolicy: IfNotPresent
-        command:
-          - /bin/sh
-          - -c
-        args:
-          - "echo \"[BigBang] | 📦 Removing any existing SSC logging configs from [${COM_FORTIFY_SSC_HOME}/conf/log4j2.xml]. The SSC webapp container copies in our custom config on each boot from [/app/ssc/WEB-INF/init].\" && rm -f \"${COM_FORTIFY_SSC_HOME}/conf/log4j2.xml\" && echo \"[BigBang] | 📦 Done removing log4j2.xml. Goodbye.\""
-        volumeMounts:
-          - mountPath: /fortify
-            name: persistent-volume
-        securityContext:
-          {{- toYaml .Values.initContainer.containerSecurityContext | nindent 12 }}
         resources:
           {{- toYaml .Values.initContainer.resources | nindent 12 }}
     ```
@@ -330,13 +315,12 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
         min_threads: 4
         max_threads: 150
   ```
-- allow changing root log level and optionally sending root logger's output to STDOUT with:
+- Allow verbose debug logs for SSC with:
   ```yaml
   ssc:
-      config:
-        log4j:
-          rootLevel: "debug"
-          copyRootToStdout: true
+    config:
+      log4j:
+        enableDebugConfig: true
   ```
 - add this to the bottom
   ```yaml

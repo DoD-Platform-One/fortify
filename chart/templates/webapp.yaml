@@ -48,6 +48,14 @@ spec:
               value: "{{ $urlPathPrefix }}"
             - name: COM_FORTIFY_SSC_ENFORCESECURETRANSPORT
               value: "false"
+          # Setting this variable tells SSC to use our custom log4j config.
+          # If neither of our custom log config options are enabled, leave it out.
+          {{- with .Values.ssc.config.log4j }}
+            {{- if or .enableDebugConfig .customXMLConfigString }}
+            - name: COM_FORTIFY_SSC_LOG4J2_OVERRIDE
+              value: "/opt/bigbang/log4j2-config-override.xml"
+            {{- end }}
+          {{- end }}
             - name: CATALINA_OPTS
               value: "-XX:+UseContainerSupport -XX:MaxRAMPercentage={{ required "The jvmMaxRAMPercentage config value is required!" .Values.jvmMaxRAMPercentage | int }}.0 {{ .Values.jvmExtraOptions }}"
             - name: HTTP_SERVER_CERTIFICATE_VERIFICATION
@@ -93,22 +101,21 @@ spec:
               readOnly: true
               mountPath: "/app/secrets"
             - name: persistent-volume
-              # Note that COM_FORTIFY_SSC_HOME points to a path within
-              # this persistent volume: /fortify/ssc.
-              # Injecting file-based SSC configs inside this
-              # persistent volume is thus handled via initContainers below.
               mountPath: "/fortify"
             - mountPath: /app/tomcat/conf/server-tpl.xml
               subPath: server-tpl.xml
               name: tomcat-template
             - name: etc-volume
               mountPath: "/app/etc"
-            - mountPath: "/app/ssc/WEB-INF/init/log4j2.xml"
+            - mountPath: "/opt/bigbang/log4j2-config-override.xml"
               name: log4j2-template
-              # 📝 By placing our desired logging config in this initial "default log config file"
-              # location we ensure the runtime logging config is overwritten with our desired
-              # values.
-              subPath: log4j2.xml
+          {{- with .Values.ssc.config.log4j }}
+            {{- if .customXMLConfigString }}
+              subPath: customXMLConfigString
+            {{- else }}
+              subPath: debugToStdoutConfig
+            {{- end }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           securityContext:
@@ -132,21 +139,6 @@ spec:
             mountPath: /shared
           - name: secrets-volume
             mountPath: /secrets
-          resources:
-            {{- toYaml .Values.initContainer.resources | nindent 12 }}
-        - name: log4j-config-pinner
-          image: "{{ .Values.image.repositoryPrefix }}{{ .Values.image.webapp }}:{{ include "ssc.image.tag" $context }}"
-          imagePullPolicy: IfNotPresent
-          command:
-            - /bin/sh
-            - -c
-          args:
-            - "echo \"[BigBang] | 📦 Removing any existing SSC logging configs from [${COM_FORTIFY_SSC_HOME}/conf/log4j2.xml]. The SSC webapp container copies in our custom config on each boot from [/app/ssc/WEB-INF/init].\" && rm -f \"${COM_FORTIFY_SSC_HOME}/conf/log4j2.xml\" && echo \"[BigBang] | 📦 Done removing log4j2.xml. Goodbye.\""
-          volumeMounts:
-            - mountPath: /fortify
-              name: persistent-volume
-          securityContext:
-            {{- toYaml .Values.initContainer.containerSecurityContext | nindent 12 }}
           resources:
             {{- toYaml .Values.initContainer.resources | nindent 12 }}
       volumes:

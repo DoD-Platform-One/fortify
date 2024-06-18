@@ -3,6 +3,18 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.1.2320154-bb.14] - 2024-06-14
+### Changed
+- Overhauled log4j config customization.
+
+### Removed
+- Removed our recently-added `initContainer` (`log4j-config-pinner`) in favor of using the vendor-provided `COM_FORTIFY_SSC_LOG4J2_OVERRIDE` to wire in our own (opt-in!) volume-mounted custom XML configuration overrides at `/opt/bigbang/log4j2-config-override.xml`.
+- Previous `.Values.ssc.config.log4j` options have been removed in favor of the two new options described below.
+
+### Added
+- Set `.Values.ssc.config.log4j.enableDebugConfig` to `true` to have SSC use log level `debug` and print logs to `STDOUT`. Not recommended as an always-on default.
+- Should you need to *fully* customize Fortify SSC's log configuration, paste in your own log4j2 config as a multiline XML string at `.Values.ssc.config.log4j.customXMLConfigString`.
+
 ## [1.1.2320154-bb.13] - 2024-06-13
 ### Removed
 - resource overrides from test values

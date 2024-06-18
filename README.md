@@ -1,6 +1,6 @@
 # fortify-ssc
 
-![Version: 1.1.2320154-bb.13](https://img.shields.io/badge/Version-1.1.2320154--bb.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 24.2.0.0186](https://img.shields.io/badge/AppVersion-24.2.0.0186-informational?style=flat-square)
+![Version: 1.1.2320154-bb.14](https://img.shields.io/badge/Version-1.1.2320154--bb.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 24.2.0.0186](https://img.shields.io/badge/AppVersion-24.2.0.0186-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -81,8 +81,8 @@ helm install fortify-ssc chart/
 | ssc.config.http.max_threads | int | `4` |  |
 | ssc.config.https.min_threads | int | `4` |  |
 | ssc.config.https.max_threads | int | `150` |  |
-| ssc.config.log4j.rootLevel | string | `"warn"` |  |
-| ssc.config.log4j.copyRootToStdout | bool | `false` |  |
+| ssc.config.log4j.enableDebugConfig | bool | `false` |  |
+| ssc.config.log4j.customXMLConfigString | string | `""` |  |
 | persistentVolumeClaim.size | string | `"4Gi"` |  |
 | persistentVolumeClaim.storageClassName | string | `""` |  |
 | persistentVolumeClaim.selector | object | `{}` |  |

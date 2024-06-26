@@ -5,11 +5,13 @@
 A Helm chart for Fortify Software Security Center application
 
 ## Upstream References
+
 * <https://www.microfocus.com/en-us/solutions/application-security>
 
 * <https://github.com/fortify/helm3-charts>
 
 ## Learn More
+
 * [Application Overview](docs/overview.md)
 * [Other Documentation](docs/)
 
@@ -21,12 +23,13 @@ A Helm chart for Fortify Software Security Center application
 
 Install Helm
 
-https://helm.sh/docs/intro/install/
+<https://helm.sh/docs/intro/install/>
 
 ## Deployment
 
 * Clone down the repository
 * cd into directory
+
 ```bash
 helm install fortify-ssc chart/
 ```

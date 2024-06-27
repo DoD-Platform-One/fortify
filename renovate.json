@@ -3,7 +3,6 @@
   "configWarningReuseIssue": false,
   "dependencyDashboard": "true",
   "dependencyDashboardAutoclose": "true",
-  "dependencyDashboardHeader": "- [ ] Sync upstream helm chart version with updated dependencies.",
   "dependencyDashboardTitle": "Renovate: Upgrade Fortify Package Dependencies",
   "draftPR": true,
   "enabledManagers": ["regex", "helmv3"],

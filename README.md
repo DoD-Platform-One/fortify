@@ -1,17 +1,15 @@
 # fortify-ssc
 
-![Version: 1.1.2320154-bb.14](https://img.shields.io/badge/Version-1.1.2320154--bb.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 24.2.0.0186](https://img.shields.io/badge/AppVersion-24.2.0.0186-informational?style=flat-square)
+![Version: 1.1.2320154-bb.15](https://img.shields.io/badge/Version-1.1.2320154--bb.15-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 24.2.0.0186](https://img.shields.io/badge/AppVersion-24.2.0.0186-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
 ## Upstream References
-
 * <https://www.microfocus.com/en-us/solutions/application-security>
 
 * <https://github.com/fortify/helm3-charts>
 
 ## Learn More
-
 * [Application Overview](docs/overview.md)
 * [Other Documentation](docs/)
 
@@ -23,13 +21,12 @@ A Helm chart for Fortify Software Security Center application
 
 Install Helm
 
-<https://helm.sh/docs/intro/install/>
+https://helm.sh/docs/intro/install/
 
 ## Deployment
 
 * Clone down the repository
 * cd into directory
-
 ```bash
 helm install fortify-ssc chart/
 ```

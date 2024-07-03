@@ -4,6 +4,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.1.2320154-bb.15] - 2024-06-25
+
+### Changed
+
+- Removed the allow nothing policy
+- Moved the authorization policies
+- Updated the istio hardened doc
+
 ## [1.1.2320154-bb.14] - 2024-06-14
 
 ### Changed

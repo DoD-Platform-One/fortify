@@ -9,6 +9,10 @@ A Helm chart for Fortify Software Security Center application
 
 * <https://github.com/fortify/helm3-charts>
 
+### Upstream Release Notes
+
+The [upstream application's release notes](https://www.microfocus.com/documentation/fortify-software-security-center/) may help when reviewing this package.
+
 ## Learn More
 * [Application Overview](docs/overview.md)
 * [Other Documentation](docs/)

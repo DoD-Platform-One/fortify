@@ -1,7 +1,7 @@
 apiVersion: v2
 description: A Helm chart for Fortify Software Security Center application
 name: fortify-ssc
-version: 1.1.2320154-bb.15
+version: 1.1.2320154-bb.16
 appVersion: 24.2.0.0186
 type: application
 keywords:
@@ -23,6 +23,9 @@ dependencies:
   version: 0.5.0
   repository: oci://registry1.dso.mil/bigbang
 annotations:
+  bigbang.dev/upstreamReleaseNotesMarkdown: |
+    - [Find our upstream chart's CHANGELOG here](https://github.com/fortify/helm3-charts/tree/main/charts)
+    - [and our upstream application release notes here](https://www.microfocus.com/documentation/fortify-core-documents/2420/FortifySW_RN_24.2.0.pdf)
   bigbang.dev/applicationVersions: |
     - Fortify: 24.2.0.0186
   helm.sh/images: |

@@ -1,6 +1,7 @@
+<!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # fortify-ssc
 
-![Version: 1.1.2320154-bb.15](https://img.shields.io/badge/Version-1.1.2320154--bb.15-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 24.2.0.0186](https://img.shields.io/badge/AppVersion-24.2.0.0186-informational?style=flat-square)
+![Version: 1.1.2320154-bb.16](https://img.shields.io/badge/Version-1.1.2320154--bb.16-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 24.2.0.0186](https://img.shields.io/badge/AppVersion-24.2.0.0186-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -11,7 +12,8 @@ A Helm chart for Fortify Software Security Center application
 
 ### Upstream Release Notes
 
-The [upstream application's release notes](https://www.microfocus.com/documentation/fortify-software-security-center/) may help when reviewing this package.
+- [Find our upstream chart's CHANGELOG here](https://github.com/fortify/helm3-charts/tree/main/charts)
+- [and our upstream application release notes here](https://www.microfocus.com/documentation/fortify-core-documents/2420/FortifySW_RN_24.2.0.pdf)
 
 ## Learn More
 * [Application Overview](docs/overview.md)
@@ -190,10 +192,10 @@ helm install fortify-ssc chart/
 | bbtests.cypress.envs.cypress_url | string | `"http://fortify-ssc-service:80"` |  |
 | bbtests.cypress.envs.cypress_user | string | `"admin"` |  |
 | bbtests.cypress.envs.cypress_password | string | `"admin"` |  |
-| bbtests.cypress.resources.requests.cpu | string | `"1"` |  |
-| bbtests.cypress.resources.requests.memory | string | `"1Gi"` |  |
+| bbtests.cypress.resources.requests.cpu | string | `"2"` |  |
+| bbtests.cypress.resources.requests.memory | string | `"4Gi"` |  |
 | bbtests.cypress.resources.limits.cpu | string | `"2"` |  |
-| bbtests.cypress.resources.limits.memory | string | `"2Gi"` |  |
+| bbtests.cypress.resources.limits.memory | string | `"4Gi"` |  |
 | bbtests.scripts.image | string | `"registry1.dso.mil/bigbang-ci/gitlab-tester:0.0.4"` |  |
 | bbtests.scripts.envs | object | `{}` |  |
 | trust_store_password | string | `"dsoppassword"` |  |
@@ -205,3 +207,8 @@ helm install fortify-ssc chart/
 ## Contributing
 
 Please see the [contributing guide](./CONTRIBUTING.md) if you are interested in contributing.
+
+---
+
+_This file is programatically generated using `helm-docs` and some BigBang-specific templates. The `gluon` repository has [instructions for regenerating package READMEs](https://repo1.dso.mil/big-bang/product/packages/gluon/-/blob/master/docs/bb-package-readme.md)._
+

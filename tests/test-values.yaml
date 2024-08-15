@@ -15,15 +15,6 @@ jvmMaxRAMPercentage: 85
 databaseSecret:
   useRoot: true
 
-initContainer:
-  resources:
-    limits:
-      cpu: 500m
-      memory: 128Mi
-    requests:
-      cpu: 250m
-      memory: 64Mi
-
 trust_store_password: dsoppassword
 key_store_password: dsoppassword
 key_store_cert_password : dsoppassword

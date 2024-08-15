@@ -425,11 +425,11 @@ bbtests:
       cypress_password: "admin"
     resources:
       requests:
-        cpu: "1"
-        memory: "1Gi"
+        cpu: "2"
+        memory: "4Gi"
       limits:
         cpu: "2"
-        memory: "2Gi"
+        memory: "4Gi"
   scripts:
     image: "registry1.dso.mil/bigbang-ci/gitlab-tester:0.0.4"
     envs: {}

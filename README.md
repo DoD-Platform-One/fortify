@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # fortify-ssc
 
-![Version: 1.1.2320154-bb.16](https://img.shields.io/badge/Version-1.1.2320154--bb.16-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 24.2.0.0186](https://img.shields.io/badge/AppVersion-24.2.0.0186-informational?style=flat-square)
+![Version: 1.1.2320154-bb.17](https://img.shields.io/badge/Version-1.1.2320154--bb.17-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 24.2.0.0186](https://img.shields.io/badge/AppVersion-24.2.0.0186-informational?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -12,8 +12,8 @@ A Helm chart for Fortify Software Security Center application
 
 ### Upstream Release Notes
 
-- [Find our upstream chart's CHANGELOG here](https://github.com/fortify/helm3-charts/tree/main/charts)
-- [and our upstream application release notes here](https://www.microfocus.com/documentation/fortify-core-documents/2420/FortifySW_RN_24.2.0.pdf)
+* [Find our upstream chart's CHANGELOG here](https://github.com/fortify/helm3-charts/tree/main/charts)
+* [and our upstream application release notes here](https://www.microfocus.com/documentation/fortify-core-documents/2420/FortifySW_RN_24.2.0.pdf)
 
 ## Learn More
 * [Application Overview](docs/overview.md)

@@ -4,12 +4,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.1.2320154-bb.17] - 2024-08-22
+
+### Added
+
+- Added allow-sidecar-scraping NetworkPolicy
+
 ## [1.1.2320154-bb.16] - 2024-08-13
 
 ### Changed
 
-- Removed redundant entries in package test-values.yaml already in package values.yaml and 
--  Updated cypress resources to standard 2 cpu and 4 Gi memory
+- Removed redundant entries in package test-values.yaml already in package values.yaml and
+- Updated cypress resources to standard 2 cpu and 4 Gi memory
 - updated upstream releasenotes
 
 ## [1.1.2320154-bb.15] - 2024-06-25

@@ -454,3 +454,9 @@ fortify_autoconfig: |
       migration.password: password
 fortify_license: |
   <License>
+
+# Extra volumes, volume mounts and init container configurations for the webapp.
+webapp:
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraInitContainers: []

@@ -116,6 +116,9 @@ spec:
               subPath: debugToStdoutConfig
             {{- end }}
           {{- end }}
+            {{- with .Values.webapp.extraVolumeMounts }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           securityContext:
@@ -141,6 +144,9 @@ spec:
             mountPath: /secrets
           resources:
             {{- toYaml .Values.initContainer.resources | nindent 12 }}
+        {{- with .Values.webapp.extraInitContainers }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
       volumes:
         - name: secrets-volume
           secret:
@@ -167,6 +173,9 @@ spec:
           emptyDir:
             medium: Memory
             sizeLimit: 1Mi
+        {{- with .Values.webapp.extraVolumes }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}

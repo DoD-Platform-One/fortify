@@ -21,6 +21,9 @@ spec:
     metadata:
       labels:
         {{- include "ssc.selector" $context | nindent 8 }}
+        {{- with .Values.podLabels }}
+          {{ tpl (toYaml . | nindent 8) $ }}
+        {{- end }}
     spec:
       containers:
         - name: webapp

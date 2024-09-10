@@ -3,6 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.1.2320154-bb.19] - 2024-09-10
+
+### Added
+
+- Modified templating for `podLabels` in `webapp.yaml` to use `tpl` function to support passing kiali-required labels.
+- Added app and verison podLabels in values.yaml under mysql.primary.podLabels.
+
 ## [1.1.2320154-bb.18] - 2024-08-22
 
 ### Added

@@ -303,6 +303,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 - set secretRef.keys.httpCertificateKeyPasswordEntry to "ssc-service.jks.key.password"
 - set jvmExtraOptions to "-Dcom.redhat.fips=false"
 - set the resources like this
+- add app and version under mysql.primary.podLabels
   ```yaml
   # Recommended resources can be found here - https://www.microfocus.com/documentation/fortify-ScanCentral-DAST/2120/Fortify_Sys_Reqs_21.2.0.pdf
   # Check page 33 and 41 for recommended resources depending on the type of scan (DAST vs SSC)

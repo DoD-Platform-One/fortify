@@ -199,6 +199,12 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
   - set spec.template.spec.containers["webapp"].readinessProbe.httpGet.port `http-web`
   - set spec.template.spec.containers["webapp"].readinessProbe.httpGet.scheme `HTTP`
   - set spec.template.spec.containers["webapp"].readinessProbe.httpGet.httpHeaders["Host"].value to `{{ include "ssc.fullcomponentname" (merge (dict "component" "service") . ) }}`
+  - add spec.template.spec.containers["webapp"].volumeMounts `.Values.webapp.extraVolumeMounts` for [additional mounts](https://repo1.dso.mil/big-bang/product/packages/fortify/-/merge_requests/174)
+    ```yaml
+            {{- with .Values.webapp.extraVolumeMounts }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+    ```
   - set spec.template.spec.containers["webapp"].volumeMounts["secrets-volume"].name to `shared`
   - add spec.template.spec.initContainers
     ```yaml
@@ -219,6 +225,15 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
           mountPath: /secrets
         resources:
           {{- toYaml .Values.initContainer.resources | nindent 12 }}
+        {{- with .Values.webapp.extraInitContainers }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+    ```
+  - add spec.template.spec.volumes `Values.webapp.extraVolumes` for [additional volumes](https://repo1.dso.mil/big-bang/product/packages/fortify/-/merge_requests/174)
+    ```yaml
+        {{- with .Values.webapp.extraVolumes }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
     ```
   - modify spec.template.spec.volumes["secrets-volume"]
     ```yaml

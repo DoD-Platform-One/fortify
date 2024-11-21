@@ -214,9 +214,6 @@ mysql:
     rootPassword: "password"
     database: "ssc_db"
   primary:
-    podLabels:   
-      version: "{{ .Chart.AppVersion }}"
-      app: "{{ .Release.Name }}"
     configuration: |-
       [mysqld]
       default_authentication_plugin=mysql_native_password

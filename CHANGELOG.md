@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Reverted changes made from previou Kiali labelling strategy
 - Updated labels used for pod from `ssc.selector` to `ssc.labels` to ensure all required labels get applied properly
+- Added the maintenance track annotation and badge
 
 ## [1.1.2320154-bb.19] - 2024-09-10
 

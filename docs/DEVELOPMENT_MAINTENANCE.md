@@ -50,7 +50,7 @@ Notes:
 1. In `/chart/values.yaml` update image.tag to the new version. Renovate might have arleady done this for you. Also update the `dev.bigbang.mil/applicationVersions`
    ```
      dev.bigbang.mil/applicationVersions: |
-    - Fortify: 24.4.1.0005
+    - Fortify: 24.4.2.0009
    ```
 1. Revert some settings in `chart/templates/webapp.yaml`:
 Increase Readiness Probe times and use HTTP vs HTTPS:
@@ -114,7 +114,7 @@ Revert Volumes and Mountpaths. These have change to automated the start up proce
     appVersion: X.X.X.X
     annotations:
       bigbang.dev/applicationVersions: |
-        - Fortify: 24.4.1.0005
+        - Fortify: 24.4.5.0009
     ```
 SecurityContext should pull from values
    ```
@@ -504,7 +504,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
         cypress_url: "http://fortify-ssc-service:80"
         cypress_token: "change_me"
     scripts:
-      image: "registry1.dso.mil/bigbang-ci/gitlab-tester:0.0.4"
+      image: "registry1.dso.mil/bigbang-ci/devops-tester:1.1.2"
       envs: {}
   
   

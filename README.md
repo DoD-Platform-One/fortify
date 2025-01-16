@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # fortify-ssc
 
-![Version: 1.1.2320154-bb.21](https://img.shields.io/badge/Version-1.1.2320154--bb.21-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 24.4.1.0005](https://img.shields.io/badge/AppVersion-24.4.1.0005-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 1.1.2320154-bb.22](https://img.shields.io/badge/Version-1.1.2320154--bb.22-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 24.4.2.0009](https://img.shields.io/badge/AppVersion-24.4.2.0009-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -47,7 +47,7 @@ helm install fortify-ssc chart/
 | image.repositoryPrefix | string | `"registry1.dso.mil/ironbank/microfocus/fortify/"` |  |
 | image.pullPolicy | string | `"Always"` |  |
 | image.webapp | string | `"ssc"` |  |
-| image.tag | string | `"24.4.1.0005"` |  |
+| image.tag | string | `"24.4.2.0009"` |  |
 | securityContext.enabled | bool | `true` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.fsGroup | int | `1111` |  |
@@ -198,7 +198,7 @@ helm install fortify-ssc chart/
 | bbtests.cypress.resources.requests.memory | string | `"4Gi"` |  |
 | bbtests.cypress.resources.limits.cpu | string | `"2"` |  |
 | bbtests.cypress.resources.limits.memory | string | `"4Gi"` |  |
-| bbtests.scripts.image | string | `"registry1.dso.mil/bigbang-ci/gitlab-tester:0.0.4"` |  |
+| bbtests.scripts.image | string | `"registry1.dso.mil/bigbang-ci/devops-tester:1.1.2"` |  |
 | bbtests.scripts.envs | object | `{}` |  |
 | trust_store_password | string | `"dsoppassword"` |  |
 | key_store_password | string | `"dsoppassword"` |  |

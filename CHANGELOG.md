@@ -3,6 +3,14 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.1.2320154-bb.22] - 2024-12-13
+
+### Changed
+
+- Update gluon 0.5.0 -> 0.5.12
+- Update bbtests image to use common devops ci test image
+- Updated fortify to version 24.4.2.0009
+
 ## [1.1.2320154-bb.21] - 2024-12-11
 
 ### Changed

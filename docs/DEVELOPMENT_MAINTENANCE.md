@@ -448,8 +448,8 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
     injection: disabled
   
   initContainer:
-    keystoreImage: registry1.dso.mil/ironbank/google/golang/golang-1.20
-    keystoreTag: 1.20.11
+    keystoreImage: registry1.dso.mil/ironbank/google/golang/ubi9/golang-1.24
+    keystoreTag: 1.24.1
     resources:
       limits:
         cpu: 500m

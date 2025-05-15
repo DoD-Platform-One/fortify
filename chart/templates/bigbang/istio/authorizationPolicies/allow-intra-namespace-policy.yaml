@@ -8,7 +8,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      {{- include "ssc.selector" . | nindent 6 }}
+      {{- include "ssc.selector" (merge (dict "component" "webapp") . ) | nindent 6 }}
   action: ALLOW
   rules:
   - from:

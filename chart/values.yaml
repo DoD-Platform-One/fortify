@@ -19,7 +19,7 @@ image:
   # webapp is a name for SSC webapp image, the name will be prefixed by repositoryPrefix
   webapp: "ssc"
 
-  tag: "24.4.2.0009"
+  tag: "24.4.3.0003"
 
 securityContext:
   enabled: true

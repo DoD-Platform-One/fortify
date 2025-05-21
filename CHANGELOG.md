@@ -3,6 +3,14 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.1.2320154-bb.26] - 2025-05-20
+
+### Changed
+
+- Update gluon 0.5.0 -> 0.5.20
+- Updated google/golang/golang-1.24.1 -> google/golang/ubi9/golang-1.24.3
+- Updated fortify to version 24.4.3.0003
+
 ## [1.1.2320154-bb.25] - 2025-05-14
 
 ### Changed

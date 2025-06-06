@@ -1,8 +1,8 @@
 apiVersion: v2
 description: A Helm chart for Fortify Software Security Center application
 name: fortify-ssc
-version: 1.1.2320154-bb.26
-appVersion: 24.4.3.0003
+version: 1.1.2320154-bb.27
+appVersion: 25.2.0.0157
 type: application
 keywords:
 - fortify
@@ -28,10 +28,10 @@ annotations:
     - [Find our upstream chart's CHANGELOG here](https://github.com/fortify/helm3-charts/tree/main/charts)
     - [and our upstream application release notes here](https://www.microfocus.com/documentation/fortify-core-documents/2420/FortifySW_RN_24.2.0.pdf)
   bigbang.dev/applicationVersions: |
-    - Fortify: 24.4.3.0003
+    - Fortify: 25.2.0.0157
   helm.sh/images: |
     - name: ssc
-      image: registry1.dso.mil/ironbank/microfocus/fortify/ssc:24.4.3.0003
+      image: registry1.dso.mil/ironbank/microfocus/fortify/ssc:25.2.0.0157
     - name: mysql
       image: registry1.dso.mil/ironbank/bitnami/mysql8:8.0.36-debian-11-r1
     - name: golang-1.24

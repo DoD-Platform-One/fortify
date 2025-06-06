@@ -1,7 +1,7 @@
 describe('template spec', () => {
   it('.should() - allow user to signin', () => {
     cy.visit(Cypress.env('url'))
-    cy.contains('SOFTWARE SECURITY CENTER', { matchCase: false })
+    cy.contains('Application Security', { matchCase: false })
     cy.get('input[placeholder="Username"]').type(Cypress.env('user'))
     cy.get('input[placeholder="Password"]').type(Cypress.env('password'))
     cy.get('button[id="login"]').click()

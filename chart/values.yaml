@@ -355,7 +355,7 @@ istio:
 
 initContainer:
   keystoreImage: registry1.dso.mil/ironbank/google/golang/ubi9/golang-1.24
-  keystoreTag: 1.24.3
+  keystoreTag: 1.24.4
   resources:
     limits:
       cpu: 500m

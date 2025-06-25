@@ -186,7 +186,7 @@ resources:
     memory: 16Gi
   requests:
     cpu: 1
-    memory: 1Gi
+    memory: 4Gi
 
 # user is configuration for user and group IDs to be used for runAsUser, runAsGroup and fsGroup in PodSecurityContext
 user:

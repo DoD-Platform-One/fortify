@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # fortify-ssc
 
-![Version: 1.1.2320154-bb.28](https://img.shields.io/badge/Version-1.1.2320154--bb.28-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 25.2.0.0157](https://img.shields.io/badge/AppVersion-25.2.0.0157-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 1.1.2320154-bb.29](https://img.shields.io/badge/Version-1.1.2320154--bb.29-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 25.2.0.0157](https://img.shields.io/badge/AppVersion-25.2.0.0157-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -100,7 +100,7 @@ helm install fortify-ssc chart/
 | resources.limits.cpu | int | `4` |  |
 | resources.limits.memory | string | `"16Gi"` |  |
 | resources.requests.cpu | int | `1` |  |
-| resources.requests.memory | string | `"1Gi"` |  |
+| resources.requests.memory | string | `"4Gi"` |  |
 | user.uid | int | `1111` |  |
 | user.gid | int | `1111` |  |
 | nodeSelector."kubernetes.io/os" | string | `"linux"` |  |

@@ -19,7 +19,7 @@ image:
   # webapp is a name for SSC webapp image, the name will be prefixed by repositoryPrefix
   webapp: "ssc"
 
-  tag: "25.2.0.0157"
+  tag: "25.2.1.0010"
 
 securityContext:
   enabled: true
@@ -355,7 +355,7 @@ istio:
 
 initContainer:
   keystoreImage: registry1.dso.mil/ironbank/google/golang/ubi9/golang-1.24
-  keystoreTag: 1.24.4
+  keystoreTag: 1.24.5
   resources:
     limits:
       cpu: 500m

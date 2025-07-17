@@ -37,7 +37,10 @@
     {
       "customType": "regex",
       "fileMatch": ["^chart/Chart\\.yaml$"],
-      "matchStrings": ["appVersion:\\s+(?<currentValue>.+)"],
+      "matchStrings": [
+                        "appVersion:\\s+(?<currentValue>.+)",
+                        "-\\sFortify:\\s+(?<currentValue>.+)"
+                      ],
       "depNameTemplate": "registry1.dso.mil/ironbank/microfocus/fortify/ssc",
       "datasourceTemplate": "docker",
       "registryUrlTemplate": "https://registry1.dso.mil"
@@ -53,6 +56,15 @@
       "fileMatch": ["^chart/values\\.yaml$"],
       "matchStrings": ["image:\\s+repository:\\s+[^/]+/(?<repName>.+)\\s+tag:\\s+(?<currentValue>.+)"],
       "depNameTemplate": "registry1.dso.mil/ironbank/bitnami/mysql8",
+      "datasourceTemplate": "docker",
+      "registryUrlTemplate": "https://registry1.dso.mil"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["^chart/values\\.yaml$"],
+      "matchStrings": ["keystoreImage:[^\\S\\r\\n]+(?<depName>.+)\\s+keystoreTag:\\s+(?<currentValue>.+)"],
+          
+      "depNameTemplate": "registry1.dso.mil/ironbank/google/golang/ubi9/golang-1.24",
       "datasourceTemplate": "docker",
       "registryUrlTemplate": "https://registry1.dso.mil"
     }

@@ -3,6 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.1.2320154-bb.31] - 2025-07-17
+
+### Fixed
+
+- Updated renovate matcher to properly update golang-1.24
+- Updated renovate matcher to catch all version tags of Fortify
+
 ## [1.1.2320154-bb.30] - 2025-07-15
 
 ### Changed

@@ -15,7 +15,7 @@ spec:
           {{- if .Values.networkPolicies.istioNamespaceSelector }}
           app.kubernetes.io/name: {{ .Values.networkPolicies.istioNamespaceSelector.egress }}
           {{- else }}
-          app.kubernetes.io/name: "istio-controlplane"
+          app.kubernetes.io/name: "istio-gateway"
           {{- end }}
       podSelector:
         matchLabels:
@@ -39,7 +39,7 @@ spec:
           {{- if .Values.networkPolicies.istioNamespaceSelector }}
           app.kubernetes.io/name: {{ .Values.networkPolicies.istioNamespaceSelector.ingress }}
           {{- else }}
-          app.kubernetes.io/name: "istio-controlplane"
+          app.kubernetes.io/name: "istio-gateway"
           {{- end }}
       podSelector:
         matchLabels:

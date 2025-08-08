@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.1.2320154-bb.33] - 2025-08-08
+
+### Fixed
+
+- registry1.dso.mil/ironbank/google/golang/ubi9/golang-1.24.5 (source) -> 1.24.6
+
 ## [1.1.2320154-bb.32] - 2025-07-22
 
 ### Fixed

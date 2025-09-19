@@ -10,17 +10,28 @@
   "enabledManagers": [
     "custom.regex"
   ],
-  "labels": ["fortify","renovate"],
+  "labels": [
+    "fortify",
+    "renovate"
+  ],
   "commitMessagePrefix": "SKIP UPDATE CHECK",
   "packageRules": [
     {
-      "matchDatasources": ["docker"],
+      "matchDatasources": [
+        "docker"
+      ],
       "groupName": "Ironbank",
-      "registryUrls": ["https://registry1.dso.mil"]
+      "registryUrls": [
+        "https://registry1.dso.mil"
+      ]
     },
     {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["registry1.dso.mil/ironbank/bitnami/mysql8"],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "registry1.dso.mil/ironbank/bitnami/mysql8"
+      ],
       "allowedVersions": "8.0.x"
     }
   ],
@@ -28,42 +39,59 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["^chart/values\\.yaml$"],
-      "matchStrings": ["image:\\s+(?:.*\\n)*?\\s+repositoryPrefix:\\s+\\\"[^\\\"]+/((?<depName>[^/]+))/[^\\\"]+\\\"\\s+(?:.*\\n)*?\\s+tag:\\s+\\\"(?<currentValue>[^\\\"]+)\\\""],
-      "depNameTemplate": "registry1.dso.mil/ironbank/microfocus/fortify/ssc",
-      "datasourceTemplate": "docker",
-      "registryUrlTemplate": "https://registry1.dso.mil"
-    },
-    {
-      "customType": "regex",
-      "fileMatch": ["^chart/Chart\\.yaml$"],
+      "managerFilePatterns": [
+        "/^chart/values\\.yaml$/"
+      ],
       "matchStrings": [
-                        "appVersion:\\s+(?<currentValue>.+)",
-                        "-\\sFortify:\\s+(?<currentValue>.+)"
-                      ],
+        "image:\\s+(?:.*\\n)*?\\s+repositoryPrefix:\\s+\\\"[^\\\"]+/((?<depName>[^/]+))/[^\\\"]+\\\"\\s+(?:.*\\n)*?\\s+tag:\\s+\\\"(?<currentValue>[^\\\"]+)\\\""
+      ],
       "depNameTemplate": "registry1.dso.mil/ironbank/microfocus/fortify/ssc",
       "datasourceTemplate": "docker",
       "registryUrlTemplate": "https://registry1.dso.mil"
     },
     {
       "customType": "regex",
-      "fileMatch": ["^chart/Chart\\.yaml$"],
-      "matchStrings": ["image:[^\\S\\r\\n]+(?<depName>.+):(?<currentValue>.+)"],
+      "managerFilePatterns": [
+        "/^chart/Chart\\.yaml$/"
+      ],
+      "matchStrings": [
+        "appVersion:\\s+(?<currentValue>.+)",
+        "-\\sFortify:\\s+(?<currentValue>.+)"
+      ],
+      "depNameTemplate": "registry1.dso.mil/ironbank/microfocus/fortify/ssc",
+      "datasourceTemplate": "docker",
+      "registryUrlTemplate": "https://registry1.dso.mil"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^chart/Chart\\.yaml$/"
+      ],
+      "matchStrings": [
+        "image:[^\\S\\r\\n]+(?<depName>.+):(?<currentValue>.+)"
+      ],
       "datasourceTemplate": "docker"
     },
     {
       "customType": "regex",
-      "fileMatch": ["^chart/values\\.yaml$"],
-      "matchStrings": ["image:\\s+repository:\\s+[^/]+/(?<repName>.+)\\s+tag:\\s+(?<currentValue>.+)"],
+      "managerFilePatterns": [
+        "/^chart/values\\.yaml$/"
+      ],
+      "matchStrings": [
+        "image:\\s+repository:\\s+[^/]+/(?<repName>.+)\\s+tag:\\s+(?<currentValue>.+)"
+      ],
       "depNameTemplate": "registry1.dso.mil/ironbank/bitnami/mysql8",
       "datasourceTemplate": "docker",
       "registryUrlTemplate": "https://registry1.dso.mil"
     },
     {
       "customType": "regex",
-      "fileMatch": ["^chart/values\\.yaml$"],
-      "matchStrings": ["keystoreImage:[^\\S\\r\\n]+(?<depName>.+)\\s+keystoreTag:\\s+(?<currentValue>.+)"],
-          
+      "managerFilePatterns": [
+        "/^chart/values\\.yaml$/"
+      ],
+      "matchStrings": [
+        "keystoreImage:[^\\S\\r\\n]+(?<depName>.+)\\s+keystoreTag:\\s+(?<currentValue>.+)"
+      ],
       "depNameTemplate": "registry1.dso.mil/ironbank/google/golang/ubi9/golang-1.24",
       "datasourceTemplate": "docker",
       "registryUrlTemplate": "https://registry1.dso.mil"

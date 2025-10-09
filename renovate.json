@@ -7,6 +7,7 @@
   "dependencyDashboardAutoclose": true,
   "dependencyDashboardTitle": "Renovate: Upgrade Fortify Package Dependencies",
   "draftPR": true,
+  "branchName": "renovate/ironbank",
   "enabledManagers": [
     "custom.regex"
   ],
@@ -14,12 +15,9 @@
     "fortify",
     "renovate"
   ],
-  "commitMessagePrefix": "SKIP UPDATE CHECK",
   "packageRules": [
     {
-      "matchDatasources": [
-        "docker"
-      ],
+      "matchManagers": ["custom.regex"],
       "groupName": "Ironbank",
       "registryUrls": [
         "https://registry1.dso.mil"

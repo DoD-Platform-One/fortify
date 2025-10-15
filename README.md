@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # fortify-ssc
 
-![Version: 1.1.2320154-bb.35](https://img.shields.io/badge/Version-1.1.2320154--bb.35-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 25.2.1.0010](https://img.shields.io/badge/AppVersion-25.2.1.0010-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 1.1.2320154-bb.36](https://img.shields.io/badge/Version-1.1.2320154--bb.36-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 25.2.1.0010](https://img.shields.io/badge/AppVersion-25.2.1.0010-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -163,7 +163,7 @@ helm install fortify-ssc chart/
 | istio.fortify.hosts[0] | string | `"fortify.{{ .Values.domain }}"` |  |
 | istio.injection | string | `"disabled"` |  |
 | initContainer.keystoreImage | string | `"registry1.dso.mil/ironbank/google/golang/ubi9/golang-1.24"` |  |
-| initContainer.keystoreTag | string | `"1.24.7"` |  |
+| initContainer.keystoreTag | string | `"1.24.8"` |  |
 | initContainer.resources.limits.cpu | string | `"500m"` |  |
 | initContainer.resources.limits.memory | string | `"128Mi"` |  |
 | initContainer.resources.requests.cpu | string | `"250m"` |  |

@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.1.2320154-bb.38] - 2025-11-06
+
+### Fixed
+
+- registry1.dso.mil/ironbank/microfocus/fortify/ssc (source) version 25.2.1.0010 -> 25.4.0.0137
+
 ## [1.1.2320154-bb.37] - 2025-10-16
 
 ### Fixed

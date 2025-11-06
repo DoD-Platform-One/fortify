@@ -21,7 +21,7 @@ Be sure to also test against monitoring locally as it is integrated by default w
 1. Download the test license using the following command
 
 ```bash
-aws s3 cp s3://bb-licenses/fortify.license
+aws s3 cp s3://bb-licenses/fortify.license ./fortify.license
 ```
 
 1. Deploy Fortify with these dev values overrides. Core apps are disabled for quick deployment. Be sure to copy the contents of the `fortify.license` file and set it in the `addons.fortify.values.fortify_license` value.

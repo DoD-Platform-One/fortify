@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.1.2320154-bb.40] - 2026-01-27
+
+### Fixed
+
+- registry1.dso.mil/ironbank/google/golang/ubi9/golang-1.24.10 (source) -> 1.24.12
+
 ## [1.1.2320154-bb.39] - 2025-11-07
 
 ### Fixed

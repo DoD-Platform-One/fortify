@@ -18,13 +18,7 @@ Be sure to also test against monitoring locally as it is integrated by default w
 
 1. Create a k8s dev environment. One option is to use the Big Bang [k3d-dev.sh](https://repo1.dso.mil/platform-one/big-bang/bigbang/-/tree/master/docs/developer/scripts) with no arguments which will give you the default configuration. The following steps assume you are using the script.
 1. Follow the instructions at the end of the script to connect to the k8s cluster and install flux.
-1. Download the test license using the following command
-
-```bash
-aws s3 cp s3://bb-licenses/fortify.license ./fortify.license
-```
-
-1. Deploy Fortify with these dev values overrides. Core apps are disabled for quick deployment. Be sure to copy the contents of the `fortify.license` file and set it in the `addons.fortify.values.fortify_license` value.
+1. Use the following override example to quickly create a test environment.  We currently do not test using a fortify license, however if one becomes available it can be set in `addons.fortify.values.fortify_license`.
 
     ```yaml
     addons:
@@ -33,7 +27,6 @@ aws s3 cp s3://bb-licenses/fortify.license ./fortify.license
         sourceType: "git"
         git:
           repo: "https://repo1.dso.mil/big-bang/product/packages/fortify.git"
-          path: "chart"
           tag: null
           branch: "replace-me-with-your-branch-name"
         values:
@@ -43,7 +36,6 @@ aws s3 cp s3://bb-licenses/fortify.license ./fortify.license
             enabled: true
           databaseSecret:
             useRoot: true
-          # A valid license is required for autoconfig to work
           fortify_autoconfig: |
               appProperties:
                 host.validation: false
@@ -55,8 +47,6 @@ aws s3 cp s3://bb-licenses/fortify.license ./fortify.license
                 migration.enabled: true
                 migration.username: root
                 migration.password: password
-          fortify_license: |
-            <paste the contents of fortify.license here>
     ```
 
 1. Access Fortify UI from a browser (usually fortify.dev.bigbang.mil, or whatever you added to your hosts file ) and login with the following default credentials:
@@ -348,9 +338,6 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
       imageRegistry: "registry1.dso.mil/ironbank"
       imagePullSecrets:
         - private-registry
-    image:
-      repository: bitnami/mysql8
-      tag: 8.0.34-debian-11-r2
     auth:
       rootPassword: "password"
       database: "ssc_db"

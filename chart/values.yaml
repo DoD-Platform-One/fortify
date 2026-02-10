@@ -1,203 +1,86 @@
-# Default values for ssc chart.
-# This is a YAML-formatted file.
+# BigBang Passthrough Values for Fortify SSC
+#
+# IMPORTANT: This chart uses a passthrough pattern where:
+# - The upstream helm-ssc chart is included as a subchart with alias 'upstream'
+# - BigBang-specific templates in /templates/bigbang/ add Istio, network policies, etc.
+# - Upstream chart configuration is customized via values passed to 'upstream:'
+# - Istio sidecar timing issues are handled via podAnnotations (holdApplicationUntilProxyStarts)
 
-# Default to false, override in openshift-test-values.yaml 
-openshift: false
+# Values to pass through to the upstream helm-ssc chart (aliased as 'upstream')
+# Only overrides from upstream defaults are specified here
+upstream:
+  # Pod annotations for Istio sidecar configuration
+  # holdApplicationUntilProxyStarts ensures the app waits for Istio proxy to be ready
+  # This prevents MySQL connection failures due to Istio endpoint propagation timing
+  podAnnotations:
+    proxy.istio.io/config: '{"holdApplicationUntilProxyStarts": true}'
 
-# image is a map of the global Kubernetes image settings
-image:
+  # image is a map of the global Kubernetes image settings
+  image:
+    # Override to use Iron Bank images
+    repository: "registry1.dso.mil/ironbank/microfocus/fortify/ssc"
+    # pullPolicy is Kubernetes image pull policy, supported values are Always, IfNotPresent, and Never
+    pullPolicy: Always
+    # tag for SSC webapp image
+    tag: "25.4.0.0137"
 
-  # repositoryPrefix is a prefix for SSC images and can be used to pull images from a private registry
-  repositoryPrefix: "registry1.dso.mil/ironbank/microfocus/fortify/"
+  # imagePullSecrets is a list of Kubernetes image pull secrets
+  imagePullSecrets:
+    - name: "private-registry"
 
-  # pullPolicy is Kubernetes image pull policy, supported values are Always, IfNotPresent, and Never
-  pullPolicy: Always
+  # nameOverride is a value to override service name, defaults to the helm chart name (ssc)
+  nameOverride: "fortify-ssc"
 
-  # buildNumber is an image build number to pull, pull the latest build for release if empty, must be a string
-  # buildNumber: ""
+  # fullnameOverride is a value to override fully-qualified service, defaults to "{deployment_name}-{service_name}"
+  fullnameOverride: "fortify-ssc"
 
-  # webapp is a name for SSC webapp image, the name will be prefixed by repositoryPrefix
-  webapp: "ssc"
+  # urlHost is a fully qualified DNS name for externally accessing the application (required)
+  urlHost: "fortify.dev.bigbang.mil"
 
-  tag: "25.4.0.0137"
+  # secretRef is a reference to externally managed Kubernetes secret (required)
+  secretRef:
+    # name is a name of externally managed Kubernetes secret to be used for configuration (required)
+    name: "fortify-ssc-secret"
+    # keys is a map of key names for externally managed Kubernetes secret (required)
+    keys:
+      sscLicenseEntry: "fortify.license"
+      sscAutoconfigEntry: "ssc.autoconfig"
+      httpCertificateKeystoreFileEntry: "ssc-service.jks"
+      httpCertificateKeystorePasswordEntry: "ssc-service.jks.password"
+      httpCertificateKeyPasswordEntry: "ssc-service.jks.key.password"
 
-securityContext:
-  enabled: true
-  capabilities:
-    drop: 
-      - ALL
-  fsGroup: 1111
-  fsGroupChangePolicy: OnRootMismatch
-  runAsUser: 1111
-  runAsGroup: 1111
-  runAsNonRoot: true
+  # Disable enforceSecureTransport since Istio terminates TLS at the gateway
+  # and forwards to SSC on HTTP. Without this, SSC 302-redirects to HTTPS in a loop.
+  environment:
+    - name: COM_FORTIFY_SSC_ENFORCESECURETRANSPORT
+      value: "false"
 
-containerSecurityContext:
-  capabilities:
-    drop: 
-      - ALL
-  fsGroup: 1111
-  fsGroupChangePolicy: OnRootMismatch
-  runAsUser: 1111
-  runAsGroup: 1111
-  runAsNonRoot: true
+  # JVM configuration
+  jvmExtraOptions: "-Dcom.redhat.fips=false"  # Disable FIPS mode
 
-# imagePullSecrets is a list of Kubernetes image pull secrets, for details, see the Kubernetes documentation
-# (https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
-imagePullSecrets: 
-  - name: "private-registry"
+  # resources is Kubernetes Pod resources specification
+  resources:
+    limits:
+      cpu: 4
+      memory: 16Gi
+    requests:
+      memory: 4Gi
 
-# nameOverride is a value to override service name, defaults to the helm chart name (ssc)
+  # User configuration - Override GID for BigBang/OpenShift compatibility
+  user:
+    gid: 1111  # Override from default 0 to 1111 for non-root group
+
+#################################################
+# BigBang Specific Values - NOT passed to upstream
+#################################################
+
+# OpenShift Support
+openshift: false  # Set to true for OpenShift deployments
+
+# Legacy naming values for BigBang templates
+# These must match upstream values for consistent labeling
 nameOverride: "fortify-ssc"
-
-# fullnameOverride is a value to override fully-qualified service, defaults to "{deployment_name}-{service_name}"
 fullnameOverride: "fortify-ssc"
-
-
-# service is a map of the Kubernetes service resource options used to expose the SSC service
-service:
-
-  # type is Kubernetes service type (required), supported values" "ClusterIP", "NodePort", "LoadBalancer"
-  type: ClusterIP
-
-  # httpPort is an external HTTP port of the service, the meaning depends on selected service type, disabled if empty
-  httpPort: 80
-
-  # httpsPort is an external HTTPS port of the service (required)
-  httpsPort: 443
-
-  # clusterIP is fixed service cluster IP address, if empty, Kubernetes assigns a value
-  clusterIP: ""
-
-  # loadBalancerIP is fixed load balancer IP address, if empty, the Kubernetes cloud provider assigns a value
-  loadBalancerIP: ""
-
-  # annotations is a map of annotations applied to the service
-  annotations: {}
-
-
-# urlHost is a fully qualified DNS name for externally accessing the application (required)
-urlHost: "fortify.dev.bigbang.mil"
-
-# urlPort is HTTPS port for externally accessing the application, if zero, a value of service.httpsPort is used instead
-urlPort: 0
-
-# sscPathPrefix is URL path prefix where the SSC application will be accessible
-sscPathPrefix: "/"
-
-# httpClientCertificateVerification is configuring HTTPS client certificate verification, supported values: "none", "optional", "required"
-httpClientCertificateVerification: "none"
-
-
-# secretRef is a reference to externally managed Kubernetes secret (required)
-secretRef:
-
-  # name is a name of externally managed Kubernetes secret to be used for configuration (required)
-  name: ""
-
-  # keys is a map of key names for externally managed Kubernetes secret (required)
-  keys:
-
-    # sscLicenseEntry is a key name for a Fortify licence (required)
-    sscLicenseEntry: "fortify.license"
-
-    # sscAutoconfigEntry is a key name for an SSC autoconfig file (required)
-    sscAutoconfigEntry: "ssc.autoconfig"
-
-    # sscSecretKeyEntry is key name for an SSC secret.key file
-    sscSecretKeyEntry: ""
-
-    # httpCertificateKeystoreFileEntry is a key name for a keystore with certificate and private key for HTTPS (required)
-    httpCertificateKeystoreFileEntry: "ssc-service.jks"
-
-    # httpCertificateKeystorePasswordEntry is a key name for a password of the HTTPS keystore (required)
-    httpCertificateKeystorePasswordEntry: "ssc-service.jks.password"
-
-    # httpCertificateKeystorePasswordEntry is a key name for a password of the HTTPS private key (required)
-    httpCertificateKeyPasswordEntry: "ssc-service.jks.key.password"
-
-    # httpTruststoreFileEntry is a key name for a truststore used by client certificate verification
-    httpTruststoreFileEntry: ""
-
-    # httpTruststorePasswordEntry is a key name for a password of the client certificate verification truststore
-    httpTruststorePasswordEntry: ""
-
-    # jvmTruststoreFileEntry is a key name for a JVM truststore
-    jvmTruststoreFileEntry: ""
-
-    # jvmTruststorePasswordEntry is a key name for a password of the JVM truststore
-    jvmTruststorePasswordEntry: ""
-
-ssc:
-  config:
-    http:
-      min_threads: 1
-      max_threads: 4
-    https:
-      min_threads: 4
-      max_threads: 150
-
-    log4j:
-      # Enable this to set the root log level to DEBUG and to print all SSC logs to STDOUT
-      #   NOTE: Setting customXMLConfigString will override this.
-      enableDebugConfig: false
-
-      # Paste in a multiline XML log4j2 config here to install your own fully
-      # customized log4j config for SSC.
-      #
-      # Example usage:
-      # customXMLConfigString: |-
-      #   <?xml version="1.0" encoding="UTF-8"?>
-      #   <Configuration status="WARN" monitorInterval="10">
-      #     <!-- Paste your own tweaked copy of /app/ssc/WEB-INF/init/log4j2.xml here. -->
-      #   </Configuration>
-      customXMLConfigString: ""
-
-
-
-# persistentVolumeClaim is a set of SSC's persistent volume claim options
-persistentVolumeClaim:
-
-  # size is a requested size of the persistent volume (required)
-  size: "4Gi"
-
-  # storageClassName is a storage class name to be used for the persistent volume
-  storageClassName: ""
-
-  # selector is a Kubernetes PersistentVolumeClaim selector
-  selector: {}
-
-
-# environment is a list of additional environment variables for the Pod, uses Kubernetes Pod spec syntax
-environment: []
-
-# jvmMaxRAMPercentage is a percentage of memory limit to be used for JVM heap
-jvmMaxRAMPercentage: 86
-
-# jvmExtraOptions is a set of additional options passed to Java process
-jvmExtraOptions: "-Dcom.redhat.fips=false"
-
-# resources is Kubernetes Pod resources specification
-# Recommended resources can be found here - https://www.microfocus.com/documentation/fortify-ScanCentral-DAST/2120/Fortify_Sys_Reqs_21.2.0.pdf
-# Check page 33 and 41 for recommended resources depending on the type of scan (DAST vs SSC)
-resources:
-  limits:
-    cpu: 4
-    memory: 16Gi
-  requests:
-    cpu: 1
-    memory: 4Gi
-
-# user is configuration for user and group IDs to be used for runAsUser, runAsGroup and fsGroup in PodSecurityContext
-user:
-  uid: 1111
-  gid: 1111
-
-nodeSelector:
-  kubernetes.io/os: linux
-  kubernetes.io/arch: amd64
-tolerations: []
-affinity: {}
 
 # MySQL Dependency Values
 mysql:
@@ -253,8 +136,6 @@ mysql:
       port=3306
       socket=/opt/bitnami/mysql/tmp/mysql.sock
       pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
-    # resources for MySQL, recommended resources can be found here - https://www.microfocus.com/documentation/fortify-ScanCentral-DAST/2120/Fortify_Sys_Reqs_21.2.0.pdf
-    # Page 22 for MySQL
     resources:
       limits:
         cpu: 8
@@ -268,13 +149,12 @@ mysql:
     containerSecurityContext:
       enabled: true
       capabilities:
-        drop: 
+        drop:
           - ALL
       runAsUser: 1001
       runAsGroup: 1001
       runAsNonRoot: true
   secondary:
-    # Page 22 for MySQL
     resources:
       limits:
         cpu: 8
@@ -288,13 +168,12 @@ mysql:
     containerSecurityContext:
       enabled: true
       capabilities:
-        drop: 
+        drop:
           - ALL
       runAsUser: 1001
       runAsGroup: 1001
       runAsNonRoot: true
   metrics:
-    # pulled from the chart example with some higher limits
     resources:
       limits:
         cpu: 2
@@ -308,54 +187,30 @@ mysql:
     containerSecurityContext:
       enabled: true
       capabilities:
-        drop: 
+        drop:
           - ALL
       runAsUser: 1001
       runAsGroup: 1001
       runAsNonRoot: true
 
-# Big Bang Additions
-domain: dev.bigbang.mil
-istio:
-  enabled: false
-  hardened:
-    enabled: false
-    outboundTrafficPolicyMode: "REGISTRY_ONLY"
-    customServiceEntries: []
-      # - name: "google-whitelist"
-      #   enabled: true
-      #   spec:
-      #     hosts:
-      #       - "www.google.com"
-      #       - "google.com"
-      #       - "repo1.dso.mil"
-      #     location: MESH_EXTERNAL
-      #     ports:
-      #       - number: 443
-      #         protocol: TLS
-      #         name: https
-      #     resolution: DNS    
-    customAuthorizationPolicies: []
-    monitoring:
-      enabled: true
-      namespaces:
-        - monitoring
-      principals:
-        - cluster.local/ns/monitoring/sa/monitoring-monitoring-kube-prometheus
-  mtls:
-    # -- STRICT = Allow only mutual TLS traffic,
-    # PERMISSIVE = Allow both plain text and mutual TLS traffic
-    mode: STRICT
-  fortify:
-    gateways:
-    - "istio-system/public"
-    hosts:
-    - "fortify.{{ .Values.domain }}"
-  injection: disabled
+# BigBang Additions
 
-initContainer:
-  keystoreImage: registry1.dso.mil/ironbank/google/golang/ubi9/golang-1.24
-  keystoreTag: 1.24.12
+# Keystore Generation Configuration
+# This Job runs as a Helm hook before install/upgrade to generate the keystore and create secrets
+keystoreJob:
+  enabled: true
+  # Set to true to recreate the secret on each upgrade (useful for cert rotation)
+  recreate: false
+  # Certificate alias for keystore generation
+  certAlias: tomcat
+  # Keystore passwords
+  trustStorePassword: dsoppassword
+  keyStorePassword: dsoppassword
+  keyStoreCertPassword: dsoppassword
+  # Image for keystore generation (must have openssl installed)
+  image: registry1.dso.mil/ironbank/redhat/ubi/ubi9
+  tag: "9.5"
+  # Resources for keystore Job
   resources:
     limits:
       cpu: 500m
@@ -364,56 +219,67 @@ initContainer:
       cpu: 250m
       memory: 64Mi
 
-  containerSecurityContext:
-    enabled: true
-    capabilities:
-      drop: 
-        - ALL
-    fsGroup: 1111
-    fsGroupChangePolicy: OnRootMismatch
-    runAsUser: 1111
-    runAsGroup: 1111
-    runAsNonRoot: true
+domain: dev.bigbang.mil
 
+istio:
+  enabled: false
+  mtls:
+    mode: STRICT
+  sidecar:
+    enabled: false
+    outboundTrafficPolicyMode: "REGISTRY_ONLY"
+  serviceEntries:
+    custom: []
+  authorizationPolicies:
+    enabled: false
+    custom: []
+
+routes:
+  inbound:
+    fortify:
+      enabled: true
+      gateways:
+        - istio-gateway/public-ingressgateway
+      hosts:
+        - "fortify.{{ .Values.domain }}"
+      service: fortify-ssc-service
+      port: 80
+      containerPort: 8080
+      selector:
+        app.kubernetes.io/name: fortify-ssc
+        app.kubernetes.io/component: webapp
+  outbound:
+    bb-tests:
+      enabled: false
+      hosts:
+        - repo1.dso.mil
 
 networkPolicies:
   enabled: false
-  ingressLabels:
-    app: istio-ingressgateway
-    istio: ingressgateway
+  egress:
+    from:
+      keystore-job:
+        podSelector:
+          matchLabels:
+            job: keystore-generator
+        to:
+          definition:
+            kubeAPI: true
+      bb-tests:
+        podSelector:
+          matchLabels:
+            helm-test: enabled
+        to:
+          cidr:
+            0.0.0.0/0:443: false
+          k8s:
+            # Allow test pods to reach the ingressgateway on targetPort 8443.
+            # kube-proxy DNAT translates service port 443 to targetPort 8443,
+            # and k3s NetworkPolicy evaluates post-DNAT, so port 443 rules don't match.
+            istio-gateway/public-ingressgateway:8443: false
   additionalPolicies: []
 
-# cache layer configurations
-# if this feature enabled, Fortify will cache the resource
-# `project/project_metadata/repository/artifact/manifest` in the redis
-# which help to improve the performance of high concurrent pulling manifest.
-cache:
-  # default is not enabled.
-  enabled: false
-  # default keep cache for one day.
-  expireHours: 24
 
-databaseSecret:
-  use_secret: false
-  name: db-credentials-mysql
-  useRoot: false # Use root credentials to create database if required
-
-# Please read the docs to create java keystore and convert it into base64
-fortify_java_keystore:
-  use: false
-  keystore: "ZHVtbXkK" # base64 of keystore
-
-default_cert_alias: tomcat
-
-fortifySecret:
-  use_secret: false
-  name: fortify-secret
-  # Secret contains following values:
-  # certificate-key-password
-  # certificate-keystore-password
-  # scc.autoconfig
-  # fortify.license
-  # Note: certificate-keystore is generated by init container
 
 bbtests:
   enabled: false
@@ -434,12 +300,14 @@ bbtests:
     image: "registry1.dso.mil/bigbang-ci/devops-tester:1.1.2"
     envs: {}
 
-trust_store_password: dsoppassword
-key_store_password: dsoppassword
-key_store_cert_password : dsoppassword
+
 fortify_autoconfig: |
     appProperties:
       host.validation: false
+      http.min_threads: 1
+      http.max_threads: 4
+      https.min_threads: 4
+      https.max_threads: 150
 
     datasourceProperties:
       db.username: root
@@ -452,11 +320,7 @@ fortify_autoconfig: |
       migration.enabled: true
       migration.username: root
       migration.password: password
+
 fortify_license: |
   <License>
 
-# Extra volumes, volume mounts and init container configurations for the webapp.
-webapp:
-  extraVolumes: []
-  extraVolumeMounts: []
-  extraInitContainers: []

@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # fortify-ssc
 
-![Version: 1.1.2320154-bb.40](https://img.shields.io/badge/Version-1.1.2320154--bb.40-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 25.4.0.0137](https://img.shields.io/badge/AppVersion-25.4.0.0137-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 25.4.0-bb.0](https://img.shields.io/badge/Version-25.4.0--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 25.4.0.0137](https://img.shields.io/badge/AppVersion-25.4.0.0137-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -43,70 +43,30 @@ helm install fortify-ssc chart/
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| upstream.podAnnotations."proxy.istio.io/config" | string | `"{\"holdApplicationUntilProxyStarts\": true}"` |  |
+| upstream.image.repository | string | `"registry1.dso.mil/ironbank/microfocus/fortify/ssc"` |  |
+| upstream.image.pullPolicy | string | `"Always"` |  |
+| upstream.image.tag | string | `"25.4.0.0137"` |  |
+| upstream.imagePullSecrets[0].name | string | `"private-registry"` |  |
+| upstream.nameOverride | string | `"fortify-ssc"` |  |
+| upstream.fullnameOverride | string | `"fortify-ssc"` |  |
+| upstream.urlHost | string | `"fortify.dev.bigbang.mil"` |  |
+| upstream.secretRef.name | string | `"fortify-ssc-secret"` |  |
+| upstream.secretRef.keys.sscLicenseEntry | string | `"fortify.license"` |  |
+| upstream.secretRef.keys.sscAutoconfigEntry | string | `"ssc.autoconfig"` |  |
+| upstream.secretRef.keys.httpCertificateKeystoreFileEntry | string | `"ssc-service.jks"` |  |
+| upstream.secretRef.keys.httpCertificateKeystorePasswordEntry | string | `"ssc-service.jks.password"` |  |
+| upstream.secretRef.keys.httpCertificateKeyPasswordEntry | string | `"ssc-service.jks.key.password"` |  |
+| upstream.environment[0].name | string | `"COM_FORTIFY_SSC_ENFORCESECURETRANSPORT"` |  |
+| upstream.environment[0].value | string | `"false"` |  |
+| upstream.jvmExtraOptions | string | `"-Dcom.redhat.fips=false"` |  |
+| upstream.resources.limits.cpu | int | `4` |  |
+| upstream.resources.limits.memory | string | `"16Gi"` |  |
+| upstream.resources.requests.memory | string | `"4Gi"` |  |
+| upstream.user.gid | int | `1111` |  |
 | openshift | bool | `false` |  |
-| image.repositoryPrefix | string | `"registry1.dso.mil/ironbank/microfocus/fortify/"` |  |
-| image.pullPolicy | string | `"Always"` |  |
-| image.webapp | string | `"ssc"` |  |
-| image.tag | string | `"25.4.0.0137"` |  |
-| securityContext.enabled | bool | `true` |  |
-| securityContext.capabilities.drop[0] | string | `"ALL"` |  |
-| securityContext.fsGroup | int | `1111` |  |
-| securityContext.fsGroupChangePolicy | string | `"OnRootMismatch"` |  |
-| securityContext.runAsUser | int | `1111` |  |
-| securityContext.runAsGroup | int | `1111` |  |
-| securityContext.runAsNonRoot | bool | `true` |  |
-| containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
-| containerSecurityContext.fsGroup | int | `1111` |  |
-| containerSecurityContext.fsGroupChangePolicy | string | `"OnRootMismatch"` |  |
-| containerSecurityContext.runAsUser | int | `1111` |  |
-| containerSecurityContext.runAsGroup | int | `1111` |  |
-| containerSecurityContext.runAsNonRoot | bool | `true` |  |
-| imagePullSecrets[0].name | string | `"private-registry"` |  |
 | nameOverride | string | `"fortify-ssc"` |  |
 | fullnameOverride | string | `"fortify-ssc"` |  |
-| service.type | string | `"ClusterIP"` |  |
-| service.httpPort | int | `80` |  |
-| service.httpsPort | int | `443` |  |
-| service.clusterIP | string | `""` |  |
-| service.loadBalancerIP | string | `""` |  |
-| service.annotations | object | `{}` |  |
-| urlHost | string | `"fortify.dev.bigbang.mil"` |  |
-| urlPort | int | `0` |  |
-| sscPathPrefix | string | `"/"` |  |
-| httpClientCertificateVerification | string | `"none"` |  |
-| secretRef.name | string | `""` |  |
-| secretRef.keys.sscLicenseEntry | string | `"fortify.license"` |  |
-| secretRef.keys.sscAutoconfigEntry | string | `"ssc.autoconfig"` |  |
-| secretRef.keys.sscSecretKeyEntry | string | `""` |  |
-| secretRef.keys.httpCertificateKeystoreFileEntry | string | `"ssc-service.jks"` |  |
-| secretRef.keys.httpCertificateKeystorePasswordEntry | string | `"ssc-service.jks.password"` |  |
-| secretRef.keys.httpCertificateKeyPasswordEntry | string | `"ssc-service.jks.key.password"` |  |
-| secretRef.keys.httpTruststoreFileEntry | string | `""` |  |
-| secretRef.keys.httpTruststorePasswordEntry | string | `""` |  |
-| secretRef.keys.jvmTruststoreFileEntry | string | `""` |  |
-| secretRef.keys.jvmTruststorePasswordEntry | string | `""` |  |
-| ssc.config.http.min_threads | int | `1` |  |
-| ssc.config.http.max_threads | int | `4` |  |
-| ssc.config.https.min_threads | int | `4` |  |
-| ssc.config.https.max_threads | int | `150` |  |
-| ssc.config.log4j.enableDebugConfig | bool | `false` |  |
-| ssc.config.log4j.customXMLConfigString | string | `""` |  |
-| persistentVolumeClaim.size | string | `"4Gi"` |  |
-| persistentVolumeClaim.storageClassName | string | `""` |  |
-| persistentVolumeClaim.selector | object | `{}` |  |
-| environment | list | `[]` |  |
-| jvmMaxRAMPercentage | int | `86` |  |
-| jvmExtraOptions | string | `"-Dcom.redhat.fips=false"` |  |
-| resources.limits.cpu | int | `4` |  |
-| resources.limits.memory | string | `"16Gi"` |  |
-| resources.requests.cpu | int | `1` |  |
-| resources.requests.memory | string | `"4Gi"` |  |
-| user.uid | int | `1111` |  |
-| user.gid | int | `1111` |  |
-| nodeSelector."kubernetes.io/os" | string | `"linux"` |  |
-| nodeSelector."kubernetes.io/arch" | string | `"amd64"` |  |
-| tolerations | list | `[]` |  |
-| affinity | object | `{}` |  |
 | mysql.enabled | bool | `true` |  |
 | mysql.fullnameOverride | string | `""` |  |
 | mysql.global.imageRegistry | string | `"registry1.dso.mil/ironbank"` |  |
@@ -149,46 +109,43 @@ helm install fortify-ssc chart/
 | mysql.metrics.containerSecurityContext.runAsUser | int | `1001` |  |
 | mysql.metrics.containerSecurityContext.runAsGroup | int | `1001` |  |
 | mysql.metrics.containerSecurityContext.runAsNonRoot | bool | `true` |  |
+| keystoreJob.enabled | bool | `true` |  |
+| keystoreJob.recreate | bool | `false` |  |
+| keystoreJob.certAlias | string | `"tomcat"` |  |
+| keystoreJob.trustStorePassword | string | `"dsoppassword"` |  |
+| keystoreJob.keyStorePassword | string | `"dsoppassword"` |  |
+| keystoreJob.keyStoreCertPassword | string | `"dsoppassword"` |  |
+| keystoreJob.image | string | `"registry1.dso.mil/ironbank/redhat/ubi/ubi9"` |  |
+| keystoreJob.tag | string | `"9.5"` |  |
+| keystoreJob.resources.limits.cpu | string | `"500m"` |  |
+| keystoreJob.resources.limits.memory | string | `"128Mi"` |  |
+| keystoreJob.resources.requests.cpu | string | `"250m"` |  |
+| keystoreJob.resources.requests.memory | string | `"64Mi"` |  |
 | domain | string | `"dev.bigbang.mil"` |  |
 | istio.enabled | bool | `false` |  |
-| istio.hardened.enabled | bool | `false` |  |
-| istio.hardened.outboundTrafficPolicyMode | string | `"REGISTRY_ONLY"` |  |
-| istio.hardened.customServiceEntries | list | `[]` |  |
-| istio.hardened.customAuthorizationPolicies | list | `[]` |  |
-| istio.hardened.monitoring.enabled | bool | `true` |  |
-| istio.hardened.monitoring.namespaces[0] | string | `"monitoring"` |  |
-| istio.hardened.monitoring.principals[0] | string | `"cluster.local/ns/monitoring/sa/monitoring-monitoring-kube-prometheus"` |  |
-| istio.mtls.mode | string | `"STRICT"` | STRICT = Allow only mutual TLS traffic, PERMISSIVE = Allow both plain text and mutual TLS traffic |
-| istio.fortify.gateways[0] | string | `"istio-system/public"` |  |
-| istio.fortify.hosts[0] | string | `"fortify.{{ .Values.domain }}"` |  |
-| istio.injection | string | `"disabled"` |  |
-| initContainer.keystoreImage | string | `"registry1.dso.mil/ironbank/google/golang/ubi9/golang-1.24"` |  |
-| initContainer.keystoreTag | string | `"1.24.12"` |  |
-| initContainer.resources.limits.cpu | string | `"500m"` |  |
-| initContainer.resources.limits.memory | string | `"128Mi"` |  |
-| initContainer.resources.requests.cpu | string | `"250m"` |  |
-| initContainer.resources.requests.memory | string | `"64Mi"` |  |
-| initContainer.containerSecurityContext.enabled | bool | `true` |  |
-| initContainer.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
-| initContainer.containerSecurityContext.fsGroup | int | `1111` |  |
-| initContainer.containerSecurityContext.fsGroupChangePolicy | string | `"OnRootMismatch"` |  |
-| initContainer.containerSecurityContext.runAsUser | int | `1111` |  |
-| initContainer.containerSecurityContext.runAsGroup | int | `1111` |  |
-| initContainer.containerSecurityContext.runAsNonRoot | bool | `true` |  |
+| istio.mtls.mode | string | `"STRICT"` |  |
+| istio.sidecar.enabled | bool | `false` |  |
+| istio.sidecar.outboundTrafficPolicyMode | string | `"REGISTRY_ONLY"` |  |
+| istio.serviceEntries.custom | list | `[]` |  |
+| istio.authorizationPolicies.enabled | bool | `false` |  |
+| istio.authorizationPolicies.custom | list | `[]` |  |
+| routes.inbound.fortify.enabled | bool | `true` |  |
+| routes.inbound.fortify.gateways[0] | string | `"istio-gateway/public-ingressgateway"` |  |
+| routes.inbound.fortify.hosts[0] | string | `"fortify.{{ .Values.domain }}"` |  |
+| routes.inbound.fortify.service | string | `"fortify-ssc-service"` |  |
+| routes.inbound.fortify.port | int | `80` |  |
+| routes.inbound.fortify.containerPort | int | `8080` |  |
+| routes.inbound.fortify.selector."app.kubernetes.io/name" | string | `"fortify-ssc"` |  |
+| routes.inbound.fortify.selector."app.kubernetes.io/component" | string | `"webapp"` |  |
+| routes.outbound.bb-tests.enabled | bool | `false` |  |
+| routes.outbound.bb-tests.hosts[0] | string | `"repo1.dso.mil"` |  |
 | networkPolicies.enabled | bool | `false` |  |
-| networkPolicies.ingressLabels.app | string | `"istio-ingressgateway"` |  |
-| networkPolicies.ingressLabels.istio | string | `"ingressgateway"` |  |
+| networkPolicies.egress.from.keystore-job.podSelector.matchLabels.job | string | `"keystore-generator"` |  |
+| networkPolicies.egress.from.keystore-job.to.definition.kubeAPI | bool | `true` |  |
+| networkPolicies.egress.from.bb-tests.podSelector.matchLabels.helm-test | string | `"enabled"` |  |
+| networkPolicies.egress.from.bb-tests.to.cidr."0.0.0.0/0:443" | bool | `false` |  |
+| networkPolicies.egress.from.bb-tests.to.k8s.istio-gateway/public-ingressgateway:8443 | bool | `false` |  |
 | networkPolicies.additionalPolicies | list | `[]` |  |
-| cache.enabled | bool | `false` |  |
-| cache.expireHours | int | `24` |  |
-| databaseSecret.use_secret | bool | `false` |  |
-| databaseSecret.name | string | `"db-credentials-mysql"` |  |
-| databaseSecret.useRoot | bool | `false` |  |
-| fortify_java_keystore.use | bool | `false` |  |
-| fortify_java_keystore.keystore | string | `"ZHVtbXkK"` |  |
-| default_cert_alias | string | `"tomcat"` |  |
-| fortifySecret.use_secret | bool | `false` |  |
-| fortifySecret.name | string | `"fortify-secret"` |  |
 | bbtests.enabled | bool | `false` |  |
 | bbtests.cypress.artifacts | bool | `true` |  |
 | bbtests.cypress.envs.cypress_url | string | `"http://fortify-ssc-service:80"` |  |
@@ -200,14 +157,8 @@ helm install fortify-ssc chart/
 | bbtests.cypress.resources.limits.memory | string | `"4Gi"` |  |
 | bbtests.scripts.image | string | `"registry1.dso.mil/bigbang-ci/devops-tester:1.1.2"` |  |
 | bbtests.scripts.envs | object | `{}` |  |
-| trust_store_password | string | `"dsoppassword"` |  |
-| key_store_password | string | `"dsoppassword"` |  |
-| key_store_cert_password | string | `"dsoppassword"` |  |
-| fortify_autoconfig | string | `"appProperties:\n  host.validation: false\n\ndatasourceProperties:\n  db.username: root\n  db.password: password\n\n  jdbc.url: 'jdbc:mysql://fortify-mysql:3306/ssc_db?sessionVariables=collation_connection=latin1_general_cs&rewriteBatchedStatements=true'\n\ndbMigrationProperties:\n\n  migration.enabled: true\n  migration.username: root\n  migration.password: password\n"` |  |
+| fortify_autoconfig | string | `"appProperties:\n  host.validation: false\n  http.min_threads: 1\n  http.max_threads: 4\n  https.min_threads: 4\n  https.max_threads: 150\n\ndatasourceProperties:\n  db.username: root\n  db.password: password\n\n  jdbc.url: 'jdbc:mysql://fortify-mysql:3306/ssc_db?sessionVariables=collation_connection=latin1_general_cs&rewriteBatchedStatements=true'\n\ndbMigrationProperties:\n\n  migration.enabled: true\n  migration.username: root\n  migration.password: password\n"` |  |
 | fortify_license | string | `"<License>\n"` |  |
-| webapp.extraVolumes | list | `[]` |  |
-| webapp.extraVolumeMounts | list | `[]` |  |
-| webapp.extraInitContainers | list | `[]` |  |
 
 ## Contributing
 

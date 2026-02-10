@@ -31,6 +31,19 @@ kyvernoPolicies:
   values:
     bbtests:
       enabled: false
+    policies:
+      update-automountserviceaccounttokens:
+        namespaces:
+          - namespace: fortify
+            pods:
+              allow:
+              - fortify-ssc-keystore-job*
+      require-labels:
+        namespaces:
+          - namespace: fortify
+            pods:
+              allow:
+              - fortify-ssc-keystore-job*
 kyverno:
   values:
     bbtests:

@@ -4,6 +4,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [25.4.0-bb.0] - 2026-02-09
+
+### Changed
+
+- Refactored to passthrough subchart pattern for Fortify
+- Migrated to bb-common library chart for Istio, NetworkPolicies, and Routes
+- Updated upstream helm-ssc chart to 25.4.0-1
+- Updated SSC image to 25.4.0.0137
+- Replaced golang init container with ubi9:9.5 for keystore generation
+
 ## [1.1.2320154-bb.40] - 2026-01-27
 
 ### Fixed

@@ -1,9 +1,15 @@
 dependencies:
+- name: bb-common
+  repository: oci://registry1.dso.mil/bigbang
+  version: 0.14.0
+- name: helm-ssc
+  repository: oci://registry-1.docker.io/fortifydocker
+  version: 25.4.0-1
 - name: mysql
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 9.19.0
 - name: gluon
   repository: oci://registry1.dso.mil/bigbang
   version: 0.5.20
-digest: sha256:38d067759afcfe340bd14f66268b04090592587a6112b197181dc8d3981a5251
-generated: "2025-05-20T16:22:43.42572749-05:00"
+digest: sha256:114b1165209be2f45ad73ba4f459d5673dd657931256a154aa9c38e5da3a3a60
+generated: "2026-02-08T15:19:27.29192-06:00"

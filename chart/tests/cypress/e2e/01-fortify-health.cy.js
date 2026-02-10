@@ -1,5 +1,6 @@
 describe('template spec', () => {
-  it('.should() - allow user to signin', () => {
+  it('.should() - allow user to signin', { retries: { runMode: 15, openMode: 0 } }, () => {
+    cy.wait(3000)
     cy.visit(Cypress.env('url'))
     cy.contains('Application Security', { matchCase: false })
     cy.get('input[placeholder="Username"]').type(Cypress.env('user'))

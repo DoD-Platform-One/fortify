@@ -1,24 +1,81 @@
-# Files that require bigbang integration testing
+# Development & Maintenance
 
-## See [bb MR testing](./docs/test-package-against-bb.md) for details regarding testing changes against bigbang umbrella chart
+## Files that require BigBang integration testing
 
-There are certain integrations within the bigbang ecosystem and this package that require additional testing outside of the specific package tests ran during CI.  This is a requirement when files within those integrations are changed, as to avoid causing breaks up through the bigbang umbrella.  Currently, these include changes to the istio implementation within fortify (see: [istio templates](/chart/templates/bigbang/istio/), [network policy templates](/chart/templates/bigbang/networkpolicies/), [service entry templates](/chart/templates/bigbang/serviceentries/)).
+There are certain integrations within the BigBang ecosystem and this package that require additional testing outside of the specific package tests ran during CI. This is a requirement when files within those integrations are changed, as to avoid causing breaks up through the BigBang umbrella. Currently, these include changes to the BigBang templates (see: [bigbang templates](/chart/templates/bigbang/)).
 
-Be aware that any changes to files listed in the [Modifications made to upstream chart](#modifications-made-to-upstream-chart) section will also require a codeowner to validate the changes using above method, to ensure that they do not affect the package or its integrations adversely.
-
-Be sure to also test against monitoring locally as it is integrated by default with these high-impact service control packages, and needs to be validated using the necessary chart values beneath `istio.hardened` block with `monitoring.enabled` set to true as part of your dev-overrides.yaml
+Be aware that any changes to files listed in the [Modifications made to upstream chart](#modifications-made-to-upstream-chart) section will also require a codeowner to validate the changes to ensure that they do not affect the package or its integrations adversely.
 
 ### Table of Contents
 
+- [Passthrough Pattern Architecture](#passthrough-pattern-architecture)
 - [Testing a new Fortify version](#testing-a-new-fortify-version)
 - [Upgrading the package chart](#how-to-upgrade-the-fortify-package-chart)
 - [Modifications made to the upstream chart](#modifications-made-to-upstream-chart)
 
+## Passthrough Pattern Architecture
+
+As of version 25.2.2-bb.0, Fortify uses a **passthrough pattern** where the upstream `helm-ssc` chart is included as a subchart with minimal modifications. BigBang-specific features (Istio, NetworkPolicies, monitoring) are added via separate templates in `chart/templates/bigbang/` using the `bb-common` library chart (gluon).
+
+### Chart Structure
+
+```
+chart/
+  Chart.yaml              # Dependencies: helm-ssc (alias: upstream), mysql, gluon
+  values.yaml             # upstream: section + BigBang-specific values
+  templates/
+    bigbang/              # bb-common Istio, NetworkPolicies, AuthorizationPolicies
+    tests/                # Cypress test templates
+    keystore-job.yaml     # Pre-install/pre-upgrade keystore generation Job
+    _helpers.tpl          # Helper functions
+```
+
+### Dependencies
+
+```yaml
+dependencies:
+  - name: helm-ssc
+    version: "25.2.2-1"
+    repository: oci://registry-1.docker.io/fortifydocker
+    alias: upstream
+  - name: mysql
+    version: 9.19.0
+    repository: oci://registry-1.docker.io/bitnamicharts
+  - name: gluon
+    version: "0.5.20"
+    repository: oci://registry1.dso.mil/bigbang
+```
+
+### Values Structure
+
+The `values.yaml` has two main sections:
+
+1. **`upstream:` section** - Passed through to the upstream helm-ssc subchart
+   ```yaml
+   upstream:
+     image:
+       repository: "registry1.dso.mil/ironbank/microfocus/fortify/ssc"
+       tag: "25.4.0.0137"
+     nameOverride: "fortify-ssc"
+     fullnameOverride: "fortify-ssc"
+     user:
+       gid: 1111  # Non-root group for OpenShift/DoD compliance
+   ```
+
+2. **Root level** - BigBang-specific values (NOT passed to upstream)
+   - `keystoreJob:` - Keystore generation Job configuration
+   - `mysql:` - MySQL subchart configuration
+   - `istio:`, `networkPolicies:`, `routes:` - bb-common integrations
+   - `fortify_autoconfig:`, `fortify_license:` - Content for secrets
+   - `bbtests:` - Cypress test configuration
+
 ## Testing a new Fortify version
 
-1. Create a k8s dev environment. One option is to use the Big Bang [k3d-dev.sh](https://repo1.dso.mil/platform-one/big-bang/bigbang/-/tree/master/docs/developer/scripts) with no arguments which will give you the default configuration. The following steps assume you are using the script.
+1. Create a k8s dev environment using the Big Bang [k3d-dev.sh](https://repo1.dso.mil/big-bang/bigbang/-/tree/master/docs/reference/scripts/developer) script. Use the `-b` flag for the big instance (m5a.4xlarge, 16 CPU) since Fortify + MySQL requires significant resources.
+
 1. Follow the instructions at the end of the script to connect to the k8s cluster and install flux.
-1. Use the following override example to quickly create a test environment.  We currently do not test using a fortify license, however if one becomes available it can be set in `addons.fortify.values.fortify_license`.
+
+1. Use the following override example to deploy. We currently do not test using a fortify license, however if one becomes available it can be set in `addons.fortify.values.fortify_license`.
 
     ```yaml
     addons:
@@ -34,8 +91,6 @@ Be sure to also test against monitoring locally as it is integrated by default w
             enabled: true
           mysql:
             enabled: true
-          databaseSecret:
-            useRoot: true
           fortify_autoconfig: |
               appProperties:
                 host.validation: false
@@ -49,464 +104,85 @@ Be sure to also test against monitoring locally as it is integrated by default w
                 migration.password: password
     ```
 
-1. Access Fortify UI from a browser (usually fortify.dev.bigbang.mil, or whatever you added to your hosts file ) and login with the following default credentials:
+1. Access Fortify UI from a browser (usually `fortify.dev.bigbang.mil`) and login with the default credentials:
 
-- Username: `admin`
-- Password: `admin`
+    - Username: `admin`
+    - Password: `admin`
 
 ## How to upgrade the Fortify Package chart
 
-BigBang makes modifications to the upstream helm chart. The full list of changes can be found in the [Modifications made to the upstream chart](#modifications-made-to-upstream-chart) section.
-
 Notes:
-
-- This is the Fortify Software Security Center (SSC). You can find additional info on [the official Fortify SSC documentation](https://www.microfocus.com/documentation/fortify-software-security-center/).
-
+- This is the Fortify Software Security Center (SSC). See the [official Fortify SSC documentation](https://www.microfocus.com/documentation/fortify-software-security-center/).
 - The current source for Fortify helm charts is [fortifydocker/helm-ssc](https://hub.docker.com/r/fortifydocker/helm-ssc)
-- Deprecated helm charts can be found in the [Fortify Helm Chart Github](https://github.com/fortify/helm3-charts/releases?q=ssc&expanded=true) page
-
-- In the context of this document and repo Fortify and Fortify SSC are often used interchangeably.
+- In the context of this document and repo, Fortify and Fortify SSC are used interchangeably.
 
 ---
 
-1. Find the current and latest release notes from the [documentation](https://www.microfocus.com/documentation/fortify-software-security-center/). Review the release notes to understand the new changes in the latest version. Take note of any manual upgrade steps that customers might need to perform, if any.
-1. Fortify provides helm charts via OCI, and no longer provides helm charts via git. Currently we can not use `kpt` to update the chart. This process may be updated in the future, sourcing the chart from [fortifydocker/helm-ssc](https://hub.docker.com/r/fortifydocker/helm-ssc).
-1. Run a helm dependency command to update the chart/charts/*.tgz archives and create a new requirements.lock file. You will commit the tar archives along with the requirements.lock that was generated.
+1. Review the upstream release notes to understand changes. Note any manual upgrade steps.
 
+1. Update the upstream chart dependency version in [`chart/Chart.yaml`](/chart/Chart.yaml):
+   ```yaml
+   dependencies:
+     - name: helm-ssc
+       version: "NEW_VERSION"
+   ```
+
+1. Update chart dependencies:
     ```bash
     helm dependency update ./chart
     ```
 
-1. In [`/chart/values.yaml`](/chart/values.yaml) update image.tag to the new version. Renovate might have already done this for you. Also update the `dev.bigbang.mil/applicationVersions`
-
+1. In [`chart/values.yaml`](/chart/values.yaml) update `upstream.image.tag` to the new version:
    ```yaml
-     dev.bigbang.mil/applicationVersions: |
-    - Fortify: 24.4.3.0003
+   upstream:
+     image:
+       tag: "NEW_VERSION"
    ```
 
-1. Update [`CHANGELOG.MD`](/CHANGELOG.md) with an entry for "upgrade Fortify to app version X.X.X chart version X.X.X-bb.X". Or, whatever description is appropriate.
-1. Update the [`README.md`](/README.md) following the [gluon library script](https://repo1.dso.mil/platform-one/big-bang/apps/library-charts/gluon/-/blob/master/docs/bb-package-readme.md)
-1. Update [`/chart/Chart.yaml`](/chart/Chart.yaml) to the appropriate versions. The annotation version should match the `appVersion`.
-
+1. Update [`chart/Chart.yaml`](/chart/Chart.yaml) versions and annotations:
     ```yaml
     version: X.X.X-bb.X
     appVersion: X.X.X.X
     annotations:
       bigbang.dev/applicationVersions: |
-        - Fortify: 24.4.5.0009
+        - Fortify: X.X.X.X
     ```
 
-SecurityContext should pull from values
+1. Update `annotations."helm.sh/images"` in Chart.yaml if image references changed.
 
-   ```yaml
-  securityContext:
-    allowPrivilegeEscalation: false
-    {{- toYaml .Values.containerSecurityContext | nindent 12 }}
-    readOnlyRootFilesystem: true
-  ```
+1. Update [`CHANGELOG.md`](/CHANGELOG.md) with an entry for the upgrade.
 
-1. Update [`/chart/Chart.yaml`](/chart/Chart.yaml) `annotations."helm.sh/images"` section to fix references to updated packages (if needed)
-1. Use a development environment to deploy and test Fortify. See more detailed testing instructions below. Also test an upgrade by deploying the old version first and then deploying the new version.
-1. When the Package pipeline runs expect the cypress tests to fail due to UI changes.
-1. Update the [`/README.md`](/README.md) again if you have made any additional changes during the upgrade/testing process.
-1. Revert changes to `chart/Values.yaml`
+1. Update [`README.md`](/README.md) following the [gluon library script](https://repo1.dso.mil/platform-one/big-bang/apps/library-charts/gluon/-/blob/master/docs/bb-package-readme.md).
 
-  ```yaml
-  repositoryPrefix: "registry1.dso.mil/ironbank/microfocus/fortify/"
-  # buildNumber: "" (this way it pulls from Chart.appVersion)
-  ```
+1. Test deployment: clean install and upgrade from previous version. See [Testing a new Fortify version](#testing-a-new-fortify-version).
 
 ## Modifications made to upstream chart
 
-This is a high-level list of modifications that Big Bang has made to the upstream helm chart. You can use this as as cross-check to make sure that no modifications were lost during the upgrade process.
+None. The upstream `helm-ssc` chart is included as an unmodified subchart (passthrough pattern). All BigBang customizations are applied via values and additional templates.
 
-### chart/charts/*.tgz
+### BigBang additions
 
-- run `helm dependency update ./chart` and commit the downloaded archives
-- commit the tar archives that were downloaded from the helm dependency update command. And also commit the requirements.lock that was generated.
+**Templates** (`chart/templates/`):
 
-### chart/templates/bigbang/*
+| Template | Purpose |
+|----------|---------|
+| `bigbang/*.yaml` | bb-common generated Istio VirtualService, NetworkPolicies, PeerAuthentication, AuthorizationPolicies, ServiceEntries, Sidecar |
+| `keystore-job.yaml` | Pre-install/pre-upgrade Job to generate JKS keystore and create secrets |
+| `tests/` | Cypress test ConfigMap and Pod for CI validation |
+| `_helpers.tpl` | Helper functions for BigBang templates |
 
-- add istio virtual service
-- add networkpolicies
-- add istio peerauthentications
-- add opt-in custom log4j2 configmap to be mounted at `/opt/bigbang/log4j2-config-override.xml`.
+**Values** (root level, not passed to upstream):
 
-### chart/templates/tests/*
-
-- add templates for CI helm tests
-
-### chart/templates/*.yaml
-
-- add script-configmap.yaml
-- add secrets.yaml
-- add tomcat-configuration.yaml
-- modify tomcat-configuration.yaml
-  - Allow setting Tomcat server min/max threads within server configuration configmap
-- modify webapp.yaml
-  - set spec.template.spec.containers["webapp"].readinessProbe.initialDelaySeconds to `30`
-  - set spec.template.spec.containers["webapp"].readinessProbe.periodSeconds to `20`
-  - set spec.template.spec.containers["webapp"].readinessProbe.httpGet.path to `/images/favicon.ico`
-  - set spec.template.spec.containers["webapp"].readinessProbe.httpGet.port `http-web`
-  - set spec.template.spec.containers["webapp"].readinessProbe.httpGet.scheme `HTTP`
-  - set spec.template.spec.containers["webapp"].readinessProbe.httpGet.httpHeaders["Host"].value to `{{ include "ssc.fullcomponentname" (merge (dict "component" "service") . ) }}`
-  - add spec.template.spec.containers["webapp"].volumeMounts `.Values.webapp.extraVolumeMounts` for [additional mounts](https://repo1.dso.mil/big-bang/product/packages/fortify/-/merge_requests/174)
-
-    ```yaml
-            {{- with .Values.webapp.extraVolumeMounts }}
-              {{- toYaml . | nindent 12 }}
-            {{- end }}
-    ```
-
-  - set spec.template.spec.containers["webapp"].volumeMounts["secrets-volume"].name to `shared`
-  - add spec.template.spec.initContainers
-
-    ```yaml
-    initContainers:
-      - name: keystore-gen
-        image: "{{ .Values.initContainer.keystoreImage }}:{{ .Values.initContainer.keystoreTag }}"
-        imagePullPolicy: IfNotPresent
-        command:
-        - /bin/sh
-        args:
-        - /script/gen.sh
-        volumeMounts:
-        - name: keystore-script
-          mountPath: /script
-        - name: shared
-          mountPath /shared
-        - name: secrets-volume
-          mountPath: /secrets
-        resources:
-          {{- toYaml .Values.initContainer.resources | nindent 12 }}
-        {{- with .Values.webapp.extraInitContainers }}
-          {{- toYaml . | nindent 8 }}
-        {{- end }}
-    ```
-
-  - add spec.template.spec.volumes `Values.webapp.extraVolumes` for [additional volumes](https://repo1.dso.mil/big-bang/product/packages/fortify/-/merge_requests/174)
-
-    ```yaml
-        {{- with .Values.webapp.extraVolumes }}
-          {{- toYaml . | nindent 8 }}
-        {{- end }}
-    ```
-
-  - modify spec.template.spec.volumes["secrets-volume"]
-
-    ```yaml
-    - name: secrets-volume
-          secret:
-            {{- if not .Values.databaseSecret.use secret }}
-            secretName: {{ include "ssc.fullcomponentname" (merge (dict "component" "secret") . ) }}
-            {{- else }}
-            secretName: {{ required "The secretRef.name config value is required!" .Values.secretRef.name }}
-            {{- end }}
-    ```
-
-  - remove spec.template.spec.volumes["etc-volume"].medium
-  - add spec.template.spec.volumes["shared"]
-
-    ```yaml
-    - name: shared
-      emptydir: {}
-    ```
-
-  - add spec.template.spec.volumes["keystore-script"]
-
-    ```yaml
-    - name: keystore-script
-      configMap:
-        name: {{ include "ssc.fullcomponentname" (merge (dict "component" "keystore-script") . ) }}
-    ```
-
-  - add spec.template.spec.volumes["tomcat-template"]
-
-    ```yaml
-    - name: tomcat-template
-      configMap:
-        name: {{ include "ssc.fullcomponentname" (merge (dict "component" "tomcat-template") . ) }}
-    ```
-
-  - add spec.template.spec.volumes["log4j2-template"]
-
-    ```yaml
-    - name: log4j2-template
-      configMap:
-        name: {{ include "ssc.fullcomponentname" (merge (dict "component" "log4j2-template") . ) }}
-    ```
-
-### chart/tests/*
-
-- add helm test scripts for CI pipeline
-
-## chart/.helmignore
-
-- add *.orig
-
-## chart/Chart.yaml
-
-- switch the api version to v2
-- update the name to fortify-ssc
-- change version key to Big Bang composite version
-- add Big Bang annotations.dev.bigbang.mil/applicationVersions and annotations.helm.sh/images keys to support release automation
-- add the following
-
-  ```yaml
-  type: application
-  keywords:
-  - fortify
-  - ssc
-  - sast
-  home: https://www.microfocus.com/en-us/solutions/application-security
-  icon: https://avatars.githubusercontent.com/u/28990234?s=200&v=4
-  sources:
-  - https://github.com/fortify/helm3-charts
-  engine: gotpl
-  ```
-
-- add the dependencies that are needed
-
-## chart/kpt.yaml
-
-- add this to manage kpt
-
-## chart/requirements.yaml
-
-- add this to manage needed charts
-
-## chart/values.yaml
-
-- update the image.repositoryPrefix to ironbank
-- comment out image.buildNumber
-- change image.webapp to "ssc"
-- add the desired image.tag
-- add an array element to imagePullSecrets with the name set to "private-registry"
-- set nameOverride to "fortify-ssc"
-- set fullnameOverride to "fortify-ssc"
-- set urlHost to "fortify.dev.bigbang.mil"
-- set secretRef.keys.sscLicenseEntry to "fortify.license"
-- set secretRef.keys.sscAutoconfigEntry to "fortify.autoconfig"
-- set secretRef.keys.httpCertificateKeystoreFileEntry to "ssc-service.jks"
-- set secretRef.keys.httpCertificateKeystorePasswordEntry to "ssc-service.jks.password"
-- set secretRef.keys.httpCertificateKeyPasswordEntry to "ssc-service.jks.key.password"
-- set jvmExtraOptions to "-Dcom.redhat.fips=false"
-- set the resources like this
-- add app and version under mysql.primary.podLabels
-
-  ```yaml
-  # Recommended resources can be found here - https://www.microfocus.com/documentation/fortify-ScanCentral-DAST/2120/Fortify_Sys_Reqs_21.2.0.pdf
-  # Check page 33 and 41 for recommended resources depending on the type of scan (DAST vs SSC)
-  resources:
-    limits:
-      cpu: 4
-      memory: 16Gi
-    requests:
-      cpu: 1
-      memory: 1Gi
-  ```
-
-- allow overriding mix and max threads allowed by ssc server with:
-
-  ```yaml
-  ssc:
-    config:
-      http:
-        min_threads: 1
-        max_threads: 4
-      https:
-        min_threads: 4
-        max_threads: 150
-  ```
-
-- Allow verbose debug logs for SSC with:
-
-  ```yaml
-  ssc:
-    config:
-      log4j:
-        enableDebugConfig: true
-  ```
-
-- add this to the bottom
-
-  ```yaml
-  # MySQL Dependency Values
-  mysql:
-    enabled: true
-    global:
-      imageRegistry: "registry1.dso.mil/ironbank"
-      imagePullSecrets:
-        - private-registry
-    auth:
-      rootPassword: "password"
-      database: "ssc_db"
-    primary:
-      configuration: |-
-        [mysqld]
-        default_authentication_plugin=mysql_native_password
-        skip-name-resolve
-        explicit_defaults_for_timestamp
-        basedir=/opt/bitnami/mysql
-        plugin_dir=/opt/bitnami/mysql/lib/plugin
-        port=3306
-        socket=/opt/bitnami/mysql/tmp/mysql.sock
-        datadir=/bitnami/mysql/data
-        tmpdir=/opt/bitnami/mysql/tmp
-        bind-address=0.0.0.0
-        pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
-        log-error=/opt/bitnami/mysql/logs/mysqld.log
-        character-set-server=latin1
-        collation-server=latin1_general_cs
-        slow_query_log=0
-        slow_query_log_file=/opt/bitnami/mysql/logs/mysqld.log
-        long_query_time=10.0
-        default_storage_engine=INNODB
-        innodb_buffer_pool_size=512M
-        innodb_lock_wait_timeout=300
-        innodb_log_file_size=512M
-        max_allowed_packet=1G
-        sql-mode="TRADITIONAL"
-  
-        [mysqldump]
-        max_allowed_packet=1G
-  
-        [client]
-        port=3306
-        socket=/opt/bitnami/mysql/tmp/mysql.sock
-        default-character-set=UTF8
-        plugin_dir=/opt/bitnami/mysql/lib/plugin
-  
-        [manager]
-        port=3306
-        socket=/opt/bitnami/mysql/tmp/mysql.sock
-        pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
-      # resources for MySQL, recommended resources can be found here - https://www.microfocus.com/documentation/fortify-ScanCentral-DAST/2120/Fortify_Sys_Reqs_21.2.0.pdf
-      # Page 22 for MySQL
-      resources:
-        limits:
-          cpu: 8
-          memory: 64Gi
-        requests:
-          cpu: 1
-          memory: 500Mi
-    secondary:
-      # Page 22 for MySQL
-      resources:
-        limits:
-          cpu: 8
-          memory: 64Gi
-        requests:
-          cpu: 1
-          memory: 500Mi
-    metrics:
-      # pulled from the chart example with some higher limits
-      resources:
-        limits:
-          cpu: 2
-          memory: 1Gi
-        requests:
-          cpu: 100m
-          memory: 256Mi
-  
-  
-  # Big Bang Additions
-  domain: dev.bigbang.mil
-  istio:
-    enabled: false
-    mtls:
-      # -- STRICT = Allow only mutual TLS traffic,
-      # PERMISSIVE = Allow both plain text and mutual TLS traffic
-      mode: STRICT
-    fortify:
-      gateways:
-      - "istio-system/public"
-      hosts:
-      - "fortify.{{ .Values.domain }}"
-    injection: disabled
-  
-  initContainer:
-    keystoreImage: registry1.dso.mil/ironbank/google/golang/ubi9/golang-1.24
-    keystoreTag: 1.24.1
-    resources:
-      limits:
-        cpu: 500m
-        memory: 128Mi
-      requests:
-        cpu: 250m
-        memory: 64Mi
-  
-  networkPolicies:
-    enabled: false
-    egress: []
-    egressDns: []
-    ingress: []
-  
-  # cache layer configurations
-  # if this feature enabled, Fortify will cache the resource
-  # `project/project_metadata/repository/artifact/manifest` in the redis
-  # which help to improve the performance of high concurrent pulling manifest.
-  cache:
-    # default is not enabled.
-    enabled: false
-    # default keep cache for one day.
-    expireHours: 24
-  
-  databaseSecret:
-    use_secret: false
-    name: db-credentials-mysql
-    useRoot: false # Use root credentials to create database if required
-  
-  # Please read the docs to create java keystore and convert it into base64
-  fortify_java_keystore:
-    use: false
-    keystore: "ZHVtbXkK" # base64 of keystore
-  
-  default_cert_alias: tomcat
-  
-  fortifySecret:
-    use_secret: false
-    name: fortify-secret
-    # Secret contains following values:
-    # certificate-key-password
-    # certificate-keystore-password
-    # scc.autoconfig
-    # fortify.license
-    # Note: certificate-keystore is generated by init container
-  
-  bbtests:
-    enabled: false
-    cypress:
-      artifacts: true
-      envs:
-        cypress_url: "http://fortify-ssc-service:80"
-        cypress_token: "change_me"
-    scripts:
-      image: "registry1.dso.mil/bigbang-ci/devops-tester:1.1.2"
-      envs: {}
-  
-  
-  trust_store_password: dsoppassword
-  key_store_password: dsoppassword
-  key_store_cert_password : dsoppassword
-  fortify_autoconfig: |
-      appProperties:
-        host.validation: false
-  
-      datasourceProperties:
-        db.username: root
-        db.password: password
-  
-        jdbc.url: 'jdbc:mysql://fortify-mysql:3306/ssc_db?sessionVariables=collation_connection=latin1_general_cs&rewriteBatchedStatements=true'
-  
-      dbMigrationProperties:
-  
-        migration.enabled: true
-        migration.username: root
-        migration.password: password
-  fortify_license: |
-    <License>
-  ```
+| Value | Purpose |
+|-------|---------|
+| `keystoreJob` | Keystore generation Job configuration (image, passwords, resources) |
+| `mysql` | Bitnami MySQL subchart for database backend |
+| `istio` | Istio service mesh integration (mTLS, sidecar, authorization policies) |
+| `routes` | bb-common inbound/outbound route definitions |
+| `networkPolicies` | bb-common network policy definitions with egress rules |
+| `bbtests` | Cypress test configuration (URL, credentials, resources) |
+| `fortify_autoconfig` | SSC autoconfig content (database, thread settings) |
+| `fortify_license` | Fortify license content |
 
 ### automountServiceAccountToken
 

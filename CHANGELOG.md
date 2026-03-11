@@ -4,6 +4,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [25.4.0-bb.1] - 2026-03-09
+
+### Changed
+
+- Restructured NetworkPolicies with definitions for external MySQL database
+- Added hbonePortInjection support for Istio ambient mesh
+- Moved keystore-job network policy to bigbang directory
+
+### Removed
+
+- Removed allow-all-egress network policy
+- Removed bb-tests egress network policies
+
+### Added
+
+- Added .gitignore file
+- Added external-mysql egress definition for operator-provided external database CIDRs
+
 ## [25.4.0-bb.0] - 2026-02-09
 
 ### Changed

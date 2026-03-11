@@ -1,0 +1,18 @@
+# Helm test outputs
+tests/__snapshot__/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.bak

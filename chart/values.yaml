@@ -256,8 +256,26 @@ routes:
 
 networkPolicies:
   enabled: false
+  # note: ztunnel does not exist yet, defaulting to false until ambient package is added
+  hbonePortInjection:
+    enabled: false
   egress:
+    definitions:
+      external-mysql:
+        # Operators must provide CIDRs when using an external MySQL server.
+        to: []
+        ports:
+          - port: 3306
+            protocol: TCP
     from:
+      fortify-webapp:
+        podSelector:
+          matchLabels:
+            app.kubernetes.io/name: fortify-ssc
+            app.kubernetes.io/component: webapp
+        to:
+          definition:
+            external-mysql: false
       keystore-job:
         podSelector:
           matchLabels:
@@ -265,18 +283,18 @@ networkPolicies:
         to:
           definition:
             kubeAPI: true
-      bb-tests:
+      keystore-job-hook:
         podSelector:
           matchLabels:
-            helm-test: enabled
+            job: keystore-generator
+        metadata:
+          annotations:
+            helm.sh/hook: pre-install,pre-upgrade
+            helm.sh/hook-weight: "-5"
+            helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
         to:
-          cidr:
-            0.0.0.0/0:443: false
-          k8s:
-            # Allow test pods to reach the ingressgateway on targetPort 8443.
-            # kube-proxy DNAT translates service port 443 to targetPort 8443,
-            # and k3s NetworkPolicy evaluates post-DNAT, so port 443 rules don't match.
-            istio-gateway/public-ingressgateway:8443: false
+          definition:
+            kubeAPI: true
   additionalPolicies: []
 
 
@@ -323,4 +341,3 @@ fortify_autoconfig: |
 
 fortify_license: |
   <License>
-

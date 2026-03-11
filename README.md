@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # fortify-ssc
 
-![Version: 25.4.0-bb.0](https://img.shields.io/badge/Version-25.4.0--bb.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 25.4.0.0137](https://img.shields.io/badge/AppVersion-25.4.0.0137-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 25.4.0-bb.1](https://img.shields.io/badge/Version-25.4.0--bb.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 25.4.0.0137](https://img.shields.io/badge/AppVersion-25.4.0.0137-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 A Helm chart for Fortify Software Security Center application
 
@@ -140,11 +140,15 @@ helm install fortify-ssc chart/
 | routes.outbound.bb-tests.enabled | bool | `false` |  |
 | routes.outbound.bb-tests.hosts[0] | string | `"repo1.dso.mil"` |  |
 | networkPolicies.enabled | bool | `false` |  |
+| networkPolicies.hbonePortInjection.enabled | bool | `false` |  |
+| networkPolicies.egress.definitions.external-mysql.to | list | `[]` |  |
+| networkPolicies.egress.definitions.external-mysql.ports[0].port | int | `3306` |  |
+| networkPolicies.egress.definitions.external-mysql.ports[0].protocol | string | `"TCP"` |  |
+| networkPolicies.egress.from.fortify-webapp.podSelector.matchLabels."app.kubernetes.io/name" | string | `"fortify-ssc"` |  |
+| networkPolicies.egress.from.fortify-webapp.podSelector.matchLabels."app.kubernetes.io/component" | string | `"webapp"` |  |
+| networkPolicies.egress.from.fortify-webapp.to.definition.external-mysql | bool | `false` |  |
 | networkPolicies.egress.from.keystore-job.podSelector.matchLabels.job | string | `"keystore-generator"` |  |
 | networkPolicies.egress.from.keystore-job.to.definition.kubeAPI | bool | `true` |  |
-| networkPolicies.egress.from.bb-tests.podSelector.matchLabels.helm-test | string | `"enabled"` |  |
-| networkPolicies.egress.from.bb-tests.to.cidr."0.0.0.0/0:443" | bool | `false` |  |
-| networkPolicies.egress.from.bb-tests.to.k8s.istio-gateway/public-ingressgateway:8443 | bool | `false` |  |
 | networkPolicies.additionalPolicies | list | `[]` |  |
 | bbtests.enabled | bool | `false` |  |
 | bbtests.cypress.artifacts | bool | `true` |  |

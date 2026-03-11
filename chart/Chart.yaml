@@ -1,7 +1,7 @@
 apiVersion: v2
 description: A Helm chart for Fortify Software Security Center application
 name: fortify-ssc
-version: 25.4.0-bb.0
+version: 25.4.0-bb.1
 appVersion: 25.4.0.0137
 type: application
 keywords:

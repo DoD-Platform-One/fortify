@@ -21,10 +21,10 @@ As of version 25.2.2-bb.0, Fortify uses a **passthrough pattern** where the upst
 
 ```
 chart/
-  Chart.yaml              # Dependencies: helm-ssc (alias: upstream), mysql, gluon
+  Chart.yaml              # Dependencies: helm-ssc (alias: upstream), mysql, bb-common
   values.yaml             # upstream: section + BigBang-specific values
   templates/
-    bigbang/              # bb-common Istio, NetworkPolicies, AuthorizationPolicies
+    bigbang/              # bb-common renders and hook-scoped BigBang policies
     tests/                # Cypress test templates
     keystore-job.yaml     # Pre-install/pre-upgrade keystore generation Job
     _helpers.tpl          # Helper functions
@@ -69,6 +69,8 @@ The `values.yaml` has two main sections:
    - `fortify_autoconfig:`, `fortify_license:` - Content for secrets
    - `bbtests:` - Cypress test configuration
 
+When `mysql.enabled=false`, Fortify no longer falls back to a broad `allow-all-egress` policy. External MySQL access must be configured through `networkPolicies.egress.definitions.external-mysql.to` with explicit CIDRs, and the rule is scoped to the Fortify webapp on port `3306`.
+
 ## Testing a new Fortify version
 
 1. Create a k8s dev environment using the Big Bang [k3d-dev.sh](https://repo1.dso.mil/big-bang/bigbang/-/tree/master/docs/reference/scripts/developer) script. Use the `-b` flag for the big instance (m5a.4xlarge, 16 CPU) since Fortify + MySQL requires significant resources.
@@ -103,6 +105,8 @@ The `values.yaml` has two main sections:
                 migration.username: root
                 migration.password: password
     ```
+
+   If testing Fortify against an external MySQL instance instead of the bundled subchart, set `mysql.enabled: false` and provide explicit CIDRs under `networkPolicies.egress.definitions.external-mysql.to`.
 
 1. Access Fortify UI from a browser (usually `fortify.dev.bigbang.mil`) and login with the default credentials:
 
@@ -166,7 +170,7 @@ None. The upstream `helm-ssc` chart is included as an unmodified subchart (passt
 
 | Template | Purpose |
 |----------|---------|
-| `bigbang/*.yaml` | bb-common generated Istio VirtualService, NetworkPolicies, PeerAuthentication, AuthorizationPolicies, ServiceEntries, Sidecar |
+| `bigbang/*.yaml` | bb-common generated Istio VirtualService, NetworkPolicies, PeerAuthentication, AuthorizationPolicies, ServiceEntries, Sidecar, and hook-scoped BigBang policies |
 | `keystore-job.yaml` | Pre-install/pre-upgrade Job to generate JKS keystore and create secrets |
 | `tests/` | Cypress test ConfigMap and Pod for CI validation |
 | `_helpers.tpl` | Helper functions for BigBang templates |

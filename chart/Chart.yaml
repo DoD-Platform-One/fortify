@@ -27,7 +27,7 @@ dependencies:
   version: '9.19.0'
   repository: oci://registry-1.docker.io/bitnamicharts
 - name: gluon
-  version: 0.5.20
+  version: 0.9.8
   repository: oci://registry1.dso.mil/bigbang
 annotations:
   bigbang.dev/maintenanceTrack: bb_integrated

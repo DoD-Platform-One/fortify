@@ -248,11 +248,7 @@ routes:
       selector:
         app.kubernetes.io/name: fortify-ssc
         app.kubernetes.io/component: webapp
-  outbound:
-    bb-tests:
-      enabled: false
-      hosts:
-        - repo1.dso.mil
+
 
 networkPolicies:
   enabled: false

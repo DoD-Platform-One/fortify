@@ -7,9 +7,13 @@
   "dependencyDashboardAutoclose": true,
   "dependencyDashboardTitle": "Renovate: Upgrade Fortify Package Dependencies",
   "draftPR": true,
-  "branchName": "renovate/ironbank",
+  "branchTopic": "ironbank",
   "enabledManagers": [
-    "custom.regex"
+    "custom.regex",
+    "helmv3"
+  ],
+  "ignorePaths": [
+    "chart/charts/**"
   ],
   "labels": [
     "fortify",
@@ -34,6 +38,9 @@
     }
   ],
   "separateMajorMinor": false,
+  "postUpdateOptions": [
+    "helmUpdateSubChartArchives"
+  ],
   "customManagers": [
     {
       "customType": "regex",
@@ -57,6 +64,18 @@
         "-\\sFortify:\\s+(?<currentValue>.+)"
       ],
       "depNameTemplate": "registry1.dso.mil/ironbank/microfocus/fortify/ssc",
+      "datasourceTemplate": "docker",
+      "registryUrlTemplate": "https://registry1.dso.mil"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^chart/Chart\\.yaml$/"
+      ],
+      "matchStrings": [
+        "- name:[\\s]+gluon[\\s]+version:[\\s]+(?<currentValue>.*)"
+      ],
+      "depNameTemplate": "bigbang/gluon",
       "datasourceTemplate": "docker",
       "registryUrlTemplate": "https://registry1.dso.mil"
     },

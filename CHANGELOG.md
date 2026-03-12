@@ -2,8 +2,6 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
----
-
 ## [25.4.0-bb.1] - 2026-03-09
 
 ### Changed
@@ -11,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Restructured NetworkPolicies with definitions for external MySQL database
 - Added hbonePortInjection support for Istio ambient mesh
 - Moved keystore-job network policy to bigbang directory
+- Updated gluon to 0.9.8 so helm test network policies are rendered by the library chart
 
 ### Removed
 
